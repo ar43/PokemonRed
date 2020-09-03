@@ -1,0 +1,55 @@
+#pragma once
+
+#include <stdio.h>
+#include <Windows.h>
+#include <math.h>
+#include <map>
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+#include <string>
+#include <time.h>
+#include <iostream>
+
+#include "timer.h"
+#include "utility.h"
+#include "frame.h"
+#include "console/console.h"
+#include "console/cmds.h"
+#include "input.h"
+#include "render.h"
+#include "../game/game.h"
+#include "../game/player.h"
+
+#define GAME_WIDTH 160
+#define GAME_HEIGHT 144
+
+class System
+{
+
+public:
+	System();
+	void init();
+	void close();
+	bool requestQuit;
+	SDL_Window* getWindow();
+	SDL_Renderer* getRenderer();
+	void error(const char* pMsg);
+	//void loadMedia();
+	Console console;
+
+private:
+	//void loadFonts();
+	//void loadTexts();
+	//void loadTextures();
+	//void loadEnts();
+	//void loadMaps();
+	//void startTimers();
+	SDL_Window* window;
+	SDL_Renderer* renderer;
+};
+
+extern System sys;
+extern Game game;
+extern Input input;

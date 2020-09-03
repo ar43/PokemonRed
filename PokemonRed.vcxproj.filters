@@ -13,5 +13,90 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\sys">
+      <UniqueIdentifier>{e488dcea-ff76-43b5-870d-cf445953d181}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\sys">
+      <UniqueIdentifier>{15638a5b-aac4-414e-bc31-6e4a78282d93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\sys\console">
+      <UniqueIdentifier>{fe9f4859-bebe-48e9-937c-9f3e2f4756ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sys\console">
+      <UniqueIdentifier>{741a541d-7da7-4228-bd62-b3977a072a38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game">
+      <UniqueIdentifier>{6c179e9c-684f-4211-8a45-1d4cf0e5a8ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game">
+      <UniqueIdentifier>{386d577e-febf-4e56-bf98-4820dc00d9dd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sys\system.cpp">
+      <Filter>Source Files\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sys\timer.cpp">
+      <Filter>Source Files\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sys\utility.cpp">
+      <Filter>Source Files\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sys\frame.cpp">
+      <Filter>Source Files\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sys\console\cmds.cpp">
+      <Filter>Source Files\sys\console</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sys\console\console.cpp">
+      <Filter>Source Files\sys\console</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sys\input.cpp">
+      <Filter>Source Files\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sys\render.cpp">
+      <Filter>Source Files\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\game.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\player.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\sys\system.h">
+      <Filter>Header Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sys\timer.h">
+      <Filter>Header Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sys\utility.h">
+      <Filter>Header Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sys\frame.h">
+      <Filter>Header Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sys\console\cmds.h">
+      <Filter>Header Files\sys\console</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sys\console\console.h">
+      <Filter>Header Files\sys\console</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sys\input.h">
+      <Filter>Header Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sys\render.h">
+      <Filter>Header Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\game.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\player.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
