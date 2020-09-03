@@ -18,10 +18,7 @@ void System::init()
 	else
 	{
 		//Set texture filtering to linear
-		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
-		{
-			sys.error("Warning: Linear texture filtering not enabled!");
-		}
+		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 
 		//Create window
 		sys.window = SDL_CreateWindow("Pokemon", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH*4, GAME_HEIGHT*4, SDL_WINDOW_SHOWN);
@@ -102,4 +99,10 @@ void System::close()
 	IMG_Quit();
 	TTF_Quit();
 	SDL_Quit();
+}
+
+void System::load_media()
+{
+	res.loadTileset("overworld", "assets/tilesets/overworld.png");
+	res.loadBlockset("overworld", "assets/blocksets/overworld.bst");
 }

@@ -4,12 +4,13 @@ System sys;
 Game game;
 Input input;
 Render rend;
+ResourceManager res;
 
 int main(int argc, char* args[])
 {
 	sys.init();
+	sys.load_media();
 	game.frame.init();
-	//sys.loadMedia();
 
 
 

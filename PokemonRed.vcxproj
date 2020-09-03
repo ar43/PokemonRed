@@ -150,6 +150,7 @@
     <ClCompile Include="src\sys\frame.cpp" />
     <ClCompile Include="src\sys\input.cpp" />
     <ClCompile Include="src\sys\render.cpp" />
+    <ClCompile Include="src\sys\resource_manager.cpp" />
     <ClCompile Include="src\sys\system.cpp" />
     <ClCompile Include="src\sys\timer.cpp" />
     <ClCompile Include="src\sys\utility.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="src\sys\frame.h" />
     <ClInclude Include="src\sys\input.h" />
     <ClInclude Include="src\sys\render.h" />
+    <ClInclude Include="src\sys\resource_manager.h" />
     <ClInclude Include="src\sys\system.h" />
     <ClInclude Include="src\sys\timer.h" />
     <ClInclude Include="src\sys\utility.h" />

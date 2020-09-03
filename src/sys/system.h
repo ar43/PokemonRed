@@ -21,6 +21,7 @@
 #include "render.h"
 #include "../game/game.h"
 #include "../game/player.h"
+#include "resource_manager.h"
 
 #define GAME_WIDTH 160
 #define GAME_HEIGHT 144
@@ -32,6 +33,7 @@ public:
 	System();
 	void init();
 	void close();
+	void load_media();
 	bool requestQuit;
 	SDL_Window* getWindow();
 	SDL_Renderer* getRenderer();
@@ -53,3 +55,5 @@ private:
 extern System sys;
 extern Game game;
 extern Input input;
+extern Render rend;
+extern ResourceManager res;

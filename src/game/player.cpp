@@ -2,8 +2,8 @@
 
 Player::Player()
 {
-	x = 16;
-	y = 12;
+	x = 0;
+	y = 0;
 	dir = Direction::DOWN;
 }
 
