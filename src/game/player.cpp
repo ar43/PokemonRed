@@ -144,29 +144,202 @@ bool Player::collision_check()
 		}
 	}
 
-	// out of bounds check (problematic: if it technically should change but there's an obstacle on the other map need to FIX)
+	// out of bounds check
 	Map* currMap = game.world.currentMap;
-	Position newpos_s = { pos.x / 16,pos.y / 16 };
-	if (newpos_s.x < 0 && currMap->connection.west == "none")
-	{
-		return false;
-	}
-	else if (newpos_s.x >= game.world.currentMap->width * 2 && currMap->connection.east == "none")
-	{
-		return false;
-	}
-	else if (newpos_s.y < 0 && currMap->connection.north == "none")
-	{
-		return false;
-	}
-	else if (newpos_s.y >= game.world.currentMap->height * 2 && currMap->connection.south == "none")
-	{
-		return false;
-	}
+	Position newpos_s = { newpos.x / 16,newpos.y / 16 };
 
-	//get map block for newpos
+	if (newpos_s.x < 0)
+	{
+		if (currMap->connection.west == "none")
+			return false;
 
-	
+		Map* tempMap = res.getMap(currMap->connection.west);
+		Position newpos_ss = { newpos_s.x,newpos_s.y };
+		newpos_ss.y -= game.world.currentMap->connection.westOffset * 2;
+		newpos_ss.x = tempMap->width * 2 - 1;
+
+		int index = (newpos_ss.y / 2) * tempMap->width + newpos_ss.x / 2;
+		if (index < 0 || index >= tempMap->blocks.size())
+			return true;
+		Block* newBlock = &tempMap->blockset->blocks[tempMap->blocks[index]];
+
+		int i = 0;
+		if (newpos.x % 32 == 0)
+		{
+			if (newpos.y % 32 == 0)
+			{
+				i = 0;
+			}
+			else
+			{
+				i = 2;
+			}
+		}
+		else
+		{
+			if (newpos.y % 32 == 0)
+			{
+				i = 1;
+			}
+			else
+			{
+				i = 3;
+			}
+		}
+		printf("i: %i\n", i);
+
+		//todo: ledge jumping (check "from" tile and "to" tile)
+
+
+
+		if (newBlock->solid[i][2]) //if the bottom left tile is solid, block movement, else dont
+			return false;
+	}
+	else if (newpos_s.x >= game.world.currentMap->width * 2)
+	{
+		if (currMap->connection.east == "none")
+			return false;
+
+		Map* tempMap = res.getMap(currMap->connection.east);
+		Position newpos_ss = { newpos_s.x,newpos_s.y };
+		newpos_ss.y -= game.world.currentMap->connection.eastOffset * 2;
+		newpos_ss.x = 0;
+
+		int index = (newpos_ss.y / 2) * tempMap->width + newpos_ss.x / 2;
+		if (index < 0 || index >= tempMap->blocks.size())
+			return true;
+		Block* newBlock = &tempMap->blockset->blocks[tempMap->blocks[index]];
+
+		int i = 0;
+		if (newpos.x % 32 == 0)
+		{
+			if (newpos.y % 32 == 0)
+			{
+				i = 0;
+			}
+			else
+			{
+				i = 2;
+			}
+		}
+		else
+		{
+			if (newpos.y % 32 == 0)
+			{
+				i = 1;
+			}
+			else
+			{
+				i = 3;
+			}
+		}
+		printf("i: %i\n", i);
+
+		//todo: ledge jumping (check "from" tile and "to" tile)
+
+
+
+		if (newBlock->solid[i][2]) //if the bottom left tile is solid, block movement, else dont
+			return false;
+	}
+	else if (newpos_s.y < 0)
+	{
+		if (currMap->connection.north == "none")
+			return false;
+
+		Map* tempMap = res.getMap(currMap->connection.north);
+		Position newpos_ss = { newpos_s.x,newpos_s.y };
+		newpos_ss.x -= game.world.currentMap->connection.northOffset * 2;
+		newpos_ss.y = tempMap->height * 2 - 1;
+
+		int index = (newpos_ss.y / 2) * tempMap->width + newpos_ss.x / 2;
+		if (index < 0 || index >= tempMap->blocks.size())
+			return true;
+		Block* newBlock = &tempMap->blockset->blocks[tempMap->blocks[index]];
+
+		int i = 0;
+		if (newpos.x % 32 == 0)
+		{
+			if (newpos.y % 32 == 0)
+			{
+				i = 0;
+			}
+			else
+			{
+				i = 2;
+			}
+		}
+		else
+		{
+			if (newpos.y % 32 == 0)
+			{
+				i = 1;
+			}
+			else
+			{
+				i = 3;
+			}
+		}
+		printf("i: %i\n", i);
+
+		//todo: ledge jumping (check "from" tile and "to" tile)
+
+
+
+		if (newBlock->solid[i][2]) //if the bottom left tile is solid, block movement, else dont
+			return false;
+	}
+	else if (newpos_s.y >= game.world.currentMap->height * 2)
+	{
+		if(currMap->connection.south == "none")
+			return false;
+
+		Map* tempMap = res.getMap(currMap->connection.south);
+		Position newpos_ss = { newpos_s.x,newpos_s.y };
+		newpos_ss.x -= game.world.currentMap->connection.southOffset * 2;
+		newpos_ss.y = 0;
+
+		int index = (newpos_ss.y / 2) * tempMap->width + newpos_ss.x / 2;
+		if (index < 0 || index >= tempMap->blocks.size())
+			return true;
+		Block* newBlock = &tempMap->blockset->blocks[tempMap->blocks[index]];
+
+		int i = 0;
+		if (newpos.x % 32 == 0)
+		{
+			if (newpos.y % 32 == 0)
+			{
+				i = 0;
+			}
+			else
+			{
+				i = 2;
+			}
+		}
+		else
+		{
+			if (newpos.y % 32 == 0)
+			{
+				i = 1;
+			}
+			else
+			{
+				i = 3;
+			}
+		}
+		printf("i: %i\n", i);
+
+		//todo: ledge jumping (check "from" tile and "to" tile)
+
+
+
+		if (newBlock->solid[i][2]) //if the bottom left tile is solid, block movement, else dont
+			return false;
+	}
+	//end of out of bounds
+
+
+	//we are not out of bounds, check for current map
 	int index = (newpos.y / 32) * currMap->width + newpos.x / 32;
 	if (index < 0 || index >= currMap->blocks.size() || newpos.x < 0 || newpos.x >= currMap->width*32) //else it would throw error
 		return true;
