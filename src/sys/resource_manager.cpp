@@ -53,22 +53,58 @@ void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 			SDL_RenderCopy(sys.getRenderer(), tileset->texture, &src, &dest);
 			if (std::find(tileset->collData->begin(), tileset->collData->end(), buffer[j]) != tileset->collData->end())
 			{
-				if (j == 0x00 || j == 0x01 || j == 0x04 || j == 0x05)
+				switch(j)
 				{
-					blockset->blocks[i].solid[0] = false;
+					case 0:
+					blockset->blocks[i].solid[0][0] = false;
+					break;
+					case 1:
+						blockset->blocks[i].solid[0][1] = false;
+						break;
+					case 2:
+						blockset->blocks[i].solid[1][0] = false;
+						break;
+					case 3:
+						blockset->blocks[i].solid[1][1] = false;
+						break;
+					case 4:
+						blockset->blocks[i].solid[0][2] = false;
+						break;
+					case 5:
+						blockset->blocks[i].solid[0][3] = false;
+						break;
+					case 6:
+						blockset->blocks[i].solid[1][2] = false;
+						break;
+					case 7:
+						blockset->blocks[i].solid[1][3] = false;
+						break;
+					case 8:
+						blockset->blocks[i].solid[2][0] = false;
+						break;
+					case 9:
+						blockset->blocks[i].solid[2][1] = false;
+						break;
+					case 10:
+						blockset->blocks[i].solid[3][0] = false;
+						break;
+					case 11:
+						blockset->blocks[i].solid[3][1] = false;
+						break;
+					case 12:
+						blockset->blocks[i].solid[2][2] = false;
+						break;
+					case 13:
+						blockset->blocks[i].solid[2][3] = false;
+						break;
+					case 14:
+						blockset->blocks[i].solid[3][2] = false;
+						break;
+					case 15:
+						blockset->blocks[i].solid[3][3] = false;
+						break;
 				}
-				else if (j == 0x02 || j == 0x03 || j == 0x06 || j == 0x07)
-				{
-					blockset->blocks[i].solid[1] = false;
-				}
-				else if (j == 0x08 || j == 0x09 || j == 0x0c || j == 0x0d)
-				{
-					blockset->blocks[i].solid[2] = false;
-				}
-				else if (j == 0x0a || j == 0x0b || j == 0x0e || j == 0x0f)
-				{
-					blockset->blocks[i].solid[3] = false;
-				}
+				
 			}
 		}
 		SDL_SetRenderTarget(sys.getRenderer(), NULL);
@@ -141,7 +177,7 @@ Map* ResourceManager::getMap(std::string mapName)
 
 	if (it == mapMap.end())
 	{
-		printf("Warning: Trying to look for a map that doesn't exist");
+		//printf("Warning: Trying to look for a map that doesn't exist");
 		return nullptr;
 	}
 	else

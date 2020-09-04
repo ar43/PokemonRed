@@ -144,9 +144,29 @@ bool Player::collision_check()
 		}
 	}
 
+	// out of bounds check
+	Map* currMap = game.world.currentMap;
+	Position newpos_s = { pos.x / 16,pos.y / 16 };
+	if (newpos_s.x < 0 && currMap->connection.west == "none")
+	{
+		return false;
+	}
+	else if (newpos_s.x >= game.world.currentMap->width * 2 && currMap->connection.east == "none")
+	{
+		return false;
+	}
+	else if (newpos_s.y < 0 && currMap->connection.north == "none")
+	{
+		return false;
+	}
+	else if (newpos_s.y >= game.world.currentMap->height * 2 && currMap->connection.south == "none")
+	{
+		return false;
+	}
+
 	//get map block for newpos
 
-	Map* currMap = game.world.currentMap;
+	
 	int index = (newpos.y / 32) * currMap->width + newpos.x / 32;
 	if (index < 0 || index >= currMap->blocks.size() || newpos.x < 0 || newpos.x >= currMap->width*32)
 		return true;
@@ -175,10 +195,53 @@ bool Player::collision_check()
 		}
 	}
 	printf("i: %i\n", i);
-	if (newBlock->solid[i])
-		return false;
-	else
-		return true;
+
+	//todo: ledge jumping (check "from" tile and "to" tile)
+
+	switch (dir)
+	{
+		case Direction::UP:
+		{
+			if (newBlock->solid[i][2] && newBlock->solid[i][3])
+				return false;
+			else
+				return true;
+
+			break;
+		}
+		case Direction::DOWN:
+		{
+			if (newBlock->solid[i][0] && newBlock->solid[i][1])
+				return false;
+			else
+				return true;
+			break;
+		}
+		case Direction::LEFT:
+		{
+			if (newBlock->solid[i][3] || newBlock->solid[i][1])
+				return false;
+			else
+				return true;
+			break;
+		}
+		case Direction::RIGHT:
+		{
+			if (newBlock->solid[i][0] || newBlock->solid[i][2])
+				return false;
+			else
+				return true;
+			break;
+		}
+		default:
+		{
+			sys.error("Collision error");
+			return true;
+		}
+	}
+
+
+	
 }
 
 

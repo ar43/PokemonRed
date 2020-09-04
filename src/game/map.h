@@ -13,7 +13,10 @@ public:
 
 		for (int i = 0; i < 4; i++)
 		{
-			solid[i] = true;
+			for(int j = 0; j < 4; j++)
+			{ 
+				solid[i][j] = true;
+			}
 		}
 	}
 	SDL_Surface* surface;
@@ -23,7 +26,7 @@ public:
 	int height;
 
 	bool valid;
-	bool solid[4];
+	bool solid[4][4];
 
 	void render(int x, int y);
 	void render_static(int x, int y);
