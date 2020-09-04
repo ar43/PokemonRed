@@ -1,6 +1,7 @@
 #pragma once
 #include "../sys/frame.h"
 #include "player.h"
+#include "world.h"
 
 class Game
 {
@@ -11,7 +12,7 @@ public:
 	//Camera camera;
 	Frame frame;
 	Player player;
-	//World world;
+	World world;
 	//Action action;
 private:
 };

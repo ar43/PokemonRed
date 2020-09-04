@@ -12,7 +12,7 @@ enum Direction
 #define PLAYER_OFFSET_Y 60
 
 #define WORLD_OFFSET_X 16
-#define WORLD_OFFSET_Y 12
+#define WORLD_OFFSET_Y 24
 
 class Player 
 {

@@ -5,6 +5,7 @@ System::System()
 	
 	requestQuit = false;
 	window = NULL;
+	renderer = NULL;
 }
 
 void System::init()
@@ -17,7 +18,6 @@ void System::init()
 	}
 	else
 	{
-		//Set texture filtering to linear
 		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 
 		//Create window
@@ -104,5 +104,8 @@ void System::close()
 void System::load_media()
 {
 	res.loadTileset("overworld", "assets/tilesets/overworld.png");
+
 	res.loadBlockset("overworld", "assets/blocksets/overworld.bst");
+
+	res.loadMap("pallet_town", "assets/maps/PalletTown.blk", "overworld", 9, 10);
 }

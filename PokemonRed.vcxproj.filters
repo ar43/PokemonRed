@@ -69,6 +69,12 @@
     <ClCompile Include="src\sys\resource_manager.cpp">
       <Filter>Source Files\sys</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\map.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\world.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sys\system.h">
@@ -103,6 +109,12 @@
     </ClInclude>
     <ClInclude Include="src\sys\resource_manager.h">
       <Filter>Header Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\map.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\world.h">
+      <Filter>Header Files\game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

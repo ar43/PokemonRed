@@ -25,7 +25,8 @@ void ResourceManager::loadTileset(std::string textureName, const char *path)
 
 void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 {
-	Block* blockset = new Block[256]();
+	Blockset* blockset = new Blockset();
+	blockset->blocks = new Block[MAX_BLOCKS]();
 	Tileset* tileset = getTileset(blocksetName);
 
 	int i = 0;
@@ -36,13 +37,13 @@ void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 	{ 
 		char buffer[16];
 		ifs.read(buffer, 16);
-		blockset[i].texture = SDL_CreateTexture(sys.getRenderer(), tileset->format, SDL_TEXTUREACCESS_TARGET, 32, 32);
-		if (!blockset[i].texture)
+		blockset->blocks[i].texture = SDL_CreateTexture(sys.getRenderer(), tileset->format, SDL_TEXTUREACCESS_TARGET, 32, 32);
+		if (!blockset->blocks[i].texture)
 		{
 			sys.error(util::va("SDL_CreateTexture failed: %s\n", SDL_GetError()));
 			break;
 		}
-		SDL_SetRenderTarget(sys.getRenderer(), blockset[i].texture);
+		SDL_SetRenderTarget(sys.getRenderer(), blockset->blocks[i].texture);
 		SDL_RenderClear(sys.getRenderer());
 		for (int j = 0; j < 16; j++)
 		{
@@ -51,11 +52,34 @@ void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 			SDL_RenderCopy(sys.getRenderer(), tileset->texture, &src, &dest);
 		}
 		SDL_SetRenderTarget(sys.getRenderer(), NULL);
+		blockset->blocks[i].valid = true;
 		i++;
 	}
 	
 
 	blocksetMap[blocksetName] = blockset;
+}
+
+void ResourceManager::loadMap(std::string mapName, const char* path, std::string blockset, int height, int width)
+{
+	Map* map = new Map(height,width,getBlockset(blockset));
+
+	//copy the bytes of map data to a vector
+	std::ifstream file(path, std::ios::binary);
+	file.unsetf(std::ios::skipws);
+	std::streampos fileSize;
+
+	file.seekg(0, std::ios::end);
+	fileSize = file.tellg();
+	file.seekg(0, std::ios::beg);
+
+	map->blocks.reserve(fileSize);
+	map->blocks.insert(map->blocks.begin(),
+		std::istream_iterator<Uint8>(file),
+		std::istream_iterator<Uint8>());
+
+	mapMap[mapName] = map;
+
 }
 
 Tileset* ResourceManager::getTileset(std::string textureName)
@@ -73,13 +97,28 @@ Tileset* ResourceManager::getTileset(std::string textureName)
 	}
 }
 
-Block* ResourceManager::getBlockset(std::string blocksetName)
+Blockset* ResourceManager::getBlockset(std::string blocksetName)
 {
-	std::map<std::string, Block*>::iterator it = blocksetMap.find(blocksetName);
+	std::map<std::string, Blockset*>::iterator it = blocksetMap.find(blocksetName);
 
 	if (it == blocksetMap.end())
 	{
 		sys.error("Trying to look for a blockset that doesn't exist");
+		return nullptr;
+	}
+	else
+	{
+		return it->second;
+	}
+}
+
+Map* ResourceManager::getMap(std::string mapName)
+{
+	std::map<std::string, Map*>::iterator it = mapMap.find(mapName);
+
+	if (it == mapMap.end())
+	{
+		sys.error("Trying to look for a map that doesn't exist");
 		return nullptr;
 	}
 	else

@@ -143,7 +143,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\game\game.cpp" />
+    <ClCompile Include="src\game\map.cpp" />
     <ClCompile Include="src\game\player.cpp" />
+    <ClCompile Include="src\game\world.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\sys\console\cmds.cpp" />
     <ClCompile Include="src\sys\console\console.cpp" />
@@ -157,7 +159,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\game.h" />
+    <ClInclude Include="src\game\map.h" />
     <ClInclude Include="src\game\player.h" />
+    <ClInclude Include="src\game\world.h" />
     <ClInclude Include="src\sys\console\cmds.h" />
     <ClInclude Include="src\sys\console\console.h" />
     <ClInclude Include="src\sys\frame.h" />
