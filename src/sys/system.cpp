@@ -107,5 +107,7 @@ void System::load_media()
 
 	res.loadBlockset("overworld", "assets/blocksets/overworld.bst");
 
-	res.loadMap("pallet_town", "assets/maps/PalletTown.blk", "overworld", 9, 10);
+	res.loadMap("pallet_town", "assets/maps/PalletTown.blk", "overworld", 9, 10,0xb,"route_1","none","none","route_21");
+	res.loadMap("route_1", "assets/maps/Route1.blk", "overworld", 18, 10, 0xb, "none", "none", "none", "none");
+	res.loadMap("route_21", "assets/maps/Route21.blk", "overworld", 45, 10, 0x43, "none", "none", "none", "none");
 }

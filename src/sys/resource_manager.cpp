@@ -60,9 +60,9 @@ void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 	blocksetMap[blocksetName] = blockset;
 }
 
-void ResourceManager::loadMap(std::string mapName, const char* path, std::string blockset, int height, int width)
+void ResourceManager::loadMap(std::string mapName, const char* path, std::string blockset, int height, int width, int background, std::string north, std::string west, std::string east, std::string south)
 {
-	Map* map = new Map(height,width,getBlockset(blockset));
+	Map* map = new Map(height,width,getBlockset(blockset), background, north, west, east, south);
 
 	//copy the bytes of map data to a vector
 	std::ifstream file(path, std::ios::binary);
@@ -114,6 +114,9 @@ Blockset* ResourceManager::getBlockset(std::string blocksetName)
 
 Map* ResourceManager::getMap(std::string mapName)
 {
+	if (mapName == "none")
+		return nullptr;
+
 	std::map<std::string, Map*>::iterator it = mapMap.find(mapName);
 
 	if (it == mapMap.end())

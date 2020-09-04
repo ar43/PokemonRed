@@ -9,8 +9,16 @@ void Block::render(int x, int y)
     SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, SDL_FLIP_NONE);
 }
 
+void Block::render_static(int x, int y)
+{
+    x = x * 32;
+    y = y * 32;
+    SDL_Rect rected = { x ,y ,32,32 };
+    SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, SDL_FLIP_NONE);
+}
 
-void Map::render()
+
+void Map::render(int x, int y)
 {
     //todo: render connected maps
 
@@ -18,7 +26,7 @@ void Map::render()
     {
         for (int X = 0; X < width; X++)
         {
-            blockset->blocks[this->blocks[Y*width + X]].render(X, Y);
+            blockset->blocks[this->blocks[Y*width + X]].render(X + x, Y + y);
         }
     }
 }

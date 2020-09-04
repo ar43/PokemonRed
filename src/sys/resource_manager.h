@@ -14,7 +14,7 @@ public:
 	void loadBlockset(std::string blocksetName, const char* path);
 	Blockset* getBlockset(std::string blocksetName);
 
-	void loadMap(std::string mapName, const char* path, std::string blockset, int height, int width);
+	void loadMap(std::string mapName, const char* path, std::string blockset, int height, int width, int background, std::string north, std::string west, std::string east, std::string south);
 	Map* getMap(std::string mapName);
 	
 private:

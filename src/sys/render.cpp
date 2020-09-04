@@ -6,10 +6,76 @@ void Render::render()
     SDL_SetRenderDrawColor(sys.getRenderer(), 0xAA, 0xAA, 0xAA, 255);
     SDL_RenderClear(sys.getRenderer());
 
-    game.world.currentMap->render();
+    draw_map();
     test();
 
     SDL_RenderPresent(sys.getRenderer());
+}
+
+void Render::draw_map()
+{
+    //static rendering is a bad idea
+    /*
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            int bkg = game.world.currentMap->background;
+            game.world.currentMap->blockset->blocks[bkg].render_static(j,i);
+        }
+    }
+    */
+
+    Map* north = res.getMap(game.world.currentMap->connection.north);
+    Map* west = res.getMap(game.world.currentMap->connection.west);
+    Map* east = res.getMap(game.world.currentMap->connection.east);
+    Map* south = res.getMap(game.world.currentMap->connection.south);
+
+    //todo: north and south background blocks
+
+    if (north != nullptr)
+    {
+        north->render(0, -north->height);
+    }
+
+    if (west != nullptr)
+    {
+        west->render(-west->width, 0);
+    }
+    else
+    {
+        for (int i = -3; i < game.world.currentMap->height + 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                int bkg = game.world.currentMap->background;
+                game.world.currentMap->blockset->blocks[bkg].render(-1 -j, i);
+            }
+        }
+    }
+
+    if (east != nullptr)
+    {
+        east->render(game.world.currentMap->width, 0);
+    }
+    else
+    {
+        for (int i = -3; i < game.world.currentMap->height + 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                int bkg = game.world.currentMap->background;
+                game.world.currentMap->blockset->blocks[bkg].render(j+game.world.currentMap->width, i);
+            }
+        }
+    }
+
+    if (south != nullptr)
+    {
+        south->render(0, game.world.currentMap->height);
+    }
+
+    game.world.currentMap->render(0, 0);
 }
 
 
