@@ -4,7 +4,7 @@ class Render
 {
 public:
 	void render();
-	void test();
+	void debug();
 	void draw_map();
 };
 

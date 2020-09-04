@@ -3,6 +3,12 @@
 #include "player.h"
 #include "world.h"
 
+struct Debug
+{
+	bool drawPlayer = true;
+	bool drawSquare = false;
+};
+
 class Game
 {
 public:
@@ -13,6 +19,7 @@ public:
 	Frame frame;
 	Player player;
 	World world;
+	Debug debug;
 	//Action action;
 private:
 };

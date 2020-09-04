@@ -31,7 +31,7 @@ void Input::catchPriority(SDL_Event *e)
 	}
 	else if (e->type == SDL_KEYDOWN)
 	{
-		printf("DEBUG: PRESSED: %i\n", (int)e->key.keysym.sym);
+		//printf("DEBUG: PRESSED: %i\n", (int)e->key.keysym.sym);
 
 		switch (e->key.keysym.sym)
 		{
@@ -73,6 +73,14 @@ void Input::catchMain(SDL_Event *e)
 			sys.requestQuit = true;
 			break;
 		}
+
+		case SDLK_F1:
+			game.debug.drawPlayer = !game.debug.drawPlayer;
+			break;
+
+		case SDLK_F2:
+			game.debug.drawSquare = !game.debug.drawSquare;
+			break;
 
 		case SDLK_UP:
 			keyDown[ARROW_UP] = true;

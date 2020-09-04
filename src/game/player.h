@@ -8,6 +8,12 @@ enum Direction
 	RIGHT
 };
 
+struct Position
+{
+	int x;
+	int y;
+};
+
 #define PLAYER_OFFSET_X 64
 #define PLAYER_OFFSET_Y 60
 
@@ -18,14 +24,17 @@ class Player
 {
 public:
 	Player();
-	int x;
-	int y;
+	void getSquarePosition(Position *position);
+	void getBlockPosition(Position* position);
+	Position* getPosition();
 	void update();
 private:
 	Direction dir;
+	Position pos;
 	Direction turnDir;
 	int turning;
 	bool moving;
 	int moveIndex;
 	void move();
+	void change_map();
 };

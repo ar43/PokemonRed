@@ -111,4 +111,5 @@ void System::load_media()
 	res.loadMap("viridian_city", "assets/maps/ViridianCity.blk", "overworld", 18, 20, 0xf, "route_2",5, "route_22",4, "none",0, "route_1",5);
 	res.loadMap("route_1", "assets/maps/Route1.blk", "overworld", 18, 10, 0xb, "viridian_city",-5, "none",0, "none",0, "pallet_town",0);
 	res.loadMap("route_21", "assets/maps/Route21.blk", "overworld", 45, 10, 0x43, "pallet_town",0, "none",0, "none",0, "cinnabar_island",0);
+	res.loadMap("route_22", "assets/maps/Route22.blk", "overworld", 9, 20, 0x2c, "route_23", 0, "none", 0, "viridian_city", -4, "none", 0);
 }

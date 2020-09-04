@@ -37,5 +37,10 @@ namespace util
 
 		return string;
 	}
+
+	int square_to_pixel(int a)
+	{
+		return a * 16;
+	}
 	
 }

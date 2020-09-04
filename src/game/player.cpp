@@ -2,14 +2,31 @@
 
 Player::Player()
 {
-	x = 0;
-	y = 0;
+	pos.x = 16;
+	pos.y = 16;
 	dir = Direction::DOWN;
 }
 
 void Player::update()
 {
 	move();
+}
+
+void Player::getSquarePosition(Position *position)
+{
+	position->x = pos.x / 16;
+	position->y = pos.y / 16;
+}
+
+void Player::getBlockPosition(Position* position)
+{
+	position->x = pos.x / 32;
+	position->y = pos.y / 32;
+}
+
+Position *Player::getPosition()
+{
+	return &pos;
 }
 
 void Player::move()
@@ -54,29 +71,32 @@ void Player::move()
 			{
 				case Direction::UP:
 				{
-					y -= 2;
+					pos.y -= 2;
 					break;
 				}
 				case Direction::DOWN:
 				{
-					y += 2;
+					pos.y += 2;
 					break;
 				}
 				case Direction::LEFT:
 				{
-					x -= 2;
+					pos.x -= 2;
 					break;
 				}
 				case Direction::RIGHT:
 				{
-					x += 2;
+					pos.x += 2;
 					break;
 				}
 			}
 		}
 		moveIndex++;
 		if (moveIndex == 16)
+		{
+			change_map();
 			moving = false;
+		}
 	}
 	else if (action)
 	{
@@ -90,5 +110,37 @@ void Player::move()
 			moving = true;
 			moveIndex = 0;
 		}
+	}
+}
+
+
+void Player::change_map()
+{
+	Position newpos;
+	getSquarePosition(&newpos);
+	if (newpos.x < 0)
+	{
+		pos.y -= util::square_to_pixel(game.world.currentMap->connection.westOffset * 2);
+		game.world.currentMap = res.getMap(game.world.currentMap->connection.west);
+		pos.x = util::square_to_pixel(game.world.currentMap->width * 2 - 1);
+
+	}
+	else if (newpos.x > game.world.currentMap->width * 2)
+	{
+		pos.y -= util::square_to_pixel(game.world.currentMap->connection.eastOffset * 2);
+		game.world.currentMap = res.getMap(game.world.currentMap->connection.east);
+		pos.x = util::square_to_pixel(1);
+	}
+	else if (newpos.y < 0)
+	{
+		pos.x -= util::square_to_pixel(game.world.currentMap->connection.northOffset * 2);
+		game.world.currentMap = res.getMap(game.world.currentMap->connection.north);
+		pos.y = util::square_to_pixel(game.world.currentMap->height * 2 - 1);
+	}
+	else if (newpos.y > game.world.currentMap->height * 2)
+	{
+		pos.x -= util::square_to_pixel(game.world.currentMap->connection.southOffset * 2);
+		game.world.currentMap = res.getMap(game.world.currentMap->connection.south);
+		pos.y = util::square_to_pixel(1);
 	}
 }

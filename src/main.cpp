@@ -13,7 +13,7 @@ int main(int argc, char* args[])
 	game.frame.init();
 
 
-	game.world.currentMap = res.getMap("viridian_city");
+	game.world.currentMap = res.getMap("pallet_town");
 	while (!sys.requestQuit)
 	{
 		game.frame.start();

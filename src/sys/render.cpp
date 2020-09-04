@@ -7,13 +7,17 @@ void Render::render()
     SDL_RenderClear(sys.getRenderer());
 
     draw_map();
-    test();
+    debug();
 
     SDL_RenderPresent(sys.getRenderer());
 }
 
 void Render::draw_map()
 {
+
+    if (game.world.currentMap == nullptr)
+        sys.error("Current map is a null pointer");
+
     //static rendering is a bad idea
     /*
     for (int i = 0; i < 5; i++)
@@ -82,41 +86,19 @@ void Render::draw_map()
 }
 
 
-void Render::test()
+void Render::debug()
 {
-    /*
-    static Uint8 colors[9][10][4];
-    Blockset *test_b = res.getBlockset("overworld");
-    if (game.frame.getFrame() == 0)
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                colors[i][j][0] = rand() % 256;
-                colors[i][j][1] = rand() % 256;
-                colors[i][j][2] = rand() % 256;
-                colors[i][j][3] = rand() % 128;
-            }
-        }
+    if(game.debug.drawPlayer)
+    { 
+        SDL_SetRenderDrawColor(sys.getRenderer(), 255, 0, 0, 255);
+        SDL_Rect rect = { PLAYER_OFFSET_X, PLAYER_OFFSET_Y,16,16 };
+        SDL_RenderFillRect(sys.getRenderer(), &rect);
     }
 
-    for (int i = 0; i < 9; i++)
-    {
-        for (int j = 0; j < 10; j++)
-        {
-            test_b->blocks[colors[i][j][3]].render(j, i);
-        }
+    if(game.debug.drawSquare)
+    { 
+        SDL_SetRenderDrawColor(sys.getRenderer(), 255, 0, 255, 255);
+        SDL_Rect rect1 = { PLAYER_OFFSET_X, PLAYER_OFFSET_Y+4,16,16 };
+        SDL_RenderFillRect(sys.getRenderer(), &rect1);
     }
-    */
-
-
-    //Tileset* test_t = res.getTileset("overworld");
-    //SDL_Rect rected = { GAME_WIDTH / 2 - game.player.x - WORLD_OFFSET_X,GAME_HEIGHT / 2 - game.player.y - WORLD_OFFSET_Y,test_t->surface->w,test_t->surface->h };
-    //SDL_RenderCopyEx(sys.getRenderer(), test_t->texture, NULL, &rected, 0.0f, NULL, SDL_FLIP_NONE);
-
-
-    SDL_SetRenderDrawColor(sys.getRenderer(), 255, 0, 0, 255);
-    SDL_Rect rect = { PLAYER_OFFSET_X, PLAYER_OFFSET_Y,16,16 };
-    SDL_RenderFillRect(sys.getRenderer(), &rect);
 }
