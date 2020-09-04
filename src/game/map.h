@@ -13,7 +13,7 @@ public:
 
 		for (int i = 0; i < 4; i++)
 		{
-			solid[i] = false;
+			solid[i] = true;
 		}
 	}
 	SDL_Surface* surface;
