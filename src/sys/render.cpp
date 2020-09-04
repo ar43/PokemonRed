@@ -33,46 +33,49 @@ void Render::draw_map()
 
     //todo: north and south background blocks
 
+    if(west == nullptr)
+    {
+        for (int i = -3; i < game.world.currentMap->height + 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                int bkg = game.world.currentMap->background;
+                game.world.currentMap->blockset->blocks[bkg].render(-1 - j, i);
+            }
+        }
+    }
+
+    if(east == nullptr)
+    {
+        for (int i = -3; i < game.world.currentMap->height + 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                int bkg = game.world.currentMap->background;
+                game.world.currentMap->blockset->blocks[bkg].render(j + game.world.currentMap->width, i);
+            }
+        }
+    }
+
     if (north != nullptr)
     {
-        north->render(0, -north->height);
+        north->render(game.world.currentMap->connection.northOffset, -north->height);
     }
 
     if (west != nullptr)
     {
-        west->render(-west->width, 0);
-    }
-    else
-    {
-        for (int i = -3; i < game.world.currentMap->height + 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                int bkg = game.world.currentMap->background;
-                game.world.currentMap->blockset->blocks[bkg].render(-1 -j, i);
-            }
-        }
+        west->render(-west->width, game.world.currentMap->connection.westOffset);
     }
 
     if (east != nullptr)
     {
-        east->render(game.world.currentMap->width, 0);
+        east->render(game.world.currentMap->width, game.world.currentMap->connection.eastOffset);
     }
-    else
-    {
-        for (int i = -3; i < game.world.currentMap->height + 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                int bkg = game.world.currentMap->background;
-                game.world.currentMap->blockset->blocks[bkg].render(j+game.world.currentMap->width, i);
-            }
-        }
-    }
+    
 
     if (south != nullptr)
     {
-        south->render(0, game.world.currentMap->height);
+        south->render(game.world.currentMap->connection.southOffset, game.world.currentMap->height);
     }
 
     game.world.currentMap->render(0, 0);

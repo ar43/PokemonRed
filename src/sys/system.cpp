@@ -107,7 +107,8 @@ void System::load_media()
 
 	res.loadBlockset("overworld", "assets/blocksets/overworld.bst");
 
-	res.loadMap("pallet_town", "assets/maps/PalletTown.blk", "overworld", 9, 10,0xb,"route_1","none","none","route_21");
-	res.loadMap("route_1", "assets/maps/Route1.blk", "overworld", 18, 10, 0xb, "none", "none", "none", "none");
-	res.loadMap("route_21", "assets/maps/Route21.blk", "overworld", 45, 10, 0x43, "none", "none", "none", "none");
+	res.loadMap("pallet_town", "assets/maps/PalletTown.blk", "overworld", 9, 10,0xb,"route_1",0,"none",0,"none",0,"route_21",0);
+	res.loadMap("viridian_city", "assets/maps/ViridianCity.blk", "overworld", 18, 20, 0xf, "route_2",5, "route_22",4, "none",0, "route_1",5);
+	res.loadMap("route_1", "assets/maps/Route1.blk", "overworld", 18, 10, 0xb, "viridian_city",-5, "none",0, "none",0, "pallet_town",0);
+	res.loadMap("route_21", "assets/maps/Route21.blk", "overworld", 45, 10, 0x43, "pallet_town",0, "none",0, "none",0, "cinnabar_island",0);
 }

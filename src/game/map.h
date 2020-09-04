@@ -33,23 +33,34 @@ class Connection
 {
 public:
 	std::string north;
+	int northOffset;
+
 	std::string west;
+	int westOffset;
+
 	std::string east;
+	int eastOffset;
+
 	std::string south;
+	int southOffset;
 };
 
 class Map
 {
 public:
-	Map(int h, int w, Blockset *blk, int background, std::string north, std::string west, std::string east, std::string south) {
+	Map(int h, int w, Blockset *blk, int background, std::string north, int northOffset, std::string west, int westOffset, std::string east, int eastOffset, std::string south, int southOffset) {
 		width = w;
 		height = h;
 		blockset = blk;
 		this->background = background;
 		connection.west = west;
+		connection.westOffset = westOffset;
 		connection.north = north;
+		connection.northOffset = northOffset;
 		connection.south = south;
+		connection.southOffset = southOffset;
 		connection.east = east;
+		connection.eastOffset = eastOffset;
 	}
 	int width;
 	int height;

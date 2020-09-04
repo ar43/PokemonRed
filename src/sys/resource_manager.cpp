@@ -60,9 +60,9 @@ void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 	blocksetMap[blocksetName] = blockset;
 }
 
-void ResourceManager::loadMap(std::string mapName, const char* path, std::string blockset, int height, int width, int background, std::string north, std::string west, std::string east, std::string south)
+void ResourceManager::loadMap(std::string mapName, const char* path, std::string blockset, int height, int width, int background, std::string north, int northOffset, std::string west, int westOffset, std::string east, int eastOffset, std::string south, int southOffset)
 {
-	Map* map = new Map(height,width,getBlockset(blockset), background, north, west, east, south);
+	Map* map = new Map(height,width,getBlockset(blockset), background, north,northOffset, west, westOffset, east, eastOffset, south, southOffset);
 
 	//copy the bytes of map data to a vector
 	std::ifstream file(path, std::ios::binary);
@@ -121,7 +121,7 @@ Map* ResourceManager::getMap(std::string mapName)
 
 	if (it == mapMap.end())
 	{
-		sys.error("Trying to look for a map that doesn't exist");
+		printf("Warning: Trying to look for a map that doesn't exist");
 		return nullptr;
 	}
 	else
