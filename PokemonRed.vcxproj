@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\game\constants.cpp" />
     <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\game\map.cpp" />
     <ClCompile Include="src\game\player.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="src\sys\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\game\constants.h" />
     <ClInclude Include="src\game\game.h" />
     <ClInclude Include="src\game\map.h" />
     <ClInclude Include="src\game\player.h" />

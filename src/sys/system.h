@@ -24,6 +24,7 @@
 #include "resource_manager.h"
 #include "../game/map.h"
 #include "../game/world.h"
+#include "../game/constants.h"
 
 #define GAME_WIDTH 160
 #define GAME_HEIGHT 144

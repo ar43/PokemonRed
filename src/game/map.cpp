@@ -3,6 +3,11 @@
 
 void Block::render(int x, int y)
 {
+    if (!valid)
+    {
+        sys.error("Trying to render an invalid block");
+    }
+
     x = x * 32;
     y = y * 32;
     SDL_Rect rected = { x + GAME_WIDTH / 2 - game.player.getPosition()->x - WORLD_OFFSET_X,y + GAME_HEIGHT / 2 - game.player.getPosition()->y - WORLD_OFFSET_Y,32,32 };
@@ -11,6 +16,11 @@ void Block::render(int x, int y)
 
 void Block::render_static(int x, int y)
 {
+    if (!valid)
+    {
+        sys.error("Trying to render an invalid block");
+    }
+
     x = x * 32;
     y = y * 32;
     SDL_Rect rected = { x ,y ,32,32 };
@@ -20,8 +30,6 @@ void Block::render_static(int x, int y)
 
 void Map::render(int x, int y)
 {
-    //todo: render connected maps
-
     for (int Y = 0; Y < height; Y++)
     {
         for (int X = 0; X < width; X++)

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-void ResourceManager::loadTileset(std::string textureName, const char *path)
+void ResourceManager::loadTileset(std::string textureName, const char *path, std::vector<Uint8>* collData)
 {
 	SDL_Surface *sur = IMG_Load(path);
 
@@ -16,6 +16,7 @@ void ResourceManager::loadTileset(std::string textureName, const char *path)
 	Tileset *tileset = new Tileset();
 	tileset->surface = gsSurface;
 	tileset->format = gsSurface->format->format;
+	tileset->collData = collData;
 
 	tileset->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), tileset->surface);
 	
@@ -50,6 +51,25 @@ void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 			SDL_Rect src = { ((Uint8)buffer[j] % 16) * 8,((Uint8)buffer[j] / 16) * 8,8,8 };
 			SDL_Rect dest = { (j % 4) * 8,(j / 4) * 8,8,8 };
 			SDL_RenderCopy(sys.getRenderer(), tileset->texture, &src, &dest);
+			if (std::find(tileset->collData->begin(), tileset->collData->end(), buffer[j]) == tileset->collData->end())
+			{
+				if (j == 0x00 || j == 0x01 || j == 0x04 || j == 0x05)
+				{
+					blockset->blocks[i].solid[0] = true;
+				}
+				else if (j == 0x02 || j == 0x03 || j == 0x06 || j == 0x07)
+				{
+					blockset->blocks[i].solid[1] = true;
+				}
+				else if (j == 0x08 || j == 0x09 || j == 0x0c || j == 0x0d)
+				{
+					blockset->blocks[i].solid[2] = true;
+				}
+				else if (j == 0x0a || j == 0x0b || j == 0x0e || j == 0x0f)
+				{
+					blockset->blocks[i].solid[3] = true;
+				}
+			}
 		}
 		SDL_SetRenderTarget(sys.getRenderer(), NULL);
 		blockset->blocks[i].valid = true;

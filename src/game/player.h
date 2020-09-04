@@ -18,7 +18,7 @@ struct Position
 #define PLAYER_OFFSET_Y 60
 
 #define WORLD_OFFSET_X 16
-#define WORLD_OFFSET_Y 24
+#define WORLD_OFFSET_Y 8
 
 class Player 
 {
@@ -37,4 +37,5 @@ private:
 	int moveIndex;
 	void move();
 	void change_map();
+	bool collision_check();
 };

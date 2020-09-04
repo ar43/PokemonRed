@@ -8,7 +8,7 @@
 class ResourceManager
 {
 public:
-	void loadTileset(std::string textureName, const char *path);
+	void loadTileset(std::string textureName, const char *path,std::vector<Uint8>* collData);
 	Tileset *getTileset(std::string textureName);
 
 	void loadBlockset(std::string blocksetName, const char* path);

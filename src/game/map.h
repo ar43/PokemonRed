@@ -10,6 +10,11 @@ public:
 		valid = false;
 		surface = NULL;
 		texture = NULL;
+
+		for (int i = 0; i < 4; i++)
+		{
+			solid[i] = false;
+		}
 	}
 	SDL_Surface* surface;
 	SDL_Texture* texture;
@@ -18,6 +23,7 @@ public:
 	int height;
 
 	bool valid;
+	bool solid[4];
 
 	void render(int x, int y);
 	void render_static(int x, int y);
@@ -77,4 +83,5 @@ public:
 	SDL_Surface* surface;
 	SDL_Texture* texture;
 	Uint32 format;
+	std::vector<Uint8> *collData;
 };

@@ -2,8 +2,8 @@
 
 Player::Player()
 {
-	pos.x = 16;
-	pos.y = 16;
+	pos.x = util::square_to_pixel(1);
+	pos.y = util::square_to_pixel(2);
 	dir = Direction::DOWN;
 }
 
@@ -107,10 +107,78 @@ void Player::move()
 		}
 		else
 		{
-			moving = true;
-			moveIndex = 0;
+			bool canMove = collision_check();
+			if(canMove)
+			{ 
+				moving = true;
+				moveIndex = 0;
+			}
 		}
 	}
+}
+
+bool Player::collision_check()
+{
+	Position newpos = { pos.x,pos.y };
+	switch (dir)
+	{
+		case Direction::UP:
+		{
+			newpos.y -= 16;
+			break;
+		}
+		case Direction::DOWN:
+		{
+			newpos.y += 16;
+			break;
+		}
+		case Direction::LEFT:
+		{
+			newpos.x -= 16;
+			break;
+		}
+		case Direction::RIGHT:
+		{
+			newpos.x += 16;
+			break;
+		}
+	}
+
+	//get map block for newpos
+
+	Map* currMap = game.world.currentMap;
+	int index = (newpos.y / 32) * currMap->width + newpos.x / 32;
+	if (index < 0 || index >= currMap->blocks.size() || newpos.x < 0 || newpos.x >= currMap->width*32)
+		return true;
+	Block* newBlock = &currMap->blockset->blocks[currMap->blocks[index]];
+	int i = 0;
+	if (newpos.x % 32 == 0)
+	{
+		if (newpos.y % 32 == 0)
+		{
+			i = 0;
+		}
+		else
+		{
+			i = 2;
+		}
+	}
+	else
+	{
+		if (newpos.y % 32 == 0)
+		{
+			i = 1;
+		}
+		else
+		{
+			i = 3;
+		}
+	}
+	printf("i: %i\n", i);
+	if (newBlock->solid[i])
+		return false;
+	else
+		return true;
 }
 
 
@@ -125,11 +193,11 @@ void Player::change_map()
 		pos.x = util::square_to_pixel(game.world.currentMap->width * 2 - 1);
 
 	}
-	else if (newpos.x > game.world.currentMap->width * 2)
+	else if (newpos.x >= game.world.currentMap->width * 2)
 	{
 		pos.y -= util::square_to_pixel(game.world.currentMap->connection.eastOffset * 2);
 		game.world.currentMap = res.getMap(game.world.currentMap->connection.east);
-		pos.x = util::square_to_pixel(1);
+		pos.x = util::square_to_pixel(0);
 	}
 	else if (newpos.y < 0)
 	{
@@ -137,10 +205,10 @@ void Player::change_map()
 		game.world.currentMap = res.getMap(game.world.currentMap->connection.north);
 		pos.y = util::square_to_pixel(game.world.currentMap->height * 2 - 1);
 	}
-	else if (newpos.y > game.world.currentMap->height * 2)
+	else if (newpos.y >= game.world.currentMap->height * 2)
 	{
 		pos.x -= util::square_to_pixel(game.world.currentMap->connection.southOffset * 2);
 		game.world.currentMap = res.getMap(game.world.currentMap->connection.south);
-		pos.y = util::square_to_pixel(1);
+		pos.y = util::square_to_pixel(0);
 	}
 }

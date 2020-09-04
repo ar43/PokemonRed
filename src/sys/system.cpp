@@ -103,7 +103,8 @@ void System::close()
 
 void System::load_media()
 {
-	res.loadTileset("overworld", "assets/tilesets/overworld.png");
+
+	res.loadTileset("overworld", "assets/tilesets/overworld.png",&Constants::Coll::overworld);
 
 	res.loadBlockset("overworld", "assets/blocksets/overworld.bst");
 
