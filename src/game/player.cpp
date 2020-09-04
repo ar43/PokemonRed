@@ -144,7 +144,7 @@ bool Player::collision_check()
 		}
 	}
 
-	// out of bounds check
+	// out of bounds check (problematic: if it technically should change but there's an obstacle on the other map need to FIX)
 	Map* currMap = game.world.currentMap;
 	Position newpos_s = { pos.x / 16,pos.y / 16 };
 	if (newpos_s.x < 0 && currMap->connection.west == "none")
@@ -168,7 +168,7 @@ bool Player::collision_check()
 
 	
 	int index = (newpos.y / 32) * currMap->width + newpos.x / 32;
-	if (index < 0 || index >= currMap->blocks.size() || newpos.x < 0 || newpos.x >= currMap->width*32)
+	if (index < 0 || index >= currMap->blocks.size() || newpos.x < 0 || newpos.x >= currMap->width*32) //else it would throw error
 		return true;
 	Block* newBlock = &currMap->blockset->blocks[currMap->blocks[index]];
 	int i = 0;
@@ -198,48 +198,12 @@ bool Player::collision_check()
 
 	//todo: ledge jumping (check "from" tile and "to" tile)
 
-	switch (dir)
-	{
-		case Direction::UP:
-		{
-			if (newBlock->solid[i][2] && newBlock->solid[i][3])
-				return false;
-			else
-				return true;
 
-			break;
-		}
-		case Direction::DOWN:
-		{
-			if (newBlock->solid[i][0] && newBlock->solid[i][1])
-				return false;
-			else
-				return true;
-			break;
-		}
-		case Direction::LEFT:
-		{
-			if (newBlock->solid[i][3] || newBlock->solid[i][1])
-				return false;
-			else
-				return true;
-			break;
-		}
-		case Direction::RIGHT:
-		{
-			if (newBlock->solid[i][0] || newBlock->solid[i][2])
-				return false;
-			else
-				return true;
-			break;
-		}
-		default:
-		{
-			sys.error("Collision error");
-			return true;
-		}
-	}
 
+	if (!newBlock->solid[i][2]) //if the bottom left tile is solid, block movement, else dont
+		return true;
+	else
+		return false;
 
 	
 }

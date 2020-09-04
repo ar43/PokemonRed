@@ -82,6 +82,10 @@ void Input::catchMain(SDL_Event *e)
 			game.debug.drawSquare = !game.debug.drawSquare;
 			break;
 
+		case SDLK_F3:
+			game.debug.drawColl = !game.debug.drawColl;
+			break;
+
 		case SDLK_UP:
 			keyDown[ARROW_UP] = true;
 			break;

@@ -7,6 +7,7 @@ struct Debug
 {
 	bool drawPlayer = true;
 	bool drawSquare = false;
+	bool drawColl = false;
 };
 
 class Game
