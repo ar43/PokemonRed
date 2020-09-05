@@ -18,6 +18,11 @@ public:
 				solid[i][j] = true;
 			}
 		}
+
+		for (int i = 0; i < 16; i++)
+		{
+			isFlower[i] = false;
+		}
 	}
 	SDL_Surface* surface;
 	SDL_Texture* texture;
@@ -27,6 +32,7 @@ public:
 
 	bool valid;
 	bool solid[4][4];
+	bool isFlower[16];
 
 	void render(int x, int y);
 	void render_static(int x, int y);
@@ -90,4 +96,15 @@ public:
 	std::vector<Uint8> *collData;
 	int w;
 	int h;
+};
+
+class Texture
+{
+public:
+	SDL_Surface* surface;
+	SDL_Texture* texture;
+	Uint32 format;
+	int w;
+	int h;
+	void render(int x, int y);
 };

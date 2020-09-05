@@ -26,6 +26,29 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 	SDL_FreeSurface(sur);
 }
 
+void ResourceManager::loadTexture(std::string textureName, const char* path)
+{
+	SDL_Surface* sur = IMG_Load(path);
+
+	if (!sur) {
+		sys.error(util::va("IMG_Load: %s\n", IMG_GetError()));
+		// handle error
+	}
+	SDL_Surface* gsSurface = SDL_ConvertSurfaceFormat(sur,
+		SDL_PIXELFORMAT_ARGB8888,
+		0);
+	Texture* texture = new Texture();
+	texture->surface = gsSurface;
+	texture->format = gsSurface->format->format;
+	texture->w = gsSurface->w;
+	texture->h = gsSurface->h;
+
+	texture->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), texture->surface);
+
+	textureMap[textureName] = texture;
+	SDL_FreeSurface(sur);
+}
+
 void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 {
 	Blockset* blockset = new Blockset();
@@ -109,6 +132,14 @@ void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 				}
 				
 			}
+
+			//for animation
+			if (blocksetName == "overworld")
+			{
+				if (buffer[j] == 0x03)
+					blockset->blocks[i].isFlower[j] = true;
+			}
+
 		}
 		SDL_SetRenderTarget(sys.getRenderer(), NULL);
 		blockset->blocks[i].valid = true;
@@ -148,6 +179,21 @@ Tileset* ResourceManager::getTileset(std::string textureName)
 	if (it == tilesetMap.end())
 	{
 		sys.error("Trying to look for a tileset that doesn't exist");
+		return nullptr;
+	}
+	else
+	{
+		return it->second;
+	}
+}
+
+Texture* ResourceManager::getTexture(std::string textureName)
+{
+	std::map<std::string, Texture*>::iterator it = textureMap.find(textureName);
+
+	if (it == textureMap.end())
+	{
+		sys.error("Trying to look for a texture that doesn't exist");
 		return nullptr;
 	}
 	else

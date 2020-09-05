@@ -114,4 +114,8 @@ void System::load_media()
 	res.loadMap("route_1", "assets/maps/Route1.blk", "overworld", 18, 10, 0xb, "viridian_city",-5, "none",0, "none",0, "pallet_town",0);
 	res.loadMap("route_21", "assets/maps/Route21.blk", "overworld", 45, 10, 0x43, "pallet_town",0, "none",0, "none",0, "cinnabar_island",0);
 	res.loadMap("route_22", "assets/maps/Route22.blk", "overworld", 9, 20, 0x2c, "route_23", 0, "none", 0, "viridian_city", -4, "none", 0);
+
+	res.loadTexture("flower1", "assets/tilesets/flower/flower1.png");
+	res.loadTexture("flower2", "assets/tilesets/flower/flower2.png");
+	res.loadTexture("flower3", "assets/tilesets/flower/flower3.png");
 }

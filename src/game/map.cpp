@@ -15,6 +15,29 @@ void Block::render(int x, int y)
     SDL_Rect rected = { final_x,final_y,32,32 };
     SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, SDL_FLIP_NONE);
 
+    //handle flowers
+    for (int i = 0; i < 16; i++)
+    {
+        if (isFlower[i])
+        {
+
+            Texture* flower;
+            if (game.frame.getFrame() % 84 < 42)
+            {
+                flower = res.getTexture("flower1");
+            }
+            else if (game.frame.getFrame() % 84 < 63)
+            {
+                flower = res.getTexture("flower2");
+            }
+            else
+            {
+                flower = res.getTexture("flower3");
+            }
+            flower->render(final_x + i % 4 * 8, final_y + i / 4 * 8);
+        }
+    }
+
     if(game.debug.drawColl)
     { 
         SDL_Rect rect0 = { final_x,final_y,8,8 };
@@ -144,4 +167,10 @@ void Map::render(int x, int y)
             blockset->blocks[this->blocks[Y*width + X]].render(X + x, Y + y);
         }
     }
+}
+
+void Texture::render(int x, int y)
+{
+    SDL_Rect rected = { x,y,w,h };
+    SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, SDL_FLIP_NONE);
 }
