@@ -13,6 +13,7 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 	SDL_Surface* gsSurface = SDL_ConvertSurfaceFormat(sur,
 		SDL_PIXELFORMAT_ARGB8888,
 		0);
+
 	Tileset *tileset = new Tileset();
 	tileset->surface = gsSurface;
 	tileset->format = gsSurface->format->format;
@@ -62,9 +63,8 @@ void ResourceManager::loadSprite(std::string spriteName, const char* path)
 		sys.error(util::va("IMG_Load: %s\n", IMG_GetError()));
 		// handle error
 	}
-	SDL_Surface* gsSurface = SDL_ConvertSurfaceFormat(sur,
-		SDL_PIXELFORMAT_ARGB8888,
-		0);
+	//SDL_Surface* gsSurface = SDL_ConvertSurfaceFormat(sur,SDL_PIXELFORMAT_ARGB8888,0);
+	SDL_Surface* gsSurface = sur;
 	SDL_SetColorKey(gsSurface, SDL_TRUE, SDL_MapRGB(gsSurface->format, 0xff, 0xff, 0xff));
 	Sprite* sprite = new Sprite();
 	sprite->surface = gsSurface;
@@ -75,7 +75,6 @@ void ResourceManager::loadSprite(std::string spriteName, const char* path)
 	sprite->animIndex = 0;
 
 	sprite->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), sprite->surface);
-
 	spriteMap[spriteName] = sprite;
 	SDL_FreeSurface(sur);
 }
