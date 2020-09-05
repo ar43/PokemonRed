@@ -86,6 +86,14 @@ void Input::catchMain(SDL_Event *e)
 			game.debug.drawColl = !game.debug.drawColl;
 			break;
 
+		case SDLK_F4:
+			game.debug.noclip = !game.debug.noclip;
+			break;
+
+		case SDLK_LSHIFT:
+			game.debug.fastMode = true;
+			break;
+
 		case SDLK_UP:
 			keyDown[ARROW_UP] = true;
 			break;
@@ -123,6 +131,10 @@ void Input::catchMain(SDL_Event *e)
 			break;
 		case SDLK_RIGHT:
 			keyDown[ARROW_RIGHT] = false;
+			break;
+
+		case SDLK_LSHIFT:
+			game.debug.fastMode = false;
 			break;
 
 		default:

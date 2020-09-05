@@ -29,6 +29,7 @@ void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 	Blockset* blockset = new Blockset();
 	blockset->blocks = new Block[MAX_BLOCKS]();
 	Tileset* tileset = getTileset(blocksetName);
+	blockset->name = blocksetName;
 
 	int i = 0;
 
@@ -56,8 +57,8 @@ void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 				switch(j)
 				{
 					case 0:
-					blockset->blocks[i].solid[0][0] = false;
-					break;
+						blockset->blocks[i].solid[0][0] = false;
+						break;
 					case 1:
 						blockset->blocks[i].solid[0][1] = false;
 						break;

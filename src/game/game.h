@@ -8,6 +8,8 @@ struct Debug
 	bool drawPlayer = true;
 	bool drawSquare = false;
 	bool drawColl = false;
+	bool fastMode = false;
+	bool noclip = false;
 };
 
 class Game

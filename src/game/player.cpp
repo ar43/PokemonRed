@@ -31,7 +31,7 @@ Position *Player::getPosition()
 
 void Player::move()
 {
-	bool action = true;
+	bool requestMove = true;
 	Direction newDir;
 	if (input.keyDown[ARROW_UP])
 	{
@@ -51,7 +51,7 @@ void Player::move()
 	}
 	else
 	{
-		action = false;
+		requestMove = false;
 	}
 
 	if (turning)
@@ -65,6 +65,33 @@ void Player::move()
 	}
 	else if (moving)
 	{
+		if (game.debug.fastMode && moveIndex == 0)
+		{
+			switch (dir)
+			{
+				case Direction::UP:
+				{
+					pos.y -= 16;
+					break;
+				}
+				case Direction::DOWN:
+				{
+					pos.y += 16;
+					break;
+				}
+				case Direction::LEFT:
+				{
+					pos.x -= 16;
+					break;
+				}
+				case Direction::RIGHT:
+				{
+					pos.x += 16;
+					break;
+				}
+			}
+			moveIndex = 18;
+		}
 		if (moveIndex % 2 == 1)
 		{
 			switch (dir)
@@ -92,13 +119,13 @@ void Player::move()
 			}
 		}
 		moveIndex++;
-		if (moveIndex == 16)
+		if (moveIndex >= 16)
 		{
 			change_map();
 			moving = false;
 		}
 	}
-	else if (action)
+	else if (requestMove)
 	{
 		if (newDir != dir)
 		{
@@ -119,6 +146,10 @@ void Player::move()
 
 bool Player::collision_check()
 {
+
+	if (game.debug.noclip)
+		return true;
+
 	Position newpos = { pos.x,pos.y };
 	switch (dir)
 	{

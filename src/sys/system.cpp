@@ -74,6 +74,7 @@ void System::error(const char* pMsg)
 		NULL);
 	printf("(FATAL ERROR): %s\n", msg);
 	sys.requestQuit = true;
+	close();
 }
 
 SDL_Window* System::getWindow()

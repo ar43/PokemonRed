@@ -61,6 +61,30 @@ void Render::draw_map()
         }
     }
 
+    if (north == nullptr)
+    {
+        for (int i = -3; i < game.world.currentMap->width + 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                int bkg = game.world.currentMap->background;
+                game.world.currentMap->blockset->blocks[bkg].render(i, -1-j);
+            }
+        }
+    }
+
+    if (south == nullptr)
+    {
+        for (int i = -3; i < game.world.currentMap->width + 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                int bkg = game.world.currentMap->background;
+                game.world.currentMap->blockset->blocks[bkg].render(i, j + game.world.currentMap->height);
+            }
+        }
+    }
+
     if (north != nullptr)
     {
         north->render(game.world.currentMap->connection.northOffset, -north->height);

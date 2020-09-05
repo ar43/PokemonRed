@@ -36,6 +36,7 @@ class Blockset
 {
 public:
 	Block* blocks;
+	std::string name;
 };
 
 class Connection
