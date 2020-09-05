@@ -105,23 +105,23 @@ void System::close()
 void System::load_media()
 {
 
-	res.loadTileset("overworld", "assets/textures/tilesets/overworld.png",&Constants::Coll::overworld,0xFF,0xFF,0xFF,0x52,OUTDOOR);
+	res.loadTileset("overworld", "assets/gfx/tilesets/overworld.png",&Constants::Coll::overworld,0xFF,0xFF,0xFF,0x52,OUTDOOR);
 
-	res.loadBlockset("overworld", "assets/blocksets/overworld.bst");
+	res.loadBlockset("overworld", "assets/data/blocksets/overworld.bst");
 
-	res.loadMap("pallet_town", "assets/maps/PalletTown.blk", "overworld", 9, 10,0xb,"route_1",0,"none",0,"none",0,"route_21",0);
-	res.loadMap("viridian_city", "assets/maps/ViridianCity.blk", "overworld", 18, 20, 0xf, "route_2",5, "route_22",4, "none",0, "route_1",5);
-	res.loadMap("route_1", "assets/maps/Route1.blk", "overworld", 18, 10, 0xb, "viridian_city",-5, "none",0, "none",0, "pallet_town",0);
-	res.loadMap("route_21", "assets/maps/Route21.blk", "overworld", 45, 10, 0x43, "pallet_town",0, "none",0, "none",0, "cinnabar_island",0);
-	res.loadMap("route_22", "assets/maps/Route22.blk", "overworld", 9, 20, 0x2c, "route_23", 0, "none", 0, "viridian_city", -4, "none", 0);
+	res.loadMap("pallet_town", "assets/data/maps/PalletTown.blk", "overworld", 9, 10,0xb,"route_1",0,"none",0,"none",0,"route_21",0);
+	res.loadMap("viridian_city", "assets/data/maps/ViridianCity.blk", "overworld", 18, 20, 0xf, "route_2",5, "route_22",4, "none",0, "route_1",5);
+	res.loadMap("route_1", "assets/data/maps/Route1.blk", "overworld", 18, 10, 0xb, "viridian_city",-5, "none",0, "none",0, "pallet_town",0);
+	res.loadMap("route_21", "assets/data/maps/Route21.blk", "overworld", 45, 10, 0x43, "pallet_town",0, "none",0, "none",0, "cinnabar_island",0);
+	res.loadMap("route_22", "assets/data/maps/Route22.blk", "overworld", 9, 20, 0x2c, "route_23", 0, "none", 0, "viridian_city", -4, "none", 0);
 
-	res.loadTexture("flower1", "assets/textures/tilesets/flower/flower1.png");
-	res.loadTexture("flower2", "assets/textures/tilesets/flower/flower2.png");
-	res.loadTexture("flower3", "assets/textures/tilesets/flower/flower3.png");
+	res.loadTexture("flower1", "assets/gfx/tilesets/flower/flower1.png");
+	res.loadTexture("flower2", "assets/gfx/tilesets/flower/flower2.png");
+	res.loadTexture("flower3", "assets/gfx/tilesets/flower/flower3.png");
 
-	res.loadTexture("water0", "assets/textures/tilesets/water/water0.png");
-	res.loadTexture("water1", "assets/textures/tilesets/water/water1.png");
-	res.loadTexture("water2", "assets/textures/tilesets/water/water2.png");
-	res.loadTexture("water3", "assets/textures/tilesets/water/water3.png");
-	res.loadTexture("water4", "assets/textures/tilesets/water/water4.png");
+	res.loadTexture("water0", "assets/gfx/tilesets/water/water0.png");
+	res.loadTexture("water1", "assets/gfx/tilesets/water/water1.png");
+	res.loadTexture("water2", "assets/gfx/tilesets/water/water2.png");
+	res.loadTexture("water3", "assets/gfx/tilesets/water/water3.png");
+	res.loadTexture("water4", "assets/gfx/tilesets/water/water4.png");
 }
