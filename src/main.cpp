@@ -11,9 +11,9 @@ int main(int argc, char* args[])
 	sys.init();
 	sys.load_media();
 	game.frame.init();
+	game.init();
 
-
-	game.world.currentMap = res.getMap("pallet_town");
+	
 	while (!sys.requestQuit)
 	{
 		game.frame.start();

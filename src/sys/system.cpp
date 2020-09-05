@@ -124,4 +124,6 @@ void System::load_media()
 	res.loadTexture("water2", "assets/gfx/tilesets/water/water2.png");
 	res.loadTexture("water3", "assets/gfx/tilesets/water/water3.png");
 	res.loadTexture("water4", "assets/gfx/tilesets/water/water4.png");
+
+	res.loadSprite("red", "assets/gfx/sprites/red.png");
 }

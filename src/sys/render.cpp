@@ -8,6 +8,7 @@ void Render::render()
 
     draw_map();
     debug();
+    game.player.render();
 
     SDL_RenderPresent(sys.getRenderer());
 }
@@ -125,4 +126,43 @@ void Render::debug()
         SDL_Rect rect1 = { PLAYER_OFFSET_X, PLAYER_OFFSET_Y+4,16,16 };
         SDL_RenderFillRect(sys.getRenderer(), &rect1);
     }
+}
+
+void Sprite::render_static(int x, int y, Direction dir)
+{
+    int offset = 0;
+    bool flip = false;
+    switch (dir)
+    {
+        case Direction::DOWN:
+        {
+            offset = 0;
+            break;
+        }
+        case Direction::LEFT:
+        {
+            offset = 32;
+            break;
+        }
+        case Direction::RIGHT:
+        {
+            offset = 32;
+            flip = true;
+            break;
+        }
+        case Direction::UP:
+        {
+            offset = 16;
+            break;
+        }
+    }
+
+    SDL_Rect rectSrc = { 0,offset,16,16 };
+    SDL_Rect rectDest = { x,y,16,16 };
+
+    if(!flip)
+        SDL_RenderCopyEx(sys.getRenderer(), texture, &rectSrc, &rectDest, 0.0f, NULL, SDL_FLIP_NONE);
+    else
+        SDL_RenderCopyEx(sys.getRenderer(), texture, &rectSrc, &rectDest, 0.0f, NULL, SDL_FLIP_HORIZONTAL);
+
 }

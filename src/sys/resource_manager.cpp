@@ -54,6 +54,32 @@ void ResourceManager::loadTexture(std::string textureName, const char* path)
 	SDL_FreeSurface(sur);
 }
 
+void ResourceManager::loadSprite(std::string spriteName, const char* path)
+{
+	SDL_Surface* sur = IMG_Load(path);
+
+	if (!sur) {
+		sys.error(util::va("IMG_Load: %s\n", IMG_GetError()));
+		// handle error
+	}
+	SDL_Surface* gsSurface = SDL_ConvertSurfaceFormat(sur,
+		SDL_PIXELFORMAT_ARGB8888,
+		0);
+	SDL_SetColorKey(gsSurface, SDL_TRUE, SDL_MapRGB(gsSurface->format, 0xff, 0xff, 0xff));
+	Sprite* sprite = new Sprite();
+	sprite->surface = gsSurface;
+	sprite->format = gsSurface->format->format;
+	sprite->w = gsSurface->w;
+	sprite->h = gsSurface->h;
+	sprite->size = sprite->h > 3 * 16 ? 6 : 3;
+	sprite->animIndex = 0;
+
+	sprite->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), sprite->surface);
+
+	spriteMap[spriteName] = sprite;
+	SDL_FreeSurface(sur);
+}
+
 void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 {
 	Blockset* blockset = new Blockset();
@@ -199,6 +225,21 @@ Texture* ResourceManager::getTexture(std::string textureName)
 	std::map<std::string, Texture*>::iterator it = textureMap.find(textureName);
 
 	if (it == textureMap.end())
+	{
+		sys.error("Trying to look for a texture that doesn't exist");
+		return nullptr;
+	}
+	else
+	{
+		return it->second;
+	}
+}
+
+Sprite* ResourceManager::getSprite(std::string spriteName)
+{
+	std::map<std::string, Sprite*>::iterator it = spriteMap.find(spriteName);
+
+	if (it == spriteMap.end())
 	{
 		sys.error("Trying to look for a texture that doesn't exist");
 		return nullptr;

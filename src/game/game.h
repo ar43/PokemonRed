@@ -18,6 +18,7 @@ public:
 	Game();
 	void update();
 	void prelogic();
+	void init();
 	//Camera camera;
 	Frame frame;
 	Player player;

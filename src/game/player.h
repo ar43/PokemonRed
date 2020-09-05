@@ -1,12 +1,7 @@
 #pragma once
 
-enum Direction
-{
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
-};
+#include "../sys/render.h"
+#include "enums.h"
 
 struct Position
 {
@@ -27,7 +22,10 @@ public:
 	void getSquarePosition(Position *position);
 	void getBlockPosition(Position* position);
 	Position* getPosition();
+	Sprite* sprite;
 	void update();
+	void init();
+	void render();
 private:
 	Direction dir;
 	Position pos;

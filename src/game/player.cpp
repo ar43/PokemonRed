@@ -7,9 +7,19 @@ Player::Player()
 	dir = Direction::DOWN;
 }
 
+void Player::init()
+{
+	sprite = res.getSprite("red");
+}
+
 void Player::update()
 {
 	move();
+}
+
+void Player::render()
+{
+	sprite->render_static(PLAYER_OFFSET_X, PLAYER_OFFSET_Y,dir);
 }
 
 void Player::getSquarePosition(Position *position)

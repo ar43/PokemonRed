@@ -160,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\constants.h" />
+    <ClInclude Include="src\game\enums.h" />
     <ClInclude Include="src\game\game.h" />
     <ClInclude Include="src\game\map.h" />
     <ClInclude Include="src\game\player.h" />
