@@ -8,7 +8,7 @@
 class ResourceManager
 {
 public:
-	void loadTileset(std::string textureName, const char *path,std::vector<Uint8>* collData);
+	void loadTileset(std::string textureName, const char *path,std::vector<Uint8>* collData, Uint8 counterTile1, Uint8 counterTile2, Uint8 counterTile3, Uint8 grassTile, Permission permission);
 	Tileset *getTileset(std::string textureName);
 
 	void loadTexture(std::string textureName, const char* path);

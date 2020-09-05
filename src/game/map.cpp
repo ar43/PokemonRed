@@ -13,7 +13,7 @@ void Block::render(int x, int y)
     int final_x = x + GAME_WIDTH / 2 - game.player.getPosition()->x - WORLD_OFFSET_X;
     int final_y = y + GAME_HEIGHT / 2 - game.player.getPosition()->y - WORLD_OFFSET_Y;
 
-    //check if we can see the block
+    //check if we can see the block (save our CPU)
     if (!(final_x > -64 && final_x < GAME_WIDTH + 64 && final_y > -64 && final_y < GAME_HEIGHT + 64))
         return;
 

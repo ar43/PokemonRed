@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-void ResourceManager::loadTileset(std::string textureName, const char *path, std::vector<Uint8>* collData)
+void ResourceManager::loadTileset(std::string textureName, const char *path, std::vector<Uint8>* collData,Uint8 counterTile1, Uint8 counterTile2, Uint8 counterTile3, Uint8 grassTile, Permission permission)
 {
 	SDL_Surface *sur = IMG_Load(path);
 
@@ -19,6 +19,11 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 	tileset->collData = collData;
 	tileset->w = gsSurface->w;
 	tileset->h = gsSurface->h;
+	tileset->counterTiles[0] = counterTile1;
+	tileset->counterTiles[1] = counterTile2;
+	tileset->counterTiles[2] = counterTile3;
+	tileset->grassTile = grassTile;
+	tileset->permission = permission;
 
 	tileset->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), tileset->surface);
 	

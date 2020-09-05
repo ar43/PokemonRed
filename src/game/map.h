@@ -95,6 +95,13 @@ public:
 	void render(int x, int y);
 };
 
+enum Permission
+{
+	INDOOR,
+	CAVE,
+	OUTDOOR
+};
+
 class Tileset
 {
 public:
@@ -104,6 +111,9 @@ public:
 	std::vector<Uint8> *collData;
 	int w;
 	int h;
+	Uint8 grassTile;
+	Uint8 counterTiles[3];
+	Permission permission;
 };
 
 class Texture

@@ -105,7 +105,7 @@ void System::close()
 void System::load_media()
 {
 
-	res.loadTileset("overworld", "assets/tilesets/overworld.png",&Constants::Coll::overworld);
+	res.loadTileset("overworld", "assets/textures/tilesets/overworld.png",&Constants::Coll::overworld,0xFF,0xFF,0xFF,0x52,OUTDOOR);
 
 	res.loadBlockset("overworld", "assets/blocksets/overworld.bst");
 
@@ -115,13 +115,13 @@ void System::load_media()
 	res.loadMap("route_21", "assets/maps/Route21.blk", "overworld", 45, 10, 0x43, "pallet_town",0, "none",0, "none",0, "cinnabar_island",0);
 	res.loadMap("route_22", "assets/maps/Route22.blk", "overworld", 9, 20, 0x2c, "route_23", 0, "none", 0, "viridian_city", -4, "none", 0);
 
-	res.loadTexture("flower1", "assets/tilesets/flower/flower1.png");
-	res.loadTexture("flower2", "assets/tilesets/flower/flower2.png");
-	res.loadTexture("flower3", "assets/tilesets/flower/flower3.png");
+	res.loadTexture("flower1", "assets/textures/tilesets/flower/flower1.png");
+	res.loadTexture("flower2", "assets/textures/tilesets/flower/flower2.png");
+	res.loadTexture("flower3", "assets/textures/tilesets/flower/flower3.png");
 
-	res.loadTexture("water0", "assets/tilesets/water/water0.png");
-	res.loadTexture("water1", "assets/tilesets/water/water1.png");
-	res.loadTexture("water2", "assets/tilesets/water/water2.png");
-	res.loadTexture("water3", "assets/tilesets/water/water3.png");
-	res.loadTexture("water4", "assets/tilesets/water/water4.png");
+	res.loadTexture("water0", "assets/textures/tilesets/water/water0.png");
+	res.loadTexture("water1", "assets/textures/tilesets/water/water1.png");
+	res.loadTexture("water2", "assets/textures/tilesets/water/water2.png");
+	res.loadTexture("water3", "assets/textures/tilesets/water/water3.png");
+	res.loadTexture("water4", "assets/textures/tilesets/water/water4.png");
 }
