@@ -12,13 +12,18 @@ void Block::render(int x, int y)
     y = y * 32;
     int final_x = x + GAME_WIDTH / 2 - game.player.getPosition()->x - WORLD_OFFSET_X;
     int final_y = y + GAME_HEIGHT / 2 - game.player.getPosition()->y - WORLD_OFFSET_Y;
+
+    //check if we can see the block
+    if (!(final_x > -64 && final_x < GAME_WIDTH + 64 && final_y > -64 && final_y < GAME_HEIGHT + 64))
+        return;
+
     SDL_Rect rected = { final_x,final_y,32,32 };
     SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, SDL_FLIP_NONE);
 
-    //handle flowers
+    //handle animation
     for (int i = 0; i < 16; i++)
     {
-        if (isFlower[i])
+        if (animation[i] == ANIMATION_FLOWER)
         {
 
             Texture* flower;
@@ -35,6 +40,43 @@ void Block::render(int x, int y)
                 flower = res.getTexture("flower3");
             }
             flower->render(final_x + i % 4 * 8, final_y + i / 4 * 8);
+        }
+        else if (animation[i] == ANIMATION_WATER)
+        {
+            Texture* water;
+            if (game.frame.getFrame() % 168 < 21)
+            {
+                water = res.getTexture("water0");
+            }
+            else if (game.frame.getFrame() % 168 < 42)
+            {
+                water = res.getTexture("water1");
+            }
+            else if (game.frame.getFrame() % 168 < 63)
+            {
+                water = res.getTexture("water2");
+            }
+            else if (game.frame.getFrame() % 168 < 84)
+            {
+                water = res.getTexture("water3");
+            }
+            else if (game.frame.getFrame() % 168 < 105)
+            {
+                water = res.getTexture("water4");
+            }
+            else if (game.frame.getFrame() % 168 < 126)
+            {
+                water = res.getTexture("water3");
+            }
+            else if (game.frame.getFrame() % 168 < 147)
+            {
+                water = res.getTexture("water2");
+            }
+            else
+            {
+                water = res.getTexture("water1");
+            }
+            water->render(final_x + i % 4 * 8, final_y + i / 4 * 8);
         }
     }
 

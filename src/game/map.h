@@ -1,6 +1,13 @@
 #pragma once
 
 
+enum MapAnimation
+{
+	ANIMATION_NONE,
+	ANIMATION_FLOWER,
+	ANIMATION_WATER
+};
+
 class Block
 {
 public:
@@ -21,7 +28,7 @@ public:
 
 		for (int i = 0; i < 16; i++)
 		{
-			isFlower[i] = false;
+			animation[i] = ANIMATION_NONE;
 		}
 	}
 	SDL_Surface* surface;
@@ -32,7 +39,8 @@ public:
 
 	bool valid;
 	bool solid[4][4];
-	bool isFlower[16];
+	
+	MapAnimation animation[16];
 
 	void render(int x, int y);
 	void render_static(int x, int y);

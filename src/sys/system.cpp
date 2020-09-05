@@ -118,4 +118,10 @@ void System::load_media()
 	res.loadTexture("flower1", "assets/tilesets/flower/flower1.png");
 	res.loadTexture("flower2", "assets/tilesets/flower/flower2.png");
 	res.loadTexture("flower3", "assets/tilesets/flower/flower3.png");
+
+	res.loadTexture("water0", "assets/tilesets/water/water0.png");
+	res.loadTexture("water1", "assets/tilesets/water/water1.png");
+	res.loadTexture("water2", "assets/tilesets/water/water2.png");
+	res.loadTexture("water3", "assets/tilesets/water/water3.png");
+	res.loadTexture("water4", "assets/tilesets/water/water4.png");
 }

@@ -137,7 +137,9 @@ void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 			if (blocksetName == "overworld")
 			{
 				if (buffer[j] == 0x03)
-					blockset->blocks[i].isFlower[j] = true;
+					blockset->blocks[i].animation[j] = ANIMATION_FLOWER;
+				else if (buffer[j] == 0x14)
+					blockset->blocks[i].animation[j] = ANIMATION_WATER;
 			}
 
 		}
