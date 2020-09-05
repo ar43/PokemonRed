@@ -88,4 +88,6 @@ public:
 	SDL_Texture* texture;
 	Uint32 format;
 	std::vector<Uint8> *collData;
+	int w;
+	int h;
 };

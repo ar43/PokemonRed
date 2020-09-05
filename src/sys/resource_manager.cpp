@@ -17,6 +17,8 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 	tileset->surface = gsSurface;
 	tileset->format = gsSurface->format->format;
 	tileset->collData = collData;
+	tileset->w = gsSurface->w;
+	tileset->h = gsSurface->h;
 
 	tileset->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), tileset->surface);
 	
