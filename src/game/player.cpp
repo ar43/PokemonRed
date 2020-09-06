@@ -62,12 +62,14 @@ void Player::move()
 	else
 	{
 		requestMove = false;
+		if(!moving)
+			sprite->animIndex = 0;
 	}
 
 	if (turning)
 	{
 		turning++;
-		if (turning == 4)
+		if (turning == 3)
 		{
 			turning = 0;
 			dir = turnDir;
@@ -75,6 +77,7 @@ void Player::move()
 	}
 	else if (moving)
 	{
+		sprite->animIndex++;
 		if (game.debug.fastMode && moveIndex == 0)
 		{
 			switch (dir)
@@ -139,6 +142,7 @@ void Player::move()
 	{
 		if (newDir != dir)
 		{
+			sprite->animIndex = 0;
 			turning = 1;
 			turnDir = newDir;
 		}
@@ -150,6 +154,7 @@ void Player::move()
 				moving = true;
 				moveIndex = 0;
 			}
+			sprite->animIndex++;
 		}
 	}
 }

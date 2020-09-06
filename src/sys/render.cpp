@@ -131,28 +131,74 @@ void Render::debug()
 void Sprite::render_static(int x, int y, Direction dir)
 {
     int offset = 0;
-    bool flip = false;
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
     switch (dir)
     {
         case Direction::DOWN:
         {
-            offset = 0;
+            if (animIndex % 36 < 9)
+            {
+                offset = 0;
+            }
+            else if (animIndex % 36 < 18)
+            {
+                offset = 48;
+            }
+            else if (animIndex % 36 < 27)
+            {
+                offset = 0;
+            }
+            else
+            {
+                offset = 48;
+                flip = SDL_FLIP_HORIZONTAL;
+            }
             break;
         }
         case Direction::LEFT:
         {
-            offset = 32;
+            if (animIndex % 18 < 9)
+            {
+                offset = 32;
+            }
+            else
+            {
+                offset = 80;
+            }
             break;
         }
         case Direction::RIGHT:
         {
-            offset = 32;
-            flip = true;
+            if (animIndex % 18 < 9)
+            {
+                offset = 32;
+            }
+            else
+            {
+                offset = 80;
+            }
+            flip = SDL_FLIP_HORIZONTAL;
             break;
         }
         case Direction::UP:
         {
-            offset = 16;
+            if(animIndex % 36 < 9)
+            { 
+                offset = 16;
+            }
+            else if (animIndex % 36 < 18)
+            {
+                offset = 64;
+            }
+            else if (animIndex % 36 < 27)
+            {
+                offset = 16;
+            }
+            else
+            {
+                offset = 64;
+                flip = SDL_FLIP_HORIZONTAL;
+            }
             break;
         }
     }
@@ -160,9 +206,6 @@ void Sprite::render_static(int x, int y, Direction dir)
     SDL_Rect rectSrc = { 0,offset,16,16 };
     SDL_Rect rectDest = { x,y,16,16 };
 
-    if(!flip)
-        SDL_RenderCopyEx(sys.getRenderer(), texture, &rectSrc, &rectDest, 0.0f, NULL, SDL_FLIP_NONE);
-    else
-        SDL_RenderCopyEx(sys.getRenderer(), texture, &rectSrc, &rectDest, 0.0f, NULL, SDL_FLIP_HORIZONTAL);
+    SDL_RenderCopyEx(sys.getRenderer(), texture, &rectSrc, &rectDest, 0.0f, NULL, flip);
 
 }
