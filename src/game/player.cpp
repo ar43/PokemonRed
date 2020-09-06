@@ -137,7 +137,7 @@ void Player::move()
 		{
 			moving = false;
 			change_map();
-			warp_check();
+			warp_check(false);
 			
 		}
 	}
@@ -156,6 +156,10 @@ void Player::move()
 			{ 
 				moving = true;
 				moveIndex = 0;
+			}
+			else
+			{
+				warp_check(true);
 			}
 			sprite->animIndex++;
 		}
@@ -320,7 +324,7 @@ void Player::change_map()
 	}
 }
 
-void Player::warp_check()
+void Player::warp_check(bool carpet)
 {
 	Map* currMap = game.world.currentMap;
 	Position newpos = { pos.x,pos.y };
@@ -346,7 +350,15 @@ void Player::warp_check()
 			i = 3;
 	}
 
-	if (newBlock->warp[i])
+	bool check;
+	bool check_carpet = (newBlock->warp_up[i] && dir == Direction::UP || newBlock->warp_down[i] && dir == Direction::DOWN || newBlock->warp_left[i] && dir == Direction::LEFT || newBlock->warp_right[i] && dir == Direction::RIGHT);
+	bool check_normal = newBlock->warp[i];
+	if (carpet)
+		check = check_carpet;
+	else
+		check = check_normal;
+
+	if (check)
 	{
 		Position sq;
 		getSquarePosition(&sq);
@@ -366,6 +378,7 @@ void Player::warp_check()
 					moving = true;
 					moveIndex = 0;
 					dir = Direction::DOWN;
+					sprite->animIndex = 0;
 				}
 				lastMap = currMap->name;
 				return;

@@ -142,5 +142,23 @@ namespace Constants
 	{
 		std::vector<Uint8> overworld{ 0x1B, 0x58 };
 		std::vector<Uint8> reds_house{ 0x1A, 0x1C };
+
+		/*
+		.FacingDownWarpTiles:
+	warp_carpet_tiles $01, $12, $17, $3D, $04, $18, $33
+
+.FacingUpWarpTiles:
+	warp_carpet_tiles $01, $5C
+
+.FacingLeftWarpTiles:
+	warp_carpet_tiles $1A, $4B
+
+.FacingRightWarpTiles:
+	warp_carpet_tiles $0F, $4E*/
+
+		std::vector<Uint8> down{ 0x01, 0x12, 0x17, 0x3D, 0x04, 0x18, 0x33 };
+		std::vector<Uint8> up{ 0x01, 0x5C };
+		std::vector<Uint8> left{ 0x1A, 0x4B };
+		std::vector<Uint8> right{ 0x0F, 0x4E };
 	}
 }

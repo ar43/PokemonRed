@@ -195,6 +195,86 @@ void ResourceManager::loadBlockset(std::string blocksetName, std::string tileset
 				}
 
 			}
+			//for carpet warp (is 0 2 8 A actually correct? assuming Red's House, but needs testing)
+			if(tileset->permission == INDOOR)
+			{ 
+				if (std::find(Constants::Warp::up.begin(), Constants::Warp::up.end(), buffer[j]) != Constants::Warp::up.end())
+				{
+					switch (j)
+					{
+					case 0:
+						blockset->blocks[i].warp_up[0] = true;
+						break;
+					case 2:
+						blockset->blocks[i].warp_up[1] = true;
+						break;
+					case 8:
+						blockset->blocks[i].warp_up[2] = true;
+						break;
+					case 0xA:
+						blockset->blocks[i].warp_up[3] = true;
+						break;
+					}
+
+				}
+				if (std::find(Constants::Warp::down.begin(), Constants::Warp::down.end(), buffer[j]) != Constants::Warp::down.end())
+				{
+					switch (j)
+					{
+					case 0:
+						blockset->blocks[i].warp_down[0] = true;
+						break;
+					case 2:
+						blockset->blocks[i].warp_down[1] = true;
+						break;
+					case 8:
+						blockset->blocks[i].warp_down[2] = true;
+						break;
+					case 0xA:
+						blockset->blocks[i].warp_down[3] = true;
+						break;
+					}
+
+				}
+				if (std::find(Constants::Warp::left.begin(), Constants::Warp::left.end(), buffer[j]) != Constants::Warp::left.end())
+				{
+					switch (j)
+					{
+					case 0:
+						blockset->blocks[i].warp_left[0] = true;
+						break;
+					case 2:
+						blockset->blocks[i].warp_left[1] = true;
+						break;
+					case 8:
+						blockset->blocks[i].warp_left[2] = true;
+						break;
+					case 0xA:
+						blockset->blocks[i].warp_left[3] = true;
+						break;
+					}
+
+				}
+				if (std::find(Constants::Warp::right.begin(), Constants::Warp::right.end(), buffer[j]) != Constants::Warp::right.end())
+				{
+					switch (j)
+					{
+					case 0:
+						blockset->blocks[i].warp_right[0] = true;
+						break;
+					case 2:
+						blockset->blocks[i].warp_right[1] = true;
+						break;
+					case 8:
+						blockset->blocks[i].warp_right[2] = true;
+						break;
+					case 0xA:
+						blockset->blocks[i].warp_right[3] = true;
+						break;
+					}
+
+				}
+			}
 
 			//for animation
 			if (blocksetName == "overworld")

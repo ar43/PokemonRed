@@ -54,6 +54,22 @@ public:
 		{
 			warp[i] = false;
 		}
+		for (int i = 0; i < 4; i++)
+		{
+			warp_up[i] = false;
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			warp_down[i] = false;
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			warp_left[i] = false;
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			warp_right[i] = false;
+		}
 
 		for (int i = 0; i < 16; i++)
 		{
@@ -74,6 +90,10 @@ public:
 	bool valid;
 	bool solid[4][4];
 	bool warp[4];
+	bool warp_up[4];
+	bool warp_down[4];
+	bool warp_left[4];
+	bool warp_right[4];
 	bool grassTile[16];
 	
 	MapAnimation animation[16];
