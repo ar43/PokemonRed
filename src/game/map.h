@@ -1,5 +1,5 @@
 #pragma once
-
+#include "enums.h"
 
 enum MapAnimation
 {
@@ -30,6 +30,11 @@ public:
 		{
 			animation[i] = ANIMATION_NONE;
 		}
+
+		for (int i = 0; i < 16; i++)
+		{
+			grassTile[i] = false;
+		}
 	}
 	SDL_Surface* surface;
 	SDL_Texture* texture;
@@ -39,6 +44,7 @@ public:
 
 	bool valid;
 	bool solid[4][4];
+	bool grassTile[16];
 	
 	MapAnimation animation[16];
 
@@ -69,6 +75,21 @@ public:
 	int southOffset;
 };
 
+class Tileset
+{
+public:
+	SDL_Surface* surface;
+	SDL_Texture* texture;
+	Uint32 format;
+	std::vector<Uint8>* collData;
+	int w;
+	int h;
+	Uint8 grassTile;
+	std::string grassName;
+	Uint8 counterTiles[3];
+	Permission permission;
+};
+
 class Map
 {
 public:
@@ -91,30 +112,12 @@ public:
 	int background;
 	std::vector<Uint8> blocks;
 	Blockset* blockset;
+	Tileset* tileset;
 	Connection connection;
+	std::vector<Position> grassEffect;
 	void render(int x, int y);
 };
 
-enum Permission
-{
-	INDOOR,
-	CAVE,
-	OUTDOOR
-};
-
-class Tileset
-{
-public:
-	SDL_Surface* surface;
-	SDL_Texture* texture;
-	Uint32 format;
-	std::vector<Uint8> *collData;
-	int w;
-	int h;
-	Uint8 grassTile;
-	Uint8 counterTiles[3];
-	Permission permission;
-};
 
 class Texture
 {
@@ -125,4 +128,5 @@ public:
 	int w;
 	int h;
 	void render(int x, int y);
+	void render_grass(int x, int y);
 };

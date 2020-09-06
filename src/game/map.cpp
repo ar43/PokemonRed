@@ -20,7 +20,7 @@ void Block::render(int x, int y)
     SDL_Rect rected = { final_x,final_y,32,32 };
     SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, SDL_FLIP_NONE);
 
-    //handle animation
+    //handle animation & grass
     for (int i = 0; i < 16; i++)
     {
         if (animation[i] == ANIMATION_FLOWER)
@@ -77,6 +77,11 @@ void Block::render(int x, int y)
                 water = res.getTexture("water1");
             }
             water->render(final_x + i % 4 * 8, final_y + i / 4 * 8);
+        }
+        if (grassTile[i])
+        {
+            Position effect = { final_x + i % 4 * 8,final_y + i / 4 * 8 };
+            game.world.currentMap->grassEffect.push_back(effect);
         }
     }
 
@@ -215,4 +220,11 @@ void Texture::render(int x, int y)
 {
     SDL_Rect rected = { x,y,w,h };
     SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, SDL_FLIP_NONE);
+}
+
+void Texture::render_grass(int x, int y)
+{
+    SDL_Rect rect1 = { 0,4,8,4 };
+    SDL_Rect rect2 = { x,y+4,8,4 };
+    SDL_RenderCopyEx(sys.getRenderer(), texture, &rect1, &rect2, 0.0f, NULL, SDL_FLIP_NONE);
 }

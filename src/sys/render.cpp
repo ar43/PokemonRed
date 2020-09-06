@@ -9,8 +9,31 @@ void Render::render()
     draw_map();
     debug();
     game.player.render();
+    draw_overlay();
+
+    
 
     SDL_RenderPresent(sys.getRenderer());
+}
+
+void Render::draw_overlay()
+{
+    if (!game.world.currentMap->grassEffect.empty())
+    {
+        for (std::vector<Position>::iterator it = game.world.currentMap->grassEffect.begin(); it != game.world.currentMap->grassEffect.end(); ++it)
+        {
+            if (it->y > PLAYER_OFFSET_Y + 4)
+            {
+                Texture* grass = res.getTexture(game.world.currentMap->tileset->grassName);
+                grass->render(it->x, it->y);
+            }
+            else if (it->y > PLAYER_OFFSET_Y)
+            {
+                Texture* grass = res.getTexture(game.world.currentMap->tileset->grassName);
+                grass->render_grass(it->x, it->y);
+            }
+        }
+    }
 }
 
 void Render::draw_map()
@@ -18,6 +41,8 @@ void Render::draw_map()
 
     if (game.world.currentMap == nullptr)
         sys.error("Current map is a null pointer");
+
+    game.world.currentMap->grassEffect.clear();
 
     //static rendering is a bad idea
     /*
@@ -38,7 +63,7 @@ void Render::draw_map()
 
     //todo: north and south background blocks
 
-    if(west == nullptr)
+    if (west == nullptr)
     {
         for (int i = -3; i < game.world.currentMap->height + 3; i++)
         {
@@ -50,7 +75,7 @@ void Render::draw_map()
         }
     }
 
-    if(east == nullptr)
+    if (east == nullptr)
     {
         for (int i = -3; i < game.world.currentMap->height + 3; i++)
         {
@@ -69,7 +94,7 @@ void Render::draw_map()
             for (int j = 0; j < 3; j++)
             {
                 int bkg = game.world.currentMap->background;
-                game.world.currentMap->blockset->blocks[bkg].render(i, -1-j);
+                game.world.currentMap->blockset->blocks[bkg].render(i, -1 - j);
             }
         }
     }
@@ -100,7 +125,7 @@ void Render::draw_map()
     {
         east->render(game.world.currentMap->width, game.world.currentMap->connection.eastOffset);
     }
-    
+
 
     if (south != nullptr)
     {
@@ -113,17 +138,17 @@ void Render::draw_map()
 
 void Render::debug()
 {
-    if(game.debug.drawPlayer)
-    { 
+    if (game.debug.drawPlayer)
+    {
         SDL_SetRenderDrawColor(sys.getRenderer(), 255, 0, 0, 255);
         SDL_Rect rect = { PLAYER_OFFSET_X, PLAYER_OFFSET_Y,16,16 };
         SDL_RenderFillRect(sys.getRenderer(), &rect);
     }
 
-    if(game.debug.drawSquare)
-    { 
+    if (game.debug.drawSquare)
+    {
         SDL_SetRenderDrawColor(sys.getRenderer(), 255, 0, 255, 255);
-        SDL_Rect rect1 = { PLAYER_OFFSET_X, PLAYER_OFFSET_Y+4,16,16 };
+        SDL_Rect rect1 = { PLAYER_OFFSET_X, PLAYER_OFFSET_Y + 4,16,16 };
         SDL_RenderFillRect(sys.getRenderer(), &rect1);
     }
 }
@@ -134,73 +159,73 @@ void Sprite::render_static(int x, int y, Direction dir)
     SDL_RendererFlip flip = SDL_FLIP_NONE;
     switch (dir)
     {
-        case Direction::DOWN:
+    case Direction::DOWN:
+    {
+        if (animIndex % 36 < 9)
         {
-            if (animIndex % 36 < 9)
-            {
-                offset = 0;
-            }
-            else if (animIndex % 36 < 18)
-            {
-                offset = 48;
-            }
-            else if (animIndex % 36 < 27)
-            {
-                offset = 0;
-            }
-            else
-            {
-                offset = 48;
-                flip = SDL_FLIP_HORIZONTAL;
-            }
-            break;
+            offset = 0;
         }
-        case Direction::LEFT:
+        else if (animIndex % 36 < 18)
         {
-            if (animIndex % 18 < 9)
-            {
-                offset = 32;
-            }
-            else
-            {
-                offset = 80;
-            }
-            break;
+            offset = 48;
         }
-        case Direction::RIGHT:
+        else if (animIndex % 36 < 27)
         {
-            if (animIndex % 18 < 9)
-            {
-                offset = 32;
-            }
-            else
-            {
-                offset = 80;
-            }
+            offset = 0;
+        }
+        else
+        {
+            offset = 48;
             flip = SDL_FLIP_HORIZONTAL;
-            break;
         }
-        case Direction::UP:
+        break;
+    }
+    case Direction::LEFT:
+    {
+        if (animIndex % 18 < 9)
         {
-            if(animIndex % 36 < 9)
-            { 
-                offset = 16;
-            }
-            else if (animIndex % 36 < 18)
-            {
-                offset = 64;
-            }
-            else if (animIndex % 36 < 27)
-            {
-                offset = 16;
-            }
-            else
-            {
-                offset = 64;
-                flip = SDL_FLIP_HORIZONTAL;
-            }
-            break;
+            offset = 32;
         }
+        else
+        {
+            offset = 80;
+        }
+        break;
+    }
+    case Direction::RIGHT:
+    {
+        if (animIndex % 18 < 9)
+        {
+            offset = 32;
+        }
+        else
+        {
+            offset = 80;
+        }
+        flip = SDL_FLIP_HORIZONTAL;
+        break;
+    }
+    case Direction::UP:
+    {
+        if (animIndex % 36 < 9)
+        {
+            offset = 16;
+        }
+        else if (animIndex % 36 < 18)
+        {
+            offset = 64;
+        }
+        else if (animIndex % 36 < 27)
+        {
+            offset = 16;
+        }
+        else
+        {
+            offset = 64;
+            flip = SDL_FLIP_HORIZONTAL;
+        }
+        break;
+    }
     }
 
     SDL_Rect rectSrc = { 0,offset,16,16 };

@@ -7,3 +7,10 @@ enum Direction
 	LEFT,
 	RIGHT
 };
+
+enum Permission
+{
+	INDOOR,
+	CAVE,
+	OUTDOOR
+};

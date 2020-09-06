@@ -7,6 +7,7 @@ public:
 	void render();
 	void debug();
 	void draw_map();
+	void draw_overlay();
 };
 
 class Sprite

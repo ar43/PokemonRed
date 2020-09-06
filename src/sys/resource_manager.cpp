@@ -24,6 +24,10 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 	tileset->counterTiles[1] = counterTile2;
 	tileset->counterTiles[2] = counterTile3;
 	tileset->grassTile = grassTile;
+	if (grassTile == 0x52)
+	{
+		tileset->grassName = "grass1";
+	}
 	tileset->permission = permission;
 
 	tileset->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), tileset->surface);
@@ -32,7 +36,7 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 	SDL_FreeSurface(sur);
 }
 
-void ResourceManager::loadTexture(std::string textureName, const char* path)
+void ResourceManager::loadTexture(std::string textureName, const char* path, bool transparent)
 {
 	SDL_Surface* sur = IMG_Load(path);
 
@@ -40,9 +44,16 @@ void ResourceManager::loadTexture(std::string textureName, const char* path)
 		sys.error(util::va("IMG_Load: %s\n", IMG_GetError()));
 		// handle error
 	}
-	SDL_Surface* gsSurface = SDL_ConvertSurfaceFormat(sur,
-		SDL_PIXELFORMAT_ARGB8888,
-		0);
+	SDL_Surface* gsSurface;
+	if(!transparent)
+	{ 
+		gsSurface = SDL_ConvertSurfaceFormat(sur,SDL_PIXELFORMAT_ARGB8888,0);
+	}
+	else
+	{
+		gsSurface = sur;
+		SDL_SetColorKey(gsSurface, SDL_TRUE, SDL_MapRGB(gsSurface->format, 0xff, 0xff, 0xff));
+	}
 	Texture* texture = new Texture();
 	texture->surface = gsSurface;
 	texture->format = gsSurface->format->format;
@@ -171,6 +182,10 @@ void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 				else if (buffer[j] == 0x14)
 					blockset->blocks[i].animation[j] = ANIMATION_WATER;
 			}
+			if (buffer[j] == tileset->grassTile)
+			{ 
+				blockset->blocks[i].grassTile[j] = true;
+			}
 
 		}
 		SDL_SetRenderTarget(sys.getRenderer(), NULL);
@@ -185,6 +200,7 @@ void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 void ResourceManager::loadMap(std::string mapName, const char* path, std::string blockset, int height, int width, int background, std::string north, int northOffset, std::string west, int westOffset, std::string east, int eastOffset, std::string south, int southOffset)
 {
 	Map* map = new Map(height,width,getBlockset(blockset), background, north,northOffset, west, westOffset, east, eastOffset, south, southOffset);
+	map->tileset = getTileset(blockset);
 
 	//copy the bytes of map data to a vector
 	std::ifstream file(path, std::ios::binary);
@@ -225,7 +241,7 @@ Texture* ResourceManager::getTexture(std::string textureName)
 
 	if (it == textureMap.end())
 	{
-		sys.error("Trying to look for a texture that doesn't exist");
+		//sys.error("Trying to look for a texture that doesn't exist");
 		return nullptr;
 	}
 	else
