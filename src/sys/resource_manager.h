@@ -8,7 +8,7 @@
 class ResourceManager
 {
 public:
-	void loadTileset(std::string textureName, const char *path,std::vector<Uint8>* collData, Uint8 counterTile1, Uint8 counterTile2, Uint8 counterTile3, Uint8 grassTile, Permission permission);
+	void loadTileset(std::string textureName, const char *path,std::vector<Uint8>* collData, std::vector<Uint8>* warpData, Uint8 counterTile1, Uint8 counterTile2, Uint8 counterTile3, Uint8 grassTile, Permission permission);
 	Tileset *getTileset(std::string textureName);
 
 	void loadTexture(std::string textureName, const char* path, bool transparent = false);
@@ -17,10 +17,10 @@ public:
 	void loadSprite(std::string textureName, const char* path);
 	Sprite* getSprite(std::string textureName);
 
-	void loadBlockset(std::string blocksetName, const char* path);
+	void loadBlockset(std::string blocksetName, std::string tilesetName, const char* path);
 	Blockset* getBlockset(std::string blocksetName);
 
-	void loadMap(std::string mapName, const char* path, std::string blockset, int height, int width, int background, std::string north, int northOffset, std::string west, int westOffset, std::string east, int eastOffset, std::string south, int southOffset);
+	void loadMap(std::string mapName, const char* path, const char* objectsPath, std::string blockset, int height, int width, int background, std::string north, int northOffset, std::string west, int westOffset, std::string east, int eastOffset, std::string south, int southOffset);
 	Map* getMap(std::string mapName);
 	
 private:

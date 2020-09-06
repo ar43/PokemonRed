@@ -10,6 +10,7 @@ Player::Player()
 void Player::init()
 {
 	sprite = res.getSprite("red");
+	lastMap = "pallet_town";
 }
 
 void Player::update()
@@ -134,8 +135,10 @@ void Player::move()
 		moveIndex++;
 		if (moveIndex >= 16)
 		{
-			change_map();
 			moving = false;
+			change_map();
+			warp_check();
+			
 		}
 	}
 	else if (requestMove)
@@ -314,5 +317,60 @@ void Player::change_map()
 		pos.x -= util::square_to_pixel(game.world.currentMap->connection.southOffset * 2);
 		game.world.currentMap = res.getMap(game.world.currentMap->connection.south);
 		pos.y = util::square_to_pixel(0);
+	}
+}
+
+void Player::warp_check()
+{
+	Map* currMap = game.world.currentMap;
+	Position newpos = { pos.x,pos.y };
+	int index = (newpos.y / 32) * currMap->width + newpos.x / 32;
+	if (index < 0 || index >= currMap->blocks.size() || newpos.x < 0 || newpos.x >= currMap->width * 32) //else it would throw error
+		return;
+
+	Block* newBlock = &currMap->blockset->blocks[currMap->blocks[index]];
+
+	int i = 0;
+	if (newpos.x % 32 == 0)
+	{
+		if (newpos.y % 32 == 0)
+			i = 0;
+		else
+			i = 2;
+	}
+	else
+	{
+		if (newpos.y % 32 == 0)
+			i = 1;
+		else
+			i = 3;
+	}
+
+	if (newBlock->warp[i])
+	{
+		Position sq;
+		getSquarePosition(&sq);
+		for (std::vector<Warp>::iterator it = currMap->warps.begin(); it != currMap->warps.end(); ++it)
+		{
+			if (it->at.x == sq.x && it->at.y == sq.y)
+			{
+				//todo: transition "animation"
+				if(it->to == "last_map")
+					game.world.currentMap = res.getMap(lastMap);
+				else
+					game.world.currentMap = res.getMap(it->to);
+				pos.x = util::square_to_pixel(game.world.currentMap->warps[it->warpIn].at.x);
+				pos.y = util::square_to_pixel(game.world.currentMap->warps[it->warpIn].at.y);
+				if (game.world.currentMap->tileset->permission == Permission::OUTDOOR)
+				{
+					moving = true;
+					moveIndex = 0;
+					dir = Direction::DOWN;
+				}
+				lastMap = currMap->name;
+				return;
+			}
+		}
+
 	}
 }

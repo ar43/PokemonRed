@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-void ResourceManager::loadTileset(std::string textureName, const char *path, std::vector<Uint8>* collData,Uint8 counterTile1, Uint8 counterTile2, Uint8 counterTile3, Uint8 grassTile, Permission permission)
+void ResourceManager::loadTileset(std::string textureName, const char *path, std::vector<Uint8>* collData, std::vector<Uint8>* warpData, Uint8 counterTile1, Uint8 counterTile2, Uint8 counterTile3, Uint8 grassTile, Permission permission)
 {
 	SDL_Surface *sur = IMG_Load(path);
 
@@ -18,6 +18,7 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 	tileset->surface = gsSurface;
 	tileset->format = gsSurface->format->format;
 	tileset->collData = collData;
+	tileset->warpData = warpData;
 	tileset->w = gsSurface->w;
 	tileset->h = gsSurface->h;
 	tileset->counterTiles[0] = counterTile1;
@@ -90,12 +91,13 @@ void ResourceManager::loadSprite(std::string spriteName, const char* path)
 	SDL_FreeSurface(sur);
 }
 
-void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
+void ResourceManager::loadBlockset(std::string blocksetName, std::string tilesetName, const char* path)
 {
 	Blockset* blockset = new Blockset();
 	blockset->blocks = new Block[MAX_BLOCKS]();
-	Tileset* tileset = getTileset(blocksetName);
+	Tileset* tileset = getTileset(tilesetName);
 	blockset->name = blocksetName;
+	blockset->tileset = tileset;
 
 	int i = 0;
 
@@ -173,6 +175,26 @@ void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 				}
 				
 			}
+			//for warp
+			if (std::find(tileset->warpData->begin(), tileset->warpData->end(), buffer[j]) != tileset->warpData->end())
+			{
+				switch (j)
+				{
+				case 4:
+					blockset->blocks[i].warp[0] = true;
+					break;
+				case 6:
+					blockset->blocks[i].warp[1] = true;
+					break;
+				case 0xC:
+					blockset->blocks[i].warp[2] = true;
+					break;
+				case 0xE:
+					blockset->blocks[i].warp[3] = true;
+					break;
+				}
+
+			}
 
 			//for animation
 			if (blocksetName == "overworld")
@@ -197,11 +219,11 @@ void ResourceManager::loadBlockset(std::string blocksetName, const char* path)
 	blocksetMap[blocksetName] = blockset;
 }
 
-void ResourceManager::loadMap(std::string mapName, const char* path, std::string blockset, int height, int width, int background, std::string north, int northOffset, std::string west, int westOffset, std::string east, int eastOffset, std::string south, int southOffset)
+void ResourceManager::loadMap(std::string mapName, const char* path, const char* objectsPath, std::string blockset, int height, int width, int background, std::string north, int northOffset, std::string west, int westOffset, std::string east, int eastOffset, std::string south, int southOffset)
 {
 	Map* map = new Map(height,width,getBlockset(blockset), background, north,northOffset, west, westOffset, east, eastOffset, south, southOffset);
-	map->tileset = getTileset(blockset);
-
+	map->tileset = getBlockset(blockset)->tileset;
+	map->name = mapName;
 	//copy the bytes of map data to a vector
 	std::ifstream file(path, std::ios::binary);
 	file.unsetf(std::ios::skipws);
@@ -215,6 +237,69 @@ void ResourceManager::loadMap(std::string mapName, const char* path, std::string
 	map->blocks.insert(map->blocks.begin(),
 		std::istream_iterator<Uint8>(file),
 		std::istream_iterator<Uint8>());
+
+	FILE *fp = fopen(objectsPath, "r");
+	if (!fp)
+		sys.error("Error when reading objects file.");
+	char string[100];
+	while (fgets(string, 100, fp)) {
+		//read warps
+		char* substring = strstr(string, "warp");
+		if (substring != nullptr && strchr(string,',') != nullptr)
+		{
+			substring += 4;
+			if(*substring != '_')
+			{ 
+				Warp newwarp;
+				newwarp.from = mapName;
+				char* token;
+				token = strtok(substring, ",");
+				int i = 0;
+				/* walk through other tokens */
+				while (token != NULL) {
+					if (i < 3)
+					{
+						int num = atoi(token);
+						if (i == 0)
+						{
+							newwarp.at.x = num;
+						}
+						else if (i == 1)
+						{
+							newwarp.at.y = num;
+						}
+						else
+						{
+							newwarp.warpIn = num;
+						}
+						//printf("%d\n", num);
+					}
+					else
+					{ 
+						util::remove_spaces(token);
+						for (int i = 0; token[i]; i++) {
+							token[i] = tolower(token[i]);
+							if (token[i] == '\n')
+								token[i] = 0;
+							if (token[i] == ';')
+							{ 
+								token[i] = 0;
+								break;
+							}
+						}
+						newwarp.to = token;
+						//printf("%s\n", token);
+					}
+
+					token = strtok(NULL, ",");
+					i++;
+				}
+				map->warps.push_back(newwarp);
+			}
+		}
+	}
+
+	fclose(fp);
 
 	mapMap[mapName] = map;
 

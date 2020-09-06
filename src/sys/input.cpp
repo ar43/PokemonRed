@@ -75,6 +75,7 @@ void Input::catchMain(SDL_Event *e)
 		}
 
 		case SDLK_F1:
+			printf("???\n");
 			game.debug.drawPlayer = !game.debug.drawPlayer;
 			break;
 

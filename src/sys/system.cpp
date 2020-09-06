@@ -104,16 +104,44 @@ void System::close()
 
 void System::load_media()
 {
+	/*
+	tileset Overworld_Block,   Overworld_GFX,   Overworld_Coll,   $FF,$FF,$FF, $52, OUTDOOR
+	tileset RedsHouse1_Block,  RedsHouse1_GFX,  RedsHouse1_Coll,  $FF,$FF,$FF, $FF, INDOOR
+	tileset Mart_Block,        Mart_GFX,        Mart_Coll,        $18,$19,$1E, $FF, INDOOR
+	tileset Forest_Block,      Forest_GFX,      Forest_Coll,      $FF,$FF,$FF, $20, CAVE
+	tileset RedsHouse2_Block,  RedsHouse2_GFX,  RedsHouse2_Coll,  $FF,$FF,$FF, $FF, INDOOR
+	tileset Dojo_Block,        Dojo_GFX,        Dojo_Coll,        $3A,$FF,$FF, $FF, OUTDOOR
+	tileset Pokecenter_Block,  Pokecenter_GFX,  Pokecenter_Coll,  $18,$19,$1E, $FF, INDOOR
+	tileset Gym_Block,         Gym_GFX,         Gym_Coll,         $3A,$FF,$FF, $FF, OUTDOOR
+	tileset House_Block,       House_GFX,       House_Coll,       $FF,$FF,$FF, $FF, INDOOR
+	tileset ForestGate_Block,  ForestGate_GFX,  ForestGate_Coll,  $17,$32,$FF, $FF, INDOOR
+	tileset Museum_Block,      Museum_GFX,      Museum_Coll,      $17,$32,$FF, $FF, INDOOR
+	tileset Underground_Block, Underground_GFX, Underground_Coll, $FF,$FF,$FF, $FF, INDOOR
+	tileset Gate_Block,        Gate_GFX,        Gate_Coll,        $17,$32,$FF, $FF, INDOOR
+	tileset Ship_Block,        Ship_GFX,        Ship_Coll,        $FF,$FF,$FF, $FF, CAVE
+	tileset ShipPort_Block,    ShipPort_GFX,    ShipPort_Coll,    $FF,$FF,$FF, $FF, CAVE
+	tileset Cemetery_Block,    Cemetery_GFX,    Cemetery_Coll,    $12,$FF,$FF, $FF, INDOOR
+	tileset Interior_Block,    Interior_GFX,    Interior_Coll,    $FF,$FF,$FF, $FF, INDOOR
+	tileset Cavern_Block,      Cavern_GFX,      Cavern_Coll,      $FF,$FF,$FF, $FF, CAVE
+	tileset Lobby_Block,       Lobby_GFX,       Lobby_Coll,       $15,$36,$FF, $FF, INDOOR
+	tileset Mansion_Block,     Mansion_GFX,     Mansion_Coll,     $FF,$FF,$FF, $FF, INDOOR
+	tileset Lab_Block,         Lab_GFX,         Lab_Coll,         $FF,$FF,$FF, $FF, INDOOR
+	tileset Club_Block,        Club_GFX,        Club_Coll,        $07,$17,$FF, $FF, INDOOR
+	tileset Facility_Block,    Facility_GFX,    Facility_Coll,    $12,$FF,$FF, $FF, CAVE
+	tileset Plateau_Block,     Plateau_GFX,     Plateau_Coll,     $FF,$FF,$FF, $45, CAVE
+*/
+	res.loadTileset("overworld", "assets/gfx/tilesets/overworld.png",&Constants::Coll::overworld, &Constants::Warp::overworld, 0xFF,0xFF,0xFF,0x52,OUTDOOR);
+	res.loadTileset("reds_house", "assets/gfx/tilesets/reds_house.png", &Constants::Coll::reds_house, &Constants::Warp::reds_house, 0xFF, 0xFF, 0xFF, 0xFF, INDOOR);
 
-	res.loadTileset("overworld", "assets/gfx/tilesets/overworld.png",&Constants::Coll::overworld,0xFF,0xFF,0xFF,0x52,OUTDOOR);
+	res.loadBlockset("overworld", "overworld", "assets/data/blocksets/overworld.bst");
+	res.loadBlockset("reds_house", "reds_house", "assets/data/blocksets/reds_house.bst");
 
-	res.loadBlockset("overworld", "assets/data/blocksets/overworld.bst");
-
-	res.loadMap("pallet_town", "assets/data/maps/PalletTown.blk", "overworld", 9, 10,0xb,"route_1",0,"none",0,"none",0,"route_21",0);
-	res.loadMap("viridian_city", "assets/data/maps/ViridianCity.blk", "overworld", 18, 20, 0xf, "route_2",5, "route_22",4, "none",0, "route_1",5);
-	res.loadMap("route_1", "assets/data/maps/Route1.blk", "overworld", 18, 10, 0xb, "viridian_city",-5, "none",0, "none",0, "pallet_town",0);
-	res.loadMap("route_21", "assets/data/maps/Route21.blk", "overworld", 45, 10, 0x43, "pallet_town",0, "none",0, "none",0, "cinnabar_island",0);
-	res.loadMap("route_22", "assets/data/maps/Route22.blk", "overworld", 9, 20, 0x2c, "route_23", 0, "none", 0, "viridian_city", -4, "none", 0);
+	res.loadMap("pallet_town", "assets/data/maps/PalletTown.blk","assets/data/objects/PalletTown.asm", "overworld", 9, 10,0xb,"route_1",0,"none",0,"none",0,"route_21",0);
+	res.loadMap("viridian_city", "assets/data/maps/ViridianCity.blk", "assets/data/objects/ViridianCity.asm", "overworld", 18, 20, 0xf, "route_2",5, "route_22",4, "none",0, "route_1",5);
+	res.loadMap("route_1", "assets/data/maps/Route1.blk", "assets/data/objects/Route1.asm", "overworld", 18, 10, 0xb, "viridian_city",-5, "none",0, "none",0, "pallet_town",0);
+	res.loadMap("route_21", "assets/data/maps/Route21.blk", "assets/data/objects/Route21.asm", "overworld", 45, 10, 0x43, "pallet_town",0, "none",0, "none",0, "cinnabar_island",0);
+	res.loadMap("route_22", "assets/data/maps/Route22.blk", "assets/data/objects/Route22.asm", "overworld", 9, 20, 0x2c, "route_23", 0, "none", 0, "viridian_city", -4, "none", 0);
+	res.loadMap("reds_house_1f", "assets/data/maps/RedsHouse1F.blk", "assets/data/objects/RedsHouse1F.asm", "reds_house", 4, 4, 0xa, "none", 0, "none", 0, "none", 0, "none", 0);
 
 	res.loadTexture("flower1", "assets/gfx/tilesets/flower/flower1.png");
 	res.loadTexture("flower2", "assets/gfx/tilesets/flower/flower2.png");

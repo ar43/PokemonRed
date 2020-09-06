@@ -35,5 +35,7 @@ private:
 	int moveIndex;
 	void move();
 	void change_map();
+	void warp_check();
 	bool collision_check();
+	std::string lastMap;
 };

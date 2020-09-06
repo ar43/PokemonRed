@@ -12,5 +12,7 @@ namespace util
 	extern char *cleanStr(char *string);
 
 	extern int square_to_pixel(int a);
+
+	extern void remove_spaces(char* s);
 }
 

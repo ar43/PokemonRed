@@ -42,5 +42,14 @@ namespace util
 	{
 		return a * 16;
 	}
+
+	void remove_spaces(char* s) {
+		const char* d = s;
+		do {
+			while (*d == ' ') {
+				++d;
+			}
+		} while (*s++ = *d++);
+	}
 	
 }

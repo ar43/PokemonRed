@@ -66,11 +66,81 @@ Plateau_Coll::
 */
 
 
+/*
+OverworldWarpTileIDs:
+	warp_tiles $1B, $58
+
+.ForestGateWarpTileIDs:
+.MuseumWarpTileIDs:
+.GateWarpTileIDs:
+	db $3B
+	; fallthrough
+.RedsHouse1WarpTileIDs:
+.RedsHouse2WarpTileIDs:
+	warp_tiles $1A, $1C
+
+.MartWarpTileIDs:
+.PokecenterWarpTileIDs:
+	warp_tiles $5E
+
+.ForestWarpTileIDs:
+	warp_tiles $5A, $5C, $3A
+
+.DojoWarpTileIDs:
+.GymWarpTileIDs:
+	warp_tiles $4A
+
+.HouseWarpTileIDs:
+	warp_tiles $54, $5C, $32
+
+.ShipWarpTileIDs:
+	warp_tiles $37, $39, $1E, $4A
+
+.InteriorWarpTileIDs:
+	warp_tiles $15, $55, $04
+
+.CavernWarpTileIDs:
+	warp_tiles $18, $1A, $22
+
+.LobbyWarpTileIDs:
+	warp_tiles $1A, $1C, $38
+
+.MansionWarpTileIDs:
+	warp_tiles $1A, $1C, $53
+
+.LabWarpTileIDs:
+	warp_tiles $34
+
+.FacilityWarpTileIDs:
+	db $43, $58, $20
+	; fallthrough
+.CemeteryWarpTileIDs:
+	db $1B
+	; fallthrough
+.UndergroundWarpTileIDs:
+	warp_tiles $13
+
+.PlateauWarpTileIDs:
+	db $1B, $3B
+	; fallthrough
+.ShipPortWarpTileIDs:
+.ClubWarpTileIDs:
+	warp_tiles ; end
+	*/
+
+
 
 namespace Constants
 {
 	namespace Coll
 	{
 		std::vector<Uint8> overworld{ 0x00, 0x10, 0x1b, 0x20, 0x21, 0x23, 0x2c, 0x2d, 0x2e, 0x30, 0x31, 0x33, 0x39, 0x3c, 0x3e, 0x52, 0x54, 0x58, 0x5b };
+
+		std::vector<Uint8> reds_house{ 0x01, 0x02, 0x03, 0x11, 0x12, 0x13, 0x14, 0x1c, 0x1a };
+	}
+	namespace Warp
+	{
+		std::vector<Uint8> overworld{ 0x1B, 0x58 };
+		std::vector<Uint8> reds_house{ 0x1A, 0x1C };
 	}
 }

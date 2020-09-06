@@ -8,6 +8,30 @@ enum MapAnimation
 	ANIMATION_WATER
 };
 
+struct Warp
+{
+	std::string from;
+	std::string to;
+	Position at;
+	int warpIn;
+};
+
+class Tileset
+{
+public:
+	SDL_Surface* surface;
+	SDL_Texture* texture;
+	Uint32 format;
+	std::vector<Uint8>* collData;
+	std::vector<Uint8>* warpData;
+	int w;
+	int h;
+	Uint8 grassTile;
+	std::string grassName;
+	Uint8 counterTiles[3];
+	Permission permission;
+};
+
 class Block
 {
 public:
@@ -24,6 +48,11 @@ public:
 			{ 
 				solid[i][j] = true;
 			}
+		}
+
+		for (int i = 0; i < 4; i++)
+		{
+			warp[i] = false;
 		}
 
 		for (int i = 0; i < 16; i++)
@@ -44,6 +73,7 @@ public:
 
 	bool valid;
 	bool solid[4][4];
+	bool warp[4];
 	bool grassTile[16];
 	
 	MapAnimation animation[16];
@@ -57,6 +87,7 @@ class Blockset
 public:
 	Block* blocks;
 	std::string name;
+	Tileset* tileset;
 };
 
 class Connection
@@ -75,20 +106,7 @@ public:
 	int southOffset;
 };
 
-class Tileset
-{
-public:
-	SDL_Surface* surface;
-	SDL_Texture* texture;
-	Uint32 format;
-	std::vector<Uint8>* collData;
-	int w;
-	int h;
-	Uint8 grassTile;
-	std::string grassName;
-	Uint8 counterTiles[3];
-	Permission permission;
-};
+
 
 class Map
 {
@@ -107,6 +125,7 @@ public:
 		connection.east = east;
 		connection.eastOffset = eastOffset;
 	}
+	std::string name;
 	int width;
 	int height;
 	int background;
@@ -115,6 +134,7 @@ public:
 	Tileset* tileset;
 	Connection connection;
 	std::vector<Position> grassEffect;
+	std::vector<Warp> warps;
 	void render(int x, int y);
 };
 
