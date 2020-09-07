@@ -371,6 +371,10 @@ void Player::warp_check(bool carpet)
 					game.world.currentMap = res.getMap(lastMap);
 				else
 					game.world.currentMap = res.getMap(it->to);
+
+				if (game.world.currentMap == nullptr)
+					sys.error("Unimplemented warp.");
+
 				pos.x = util::square_to_pixel(game.world.currentMap->warps[it->warpIn].at.x);
 				pos.y = util::square_to_pixel(game.world.currentMap->warps[it->warpIn].at.y);
 				if (game.world.currentMap->tileset->permission == Permission::OUTDOOR)

@@ -5,7 +5,7 @@
 
 struct Debug
 {
-	bool drawPlayer = true;
+	bool drawPlayer = false;
 	bool drawSquare = false;
 	bool drawColl = false;
 	bool fastMode = false;

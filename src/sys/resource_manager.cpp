@@ -1,6 +1,7 @@
 #include "system.h"
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 void ResourceManager::loadTileset(std::string textureName, const char *path, std::vector<Uint8>* collData, std::vector<Uint8>* warpData, Uint8 counterTile1, Uint8 counterTile2, Uint8 counterTile3, Uint8 grassTile, Permission permission)
 {
@@ -299,13 +300,63 @@ void ResourceManager::loadBlockset(std::string blocksetName, std::string tileset
 	blocksetMap[blocksetName] = blockset;
 }
 
-void ResourceManager::loadMap(std::string mapName, const char* path, const char* objectsPath, std::string blockset, int height, int width, int background, std::string north, int northOffset, std::string west, int westOffset, std::string east, int eastOffset, std::string south, int southOffset)
+void ResourceManager::loadMap(std::string mapName, std::string fileName, std::string blockset, int background, std::string north, int northOffset, std::string west, int westOffset, std::string east, int eastOffset, std::string south, int southOffset)
 {
+	int height = -1;
+	int width = -1;
+	char string[1024];
+	FILE* fp = fopen("assets/data/constants/map_constants.asm", "r");
+	if (!fp)
+		sys.error("Cant find the map_constants.asm file");
+
+	std::string uppercase = mapName + ",";
+	std::transform(uppercase.begin(), uppercase.end(), uppercase.begin(), ::toupper);
+
+	while (fgets(string, 1024, fp)) {
+		char* substring = strstr(string, uppercase.c_str());
+		if (substring != nullptr)
+		{
+			char* token;
+			token = strtok(substring, ",");
+			int i = 0;
+			/* walk through other tokens */
+			while (token != NULL) {
+				if (i == 1 || i == 2)
+				{
+					util::remove_spaces(token);
+					for (int k = 0; token[k]; k++) {
+						if (token[k] == '\n')
+							token[k] = 0;
+						if (token[k] == ';')
+						{
+							token[k] = 0;
+							break;
+						}
+					}
+					if (i == 1)
+					{
+						height = atoi(token);
+					}
+					else if (i == 2)
+					{
+						width = atoi(token);
+					}
+
+				}
+				token = strtok(NULL, ",");
+				i++;
+			}
+		}
+	}
+	fclose(fp);
+
+	std::string pathData = "assets/data/maps/" + fileName + ".blk";
+	std::string pathObjects = "assets/data/objects/" + fileName + ".asm";
 	Map* map = new Map(height,width,getBlockset(blockset), background, north,northOffset, west, westOffset, east, eastOffset, south, southOffset);
 	map->tileset = getBlockset(blockset)->tileset;
 	map->name = mapName;
 	//copy the bytes of map data to a vector
-	std::ifstream file(path, std::ios::binary);
+	std::ifstream file(pathData, std::ios::binary);
 	file.unsetf(std::ios::skipws);
 	std::streampos fileSize;
 
@@ -318,11 +369,16 @@ void ResourceManager::loadMap(std::string mapName, const char* path, const char*
 		std::istream_iterator<Uint8>(file),
 		std::istream_iterator<Uint8>());
 
-	FILE *fp = fopen(objectsPath, "r");
+	printf("%s: (%i, %i)\n", mapName.c_str(), map->height, map->width);
+
+	if (map->height == -1 || map->width == -1)
+		sys.error("Corrupted map (bad width and height)");
+
+	fp = fopen(pathObjects.c_str(), "r");
 	if (!fp)
 		sys.error("Error when reading objects file.");
-	char string[100];
-	while (fgets(string, 100, fp)) {
+	
+	while (fgets(string, 1024, fp)) {
 		//read warps
 		char* substring = strstr(string, "warp");
 		if (substring != nullptr && strchr(string,',') != nullptr)
@@ -357,13 +413,13 @@ void ResourceManager::loadMap(std::string mapName, const char* path, const char*
 					else
 					{ 
 						util::remove_spaces(token);
-						for (int i = 0; token[i]; i++) {
-							token[i] = tolower(token[i]);
-							if (token[i] == '\n')
-								token[i] = 0;
-							if (token[i] == ';')
+						for (int k = 0; token[k]; k++) {
+							token[k] = tolower(token[k]);
+							if (token[k] == '\n')
+								token[k] = 0;
+							if (token[k] == ';')
 							{ 
-								token[i] = 0;
+								token[k] = 0;
 								break;
 							}
 						}
