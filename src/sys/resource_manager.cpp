@@ -300,7 +300,7 @@ void ResourceManager::loadBlockset(std::string blocksetName, std::string tileset
 	blocksetMap[blocksetName] = blockset;
 }
 
-void ResourceManager::loadMap(std::string mapName, std::string fileName, std::string blockset, int background, std::string north, int northOffset, std::string west, int westOffset, std::string east, int eastOffset, std::string south, int southOffset)
+void ResourceManager::loadMap(std::string mapName, std::string fileName, std::string blockset, std::string north, int northOffset, std::string west, int westOffset, std::string east, int eastOffset, std::string south, int southOffset)
 {
 	int height = -1;
 	int width = -1;
@@ -352,7 +352,7 @@ void ResourceManager::loadMap(std::string mapName, std::string fileName, std::st
 
 	std::string pathData = "assets/data/maps/" + fileName + ".blk";
 	std::string pathObjects = "assets/data/objects/" + fileName + ".asm";
-	Map* map = new Map(height,width,getBlockset(blockset), background, north,northOffset, west, westOffset, east, eastOffset, south, southOffset);
+	Map* map = new Map(height,width,getBlockset(blockset), 0, north,northOffset, west, westOffset, east, eastOffset, south, southOffset);
 	map->tileset = getBlockset(blockset)->tileset;
 	map->name = mapName;
 	//copy the bytes of map data to a vector
@@ -377,8 +377,20 @@ void ResourceManager::loadMap(std::string mapName, std::string fileName, std::st
 	fp = fopen(pathObjects.c_str(), "r");
 	if (!fp)
 		sys.error("Error when reading objects file.");
-	
+	int l = 0;
 	while (fgets(string, 1024, fp)) {
+		//read background
+		if (l == 1) // second line, background info
+		{
+			char string_c[1024];
+			SDL_strlcpy(string_c, string, 1024);
+			char* str = &string_c[0];
+			str += 5;
+			str[2] = 0;
+			int bkg = strtol(str, NULL, 16);
+			map->background = bkg;
+			//printf("Background: %i (%s)\n", bkg,str);
+		}
 		//read warps
 		char* substring = strstr(string, "warp");
 		if (substring != nullptr && strchr(string,',') != nullptr)
@@ -433,6 +445,7 @@ void ResourceManager::loadMap(std::string mapName, std::string fileName, std::st
 				map->warps.push_back(newwarp);
 			}
 		}
+		l++;
 	}
 
 	fclose(fp);

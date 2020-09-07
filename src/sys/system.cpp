@@ -137,12 +137,12 @@ void System::load_media()
 	res.loadBlockset("overworld", "overworld", "assets/data/blocksets/overworld.bst");
 	res.loadBlockset("reds_house", "reds_house", "assets/data/blocksets/reds_house.bst");
 
-	res.loadMap("pallet_town", "PalletTown", "overworld", 0xb,"route_1",0,"none",0,"none",0,"route_21",0);
-	res.loadMap("viridian_city", "ViridianCity", "overworld", 0xf, "route_2",5, "route_22",4, "none",0, "route_1",5);
-	res.loadMap("route_1", "Route1", "overworld", 0xb, "viridian_city",-5, "none",0, "none",0, "pallet_town",0);
-	res.loadMap("route_21", "Route21", "overworld", 0x43, "pallet_town",0, "none",0, "none",0, "cinnabar_island",0);
-	res.loadMap("route_22", "Route22", "overworld", 0x2c, "route_23", 0, "none", 0, "viridian_city", -4, "none", 0);
-	res.loadMap("reds_house_1f", "RedsHouse1F", "reds_house", 0xa, "none", 0, "none", 0, "none", 0, "none", 0);
+	res.loadMap("pallet_town", "PalletTown", "overworld", "route_1",0,"none",0,"none",0,"route_21",0);
+	res.loadMap("viridian_city", "ViridianCity", "overworld", "route_2",5, "route_22",4, "none",0, "route_1",5);
+	res.loadMap("route_1", "Route1", "overworld", "viridian_city",-5, "none",0, "none",0, "pallet_town",0);
+	res.loadMap("route_21", "Route21", "overworld", "pallet_town",0, "none",0, "none",0, "cinnabar_island",0);
+	res.loadMap("route_22", "Route22", "overworld", "route_23", 0, "none", 0, "viridian_city", -4, "none", 0);
+	res.loadMap("reds_house_1f", "RedsHouse1F", "reds_house", "none", 0, "none", 0, "none", 0, "none", 0);
 
 	res.loadTexture("flower1", "assets/gfx/tilesets/flower/flower1.png");
 	res.loadTexture("flower2", "assets/gfx/tilesets/flower/flower2.png");
