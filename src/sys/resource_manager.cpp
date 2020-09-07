@@ -300,7 +300,7 @@ void ResourceManager::loadBlockset(std::string blocksetName, std::string tileset
 	blocksetMap[blocksetName] = blockset;
 }
 
-void ResourceManager::loadMap(std::string mapName, std::string fileName, std::string blockset, std::string north, int northOffset, std::string west, int westOffset, std::string east, int eastOffset, std::string south, int southOffset)
+void ResourceManager::loadMap(std::string mapName, std::string fileName, std::string blockset)
 {
 	int height = -1;
 	int width = -1;
@@ -350,9 +350,10 @@ void ResourceManager::loadMap(std::string mapName, std::string fileName, std::st
 	}
 	fclose(fp);
 
-	std::string pathData = "assets/data/maps/" + fileName + ".blk";
-	std::string pathObjects = "assets/data/objects/" + fileName + ".asm";
-	Map* map = new Map(height,width,getBlockset(blockset), 0, north,northOffset, west, westOffset, east, eastOffset, south, southOffset);
+	std::string pathData = "assets/data/map_data/" + fileName + ".blk";
+	std::string pathObjects = "assets/data/map_objects/" + fileName + ".asm";
+	std::string pathHeaders = "assets/data/map_headers/" + fileName + ".asm";
+	Map* map = new Map(height,width,getBlockset(blockset), 0, "none",0, "none", 0, "none", 0, "none", 0);
 	map->tileset = getBlockset(blockset)->tileset;
 	map->name = mapName;
 	//copy the bytes of map data to a vector
@@ -373,6 +374,83 @@ void ResourceManager::loadMap(std::string mapName, std::string fileName, std::st
 
 	if (map->height == -1 || map->width == -1)
 		sys.error("Corrupted map (bad width and height)");
+
+	fp = fopen(pathHeaders.c_str(), "r");
+	if (!fp)
+		sys.error("Cant find the map header file");
+
+	while (fgets(string, 1024, fp)) {
+		char* substring = strstr(string, "connection");
+		if (substring != nullptr)
+		{
+			char location[128] = { 0 };
+			char map_name[128] = { 0 };
+			int offset = 0;
+			substring += 11;
+			//printf("%s", substring);
+			char* token;
+			token = strtok(substring, ",");
+			int i = 0;
+			/* walk through other tokens */
+			while (token != NULL) {
+				if (i == 0)
+				{
+					SDL_strlcpy(location, token, 128);
+				}
+				if (i == 2)
+				{
+					util::remove_spaces(token);
+					for (int k = 0; token[k]; k++) {
+						token[k] = tolower(token[k]);
+						if (token[k] == '\n')
+							token[k] = 0;
+						if (token[k] == ';')
+						{
+							token[k] = 0;
+							break;
+						}
+					}
+					SDL_strlcpy(map_name, token, 128);
+					//printf("%s\n", mapName);
+				}
+				if (i == 3)
+				{
+					token = util::cleanStr(token);
+					offset = atoi(token);
+					//printf("offset: %d\n", offset);
+				}
+				token = strtok(NULL, ",");
+				i++;
+			}
+			if (strcmp(location, "north") == 0)
+			{
+				map->connection.north = map_name;
+				map->connection.northOffset = offset;
+				//printf("%s - %d\n", map->connection.north.c_str(), offset);
+			}
+			else if (strcmp(location, "south") == 0)
+			{
+				map->connection.south = map_name;
+				map->connection.southOffset = offset;
+				//printf("%s - %d\n", map->connection.south.c_str(), offset);
+			}
+			else if (strcmp(location, "east") == 0)
+			{
+				map->connection.east = map_name;
+				map->connection.eastOffset = offset;
+				//printf("%s - %d\n", map->connection.east.c_str(), offset);
+			}
+			else if (strcmp(location, "west") == 0)
+			{
+				map->connection.west = map_name;
+				map->connection.westOffset = offset;
+				//printf("%s - %d\n", map->connection.west.c_str(), offset);
+			}
+		}
+	}
+	fclose(fp);
+
+
 
 	fp = fopen(pathObjects.c_str(), "r");
 	if (!fp)
