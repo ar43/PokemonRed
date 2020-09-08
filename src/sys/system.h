@@ -53,6 +53,7 @@ private:
 	//void startTimers();
 	SDL_Window* window;
 	SDL_Renderer* renderer;
+	void load_maps();
 };
 
 extern System sys;

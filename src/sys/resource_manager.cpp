@@ -26,7 +26,7 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 	tileset->counterTiles[1] = counterTile2;
 	tileset->counterTiles[2] = counterTile3;
 	tileset->grassTile = grassTile;
-	if (grassTile == 0x52)
+	if (grassTile != 0xFF) //TODO: grass for every type of grass
 	{
 		tileset->grassName = "grass1";
 	}
@@ -310,6 +310,12 @@ void ResourceManager::loadMap(std::string fileName)
 	map->name = "error";
 	//copy the bytes of map data to a vector
 	std::ifstream file(pathData, std::ios::binary);
+	if (file.fail())
+	{
+		delete map;
+		printf("%s does not exist.\n", pathData.c_str());
+		return;
+	}
 	file.unsetf(std::ios::skipws);
 	std::streampos fileSize;
 
@@ -453,11 +459,13 @@ void ResourceManager::loadMap(std::string fileName)
 
 	std::string uppercase = map->name + ",";
 	std::transform(uppercase.begin(), uppercase.end(), uppercase.begin(), ::toupper);
+	std::string search = "mapconst " + uppercase;
 
 	while (fgets(string, 1024, fp)) {
-		char* substring = strstr(string, uppercase.c_str());
+		char* substring = strstr(string, search.c_str());
 		if (substring != nullptr)
 		{
+			substring += 9;
 			char* token;
 			token = strtok(substring, ",");
 			int i = 0;

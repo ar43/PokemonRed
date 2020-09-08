@@ -351,7 +351,8 @@ void Player::warp_check(bool carpet)
 	}
 
 	bool check;
-	bool check_carpet = (newBlock->warp_up[i] && dir == Direction::UP || newBlock->warp_down[i] && dir == Direction::DOWN || newBlock->warp_left[i] && dir == Direction::LEFT || newBlock->warp_right[i] && dir == Direction::RIGHT);
+	//bool check_carpet = (newBlock->warp_up[i] && dir == Direction::UP || newBlock->warp_down[i] && dir == Direction::DOWN || newBlock->warp_left[i] && dir == Direction::LEFT || newBlock->warp_right[i] && dir == Direction::RIGHT);
+	bool check_carpet = true;
 	bool check_normal = newBlock->warp[i];
 	if (carpet)
 		check = check_carpet;
@@ -367,6 +368,13 @@ void Player::warp_check(bool carpet)
 			if (it->at.x == sq.x && it->at.y == sq.y)
 			{
 				//todo: transition "animation"
+				SDL_Delay(250);
+
+				if (game.world.currentMap->tileset->permission == Permission::OUTDOOR) //is current map outdoors?
+				{
+					lastMap = game.world.currentMap->name;
+				}
+		
 				if(it->to == "last_map")
 					game.world.currentMap = res.getMap(lastMap);
 				else
@@ -377,14 +385,12 @@ void Player::warp_check(bool carpet)
 
 				pos.x = util::square_to_pixel(game.world.currentMap->warps[it->warpIn].at.x);
 				pos.y = util::square_to_pixel(game.world.currentMap->warps[it->warpIn].at.y);
-				if (game.world.currentMap->tileset->permission == Permission::OUTDOOR)
+				if (game.world.currentMap->tileset->permission == Permission::OUTDOOR) //is next map outdoors?
 				{
 					moving = true;
 					moveIndex = 0;
-					dir = Direction::DOWN;
 					sprite->animIndex = 0;
 				}
-				lastMap = currMap->name;
 				return;
 			}
 		}
