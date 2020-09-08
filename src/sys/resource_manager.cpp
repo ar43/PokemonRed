@@ -300,62 +300,14 @@ void ResourceManager::loadBlockset(std::string blocksetName, std::string tileset
 	blocksetMap[blocksetName] = blockset;
 }
 
-void ResourceManager::loadMap(std::string mapName, std::string fileName, std::string blockset)
+void ResourceManager::loadMap(std::string fileName)
 {
-	int height = -1;
-	int width = -1;
-	char string[1024];
-	FILE* fp = fopen("assets/data/constants/map_constants.asm", "r");
-	if (!fp)
-		sys.error("Cant find the map_constants.asm file");
-
-	std::string uppercase = mapName + ",";
-	std::transform(uppercase.begin(), uppercase.end(), uppercase.begin(), ::toupper);
-
-	while (fgets(string, 1024, fp)) {
-		char* substring = strstr(string, uppercase.c_str());
-		if (substring != nullptr)
-		{
-			char* token;
-			token = strtok(substring, ",");
-			int i = 0;
-			/* walk through other tokens */
-			while (token != NULL) {
-				if (i == 1 || i == 2)
-				{
-					util::remove_spaces(token);
-					for (int k = 0; token[k]; k++) {
-						if (token[k] == '\n')
-							token[k] = 0;
-						if (token[k] == ';')
-						{
-							token[k] = 0;
-							break;
-						}
-					}
-					if (i == 1)
-					{
-						height = atoi(token);
-					}
-					else if (i == 2)
-					{
-						width = atoi(token);
-					}
-
-				}
-				token = strtok(NULL, ",");
-				i++;
-			}
-		}
-	}
-	fclose(fp);
-
 	std::string pathData = "assets/data/map_data/" + fileName + ".blk";
 	std::string pathObjects = "assets/data/map_objects/" + fileName + ".asm";
 	std::string pathHeaders = "assets/data/map_headers/" + fileName + ".asm";
-	Map* map = new Map(height,width,getBlockset(blockset), 0, "none",0, "none", 0, "none", 0, "none", 0);
-	map->tileset = getBlockset(blockset)->tileset;
-	map->name = mapName;
+	Map* map = new Map(-1,-1,nullptr, 0, "none",0, "none", 0, "none", 0, "none", 0);
+	map->tileset = nullptr;
+	map->name = "error";
 	//copy the bytes of map data to a vector
 	std::ifstream file(pathData, std::ios::binary);
 	file.unsetf(std::ios::skipws);
@@ -370,16 +322,59 @@ void ResourceManager::loadMap(std::string mapName, std::string fileName, std::st
 		std::istream_iterator<Uint8>(file),
 		std::istream_iterator<Uint8>());
 
-	printf("%s: (%i, %i)\n", mapName.c_str(), map->height, map->width);
+	char string[1024];
 
-	if (map->height == -1 || map->width == -1)
-		sys.error("Corrupted map (bad width and height)");
-
-	fp = fopen(pathHeaders.c_str(), "r");
+	FILE *fp = fopen(pathHeaders.c_str(), "r");
 	if (!fp)
 		sys.error("Cant find the map header file");
-
+	int l = 0;
 	while (fgets(string, 1024, fp)) {
+		//read blockset & mapName
+		if (l == 1)
+		{
+			char* token;
+			token = strtok(string, ",");
+			int i = 0;
+			/* walk through other tokens */
+			while (token != NULL) {
+				if (i == 1)
+				{
+					util::remove_spaces(token);
+					for (int k = 0; token[k]; k++) {
+						token[k] = tolower(token[k]);
+						if (token[k] == '\n')
+							token[k] = 0;
+						if (token[k] == ';')
+						{
+							token[k] = 0;
+							break;
+						}
+					}
+					map->name = token;
+					//printf("%s\n", token);
+				}
+				if (i == 2)
+				{
+					util::remove_spaces(token);
+					for (int k = 0; token[k]; k++) {
+						token[k] = tolower(token[k]);
+						if (token[k] == '\n')
+							token[k] = 0;
+						if (token[k] == ';')
+						{
+							token[k] = 0;
+							break;
+						}
+					}
+					map->blockset = getBlockset(token);
+					map->tileset = map->blockset->tileset;
+					//printf("%s\n", token);
+				}
+				token = strtok(NULL, ",");
+				i++;
+			}
+		}
+		//read connections
 		char* substring = strstr(string, "connection");
 		if (substring != nullptr)
 		{
@@ -447,15 +442,60 @@ void ResourceManager::loadMap(std::string mapName, std::string fileName, std::st
 				//printf("%s - %d\n", map->connection.west.c_str(), offset);
 			}
 		}
+		l++;
 	}
 	fclose(fp);
 
+	
+	fp = fopen("assets/data/constants/map_constants.asm", "r");
+	if (!fp)
+		sys.error("Cant find the map_constants.asm file");
 
+	std::string uppercase = map->name + ",";
+	std::transform(uppercase.begin(), uppercase.end(), uppercase.begin(), ::toupper);
+
+	while (fgets(string, 1024, fp)) {
+		char* substring = strstr(string, uppercase.c_str());
+		if (substring != nullptr)
+		{
+			char* token;
+			token = strtok(substring, ",");
+			int i = 0;
+			/* walk through other tokens */
+			while (token != NULL) {
+				if (i == 1 || i == 2)
+				{
+					util::remove_spaces(token);
+					for (int k = 0; token[k]; k++) {
+						if (token[k] == '\n')
+							token[k] = 0;
+						if (token[k] == ';')
+						{
+							token[k] = 0;
+							break;
+						}
+					}
+					if (i == 1)
+					{
+						map->height = atoi(token);
+					}
+					else if (i == 2)
+					{
+						map->width = atoi(token);
+					}
+
+				}
+				token = strtok(NULL, ",");
+				i++;
+			}
+		}
+	}
+	fclose(fp);
 
 	fp = fopen(pathObjects.c_str(), "r");
 	if (!fp)
 		sys.error("Error when reading objects file.");
-	int l = 0;
+	l = 0;
 	while (fgets(string, 1024, fp)) {
 		//read background
 		if (l == 1) // second line, background info
@@ -477,7 +517,7 @@ void ResourceManager::loadMap(std::string mapName, std::string fileName, std::st
 			if(*substring != '_')
 			{ 
 				Warp newwarp;
-				newwarp.from = mapName;
+				newwarp.from = map->name;
 				char* token;
 				token = strtok(substring, ",");
 				int i = 0;
@@ -528,7 +568,8 @@ void ResourceManager::loadMap(std::string mapName, std::string fileName, std::st
 
 	fclose(fp);
 
-	mapMap[mapName] = map;
+	printf("%s: (%i, %i)\n", map->name.c_str(), map->height, map->width);
+	mapMap[map->name] = map;
 
 }
 

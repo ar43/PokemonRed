@@ -20,7 +20,7 @@ public:
 	void loadBlockset(std::string blocksetName, std::string tilesetName, const char* path);
 	Blockset* getBlockset(std::string blocksetName);
 
-	void loadMap(std::string mapName, std::string fileName, std::string blockset);
+	void loadMap(std::string fileName);
 	Map* getMap(std::string mapName);
 	
 private:

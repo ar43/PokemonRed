@@ -135,14 +135,14 @@ void System::load_media()
 	res.loadTileset("reds_house", "assets/gfx/tilesets/reds_house.png", &Constants::Coll::reds_house, &Constants::Warp::reds_house, 0xFF, 0xFF, 0xFF, 0xFF, INDOOR);
 
 	res.loadBlockset("overworld", "overworld", "assets/data/blocksets/overworld.bst");
-	res.loadBlockset("reds_house", "reds_house", "assets/data/blocksets/reds_house.bst");
+	res.loadBlockset("reds_house_1", "reds_house", "assets/data/blocksets/reds_house.bst");
 
-	res.loadMap("pallet_town", "PalletTown", "overworld");
-	res.loadMap("viridian_city", "ViridianCity", "overworld");
-	res.loadMap("route_1", "Route1", "overworld");
-	res.loadMap("route_21", "Route21", "overworld");
-	res.loadMap("route_22", "Route22", "overworld");
-	res.loadMap("reds_house_1f", "RedsHouse1F", "reds_house");
+	res.loadMap("PalletTown");
+	res.loadMap("ViridianCity");
+	res.loadMap("Route1");
+	res.loadMap("Route21");
+	res.loadMap("Route22");
+	res.loadMap("RedsHouse1F");
 
 	res.loadTexture("flower1", "assets/gfx/tilesets/flower/flower1.png");
 	res.loadTexture("flower2", "assets/gfx/tilesets/flower/flower2.png");
