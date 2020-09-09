@@ -15,7 +15,15 @@ void Player::init()
 
 void Player::update()
 {
+	if (warping)
+		warpIndex++;
+
 	move();
+	if (warpIndex == 47)
+		warp();
+
+	if (input.block > 0)
+		input.block--;
 }
 
 void Player::render()
@@ -326,6 +334,8 @@ void Player::change_map()
 
 void Player::warp_check(bool carpet)
 {
+	if (warping)
+		return;
 	Map* currMap = game.world.currentMap;
 	Position newpos = { pos.x,pos.y };
 	int index = (newpos.y / 32) * currMap->width + newpos.x / 32;
@@ -367,33 +377,42 @@ void Player::warp_check(bool carpet)
 		{
 			if (it->at.x == sq.x && it->at.y == sq.y)
 			{
-				//todo: transition "animation"
-				SDL_Delay(250);
-
-				if (game.world.currentMap->tileset->permission == Permission::OUTDOOR) //is current map outdoors?
-				{
-					lastMap = game.world.currentMap->name;
-				}
-		
-				if(it->to == "last_map")
-					game.world.currentMap = res.getMap(lastMap);
-				else
-					game.world.currentMap = res.getMap(it->to);
-
-				if (game.world.currentMap == nullptr)
-					sys.error("Unimplemented warp.");
-
-				pos.x = util::square_to_pixel(game.world.currentMap->warps[it->warpIn].at.x);
-				pos.y = util::square_to_pixel(game.world.currentMap->warps[it->warpIn].at.y);
-				if (game.world.currentMap->tileset->permission == Permission::OUTDOOR) //is next map outdoors?
-				{
-					moving = true;
-					moveIndex = 0;
-					sprite->animIndex = 0;
-				}
+				nextWarp = &(*it);
+				input.block = 64;
+				for (int i = 0; i < 4; i++)
+					input.keyDown[i] = false;
+				warpIndex = 0;
+				warping = true;
 				return;
 			}
 		}
 
 	}
+}
+
+void Player::warp()
+{
+	if (game.world.currentMap->tileset->permission == Permission::OUTDOOR) //is current map outdoors?
+	{
+		lastMap = game.world.currentMap->name;
+	}
+
+	if (nextWarp->to == "last_map")
+		game.world.currentMap = res.getMap(lastMap);
+	else
+		game.world.currentMap = res.getMap(nextWarp->to);
+
+	if (game.world.currentMap == nullptr)
+		sys.error("Unimplemented warp.");
+
+	pos.x = util::square_to_pixel(game.world.currentMap->warps[nextWarp->warpIn].at.x);
+	pos.y = util::square_to_pixel(game.world.currentMap->warps[nextWarp->warpIn].at.y);
+	if (game.world.currentMap->tileset->permission == Permission::OUTDOOR) //is next map outdoors?
+	{
+		moving = true;
+		moveIndex = 0;
+		sprite->animIndex = 0;
+	}
+	warpIndex = 0;
+	warping = false;
 }

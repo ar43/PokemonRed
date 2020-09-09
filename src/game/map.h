@@ -8,14 +8,6 @@ enum MapAnimation
 	ANIMATION_WATER
 };
 
-struct Warp
-{
-	std::string from;
-	std::string to;
-	Position at;
-	int warpIn;
-};
-
 class Tileset
 {
 public:

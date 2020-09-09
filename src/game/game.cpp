@@ -17,6 +17,6 @@ void Game::update()
 
 void Game::init()
 {
-	game.world.currentMap = res.getMap("agathas_room");
+	game.world.currentMap = res.getMap("pallet_town");
 	player.init();
 }

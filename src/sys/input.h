@@ -26,7 +26,7 @@ public:
 	Keycatchers keycatchers;
 	void process(SDL_Event *e);
 	bool keyDown[NUM_KEYS];
-	
+	int block;
 
 private:
 	void catchMain(SDL_Event *e);

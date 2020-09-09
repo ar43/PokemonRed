@@ -1,13 +1,8 @@
 #pragma once
 
 #include "../sys/render.h"
+#include "map.h"
 #include "enums.h"
-
-struct Position
-{
-	int x;
-	int y;
-};
 
 #define PLAYER_OFFSET_X 64
 #define PLAYER_OFFSET_Y 60
@@ -26,6 +21,8 @@ public:
 	void update();
 	void init();
 	void render();
+	void warp();
+	int warpIndex;
 private:
 	Direction dir;
 	Position pos;
@@ -33,9 +30,11 @@ private:
 	int turning;
 	bool moving;
 	int moveIndex;
+	bool warping;
 	void move();
 	void change_map();
 	void warp_check(bool carpet);
 	bool collision_check();
 	std::string lastMap;
+	Warp* nextWarp;
 };

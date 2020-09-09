@@ -10,6 +10,7 @@ struct Debug
 	bool drawColl = false;
 	bool fastMode = false;
 	bool noclip = false;
+	bool darken = false;
 };
 
 class Game

@@ -106,7 +106,7 @@ void System::close()
 
 void System::load_maps()
 {
-	printf("Loading maps...");
+	printf("Loading maps...\n");
 	DIR* dir;
 	struct dirent* ent;
 	if ((dir = opendir(".\\assets\\data\\map_headers\\")) != NULL) {

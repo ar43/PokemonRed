@@ -14,3 +14,17 @@ enum Permission
 	CAVE,
 	OUTDOOR
 };
+
+struct Position
+{
+	int x;
+	int y;
+};
+
+struct Warp
+{
+	std::string from;
+	std::string to;
+	Position at;
+	int warpIn;
+};

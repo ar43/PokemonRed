@@ -3,7 +3,7 @@
 Input::Input()
 {
 	keycatchers = KEYCATCHERS_NORMAL;
-
+	block = 0;
 	for (int i = 0; i < NUM_KEYS; i++)
 	{
 		keyDown[i] = false;
@@ -64,7 +64,7 @@ void Input::catchPriority(SDL_Event *e)
 void Input::catchMain(SDL_Event *e)
 {
 	
-	if (e->type == SDL_KEYDOWN)
+	if (e->type == SDL_KEYDOWN && block == 0)
 	{
 		switch (e->key.keysym.sym)
 		{
@@ -89,6 +89,10 @@ void Input::catchMain(SDL_Event *e)
 
 		case SDLK_F4:
 			game.debug.noclip = !game.debug.noclip;
+			break;
+
+		case SDLK_F5:
+			game.debug.darken = !game.debug.darken;
 			break;
 
 		case SDLK_LSHIFT:
@@ -142,7 +146,5 @@ void Input::catchMain(SDL_Event *e)
 			break;
 		}
 	}
-	
-	
 	
 }

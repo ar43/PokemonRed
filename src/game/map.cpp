@@ -17,6 +17,19 @@ void Block::render(int x, int y)
     if (!(final_x > -64 && final_x < GAME_WIDTH + 64 && final_y > -64 && final_y < GAME_HEIGHT + 64))
         return;
 
+    if (game.player.warpIndex < 8)
+    {
+        SDL_SetTextureColorMod(texture, 255, 255, 255);
+    }
+    else if (game.player.warpIndex < 16)
+    {
+        SDL_SetTextureColorMod(texture, 128, 128, 128);
+    }
+    else if (game.player.warpIndex < 24)
+    {
+        SDL_SetTextureColorMod(texture, 16, 16, 16);
+    }
+
     SDL_Rect rected = { final_x,final_y,32,32 };
     SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, SDL_FLIP_NONE);
 
@@ -218,12 +231,38 @@ void Map::render(int x, int y)
 
 void Texture::render(int x, int y)
 {
+    if (game.player.warpIndex < 8)
+    {
+        SDL_SetTextureColorMod(texture, 255, 255, 255);
+    }
+    else if (game.player.warpIndex < 16)
+    {
+        SDL_SetTextureColorMod(texture, 128, 128, 128);
+    }
+    else if (game.player.warpIndex < 24)
+    {
+        SDL_SetTextureColorMod(texture, 16, 16, 16);
+    }
+
     SDL_Rect rected = { x,y,w,h };
     SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, SDL_FLIP_NONE);
 }
 
 void Texture::render_grass(int x, int y)
 {
+    if (game.player.warpIndex < 8)
+    {
+        SDL_SetTextureColorMod(texture, 255, 255, 255);
+    }
+    else if (game.player.warpIndex < 16)
+    {
+        SDL_SetTextureColorMod(texture, 128, 128, 128);
+    }
+    else if (game.player.warpIndex < 24)
+    {
+        SDL_SetTextureColorMod(texture, 16, 16, 16);
+    }
+
     SDL_Rect rect1 = { 0,4,8,4 };
     SDL_Rect rect2 = { x,y+4,8,4 };
     SDL_RenderCopyEx(sys.getRenderer(), texture, &rect1, &rect2, 0.0f, NULL, SDL_FLIP_NONE);

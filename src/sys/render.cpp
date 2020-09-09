@@ -34,6 +34,25 @@ void Render::draw_overlay()
             }
         }
     }
+
+    if (game.player.warpIndex < 32 && game.player.warpIndex >= 24)
+    {
+        SDL_SetRenderDrawColor(sys.getRenderer(), 0, 0, 0, 255);
+        SDL_Rect screen = { 0,0,GAME_WIDTH,GAME_HEIGHT };
+        SDL_RenderFillRect(sys.getRenderer(), &screen);
+    }
+    else if (game.player.warpIndex < 40 && game.player.warpIndex >= 24)
+    {
+        SDL_SetRenderDrawColor(sys.getRenderer(), 255, 255, 255, 255);
+        SDL_Rect screen = { 0,0,GAME_WIDTH,GAME_HEIGHT };
+        SDL_RenderFillRect(sys.getRenderer(), &screen);
+    }
+    else if (game.player.warpIndex < 47 && game.player.warpIndex >= 24)
+    {
+        SDL_SetRenderDrawColor(sys.getRenderer(), 0, 0, 0, 255);
+        SDL_Rect screen = { 0,0,GAME_WIDTH,GAME_HEIGHT };
+        SDL_RenderFillRect(sys.getRenderer(), &screen);
+    }
 }
 
 void Render::draw_map()
@@ -230,6 +249,19 @@ void Sprite::render_static(int x, int y, Direction dir)
 
     SDL_Rect rectSrc = { 0,offset,16,16 };
     SDL_Rect rectDest = { x,y,16,16 };
+
+    if (game.player.warpIndex < 8)
+    {
+        SDL_SetTextureColorMod(texture, 255, 255, 255);
+    }
+    else if (game.player.warpIndex < 16)
+    {
+        SDL_SetTextureColorMod(texture, 128, 128, 128);
+    }
+    else if (game.player.warpIndex < 24)
+    {
+        SDL_SetTextureColorMod(texture, 16, 16, 16);
+    }
 
     SDL_RenderCopyEx(sys.getRenderer(), texture, &rectSrc, &rectDest, 0.0f, NULL, flip);
 
