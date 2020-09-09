@@ -54,6 +54,8 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	void load_maps();
+	void load_tilesets();
+	void load_blocksets();
 };
 
 extern System sys;

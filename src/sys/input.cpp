@@ -10,6 +10,15 @@ Input::Input()
 	}
 }
 
+
+void Input::clear()
+{
+	for (int i = 0; i < NUM_KEYS; i++)
+	{
+		keyDown[i] = false;
+	}
+}
+
 void Input::process(SDL_Event *e)
 {
 	while (SDL_PollEvent(e) != 0)

@@ -27,6 +27,7 @@ public:
 	void process(SDL_Event *e);
 	bool keyDown[NUM_KEYS];
 	int block;
+	void clear();
 
 private:
 	void catchMain(SDL_Event *e);

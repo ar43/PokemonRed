@@ -22,6 +22,7 @@ public:
 	void init();
 	void render();
 	void warp();
+	void block_input(int time);
 	int warpIndex;
 private:
 	Direction dir;

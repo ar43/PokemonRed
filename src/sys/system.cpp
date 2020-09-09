@@ -136,7 +136,7 @@ void System::load_maps()
 	}
 }
 
-void System::load_media()
+void System::load_tilesets()
 {
 	/*
 	tileset Overworld_Block,   Overworld_GFX,   Overworld_Coll,   0xFF,0xFF,0xFF, 0x52, OUTDOOR
@@ -164,7 +164,8 @@ void System::load_media()
 	tileset Facility_Block,    Facility_GFX,    Facility_Coll,    0x12,0xFF,0xFF, 0xFF, CAVE
 	tileset Plateau_Block,     Plateau_GFX,     Plateau_Coll,     0xFF,0xFF,0xFF, 0x45, CAVE
 */
-	res.loadTileset("overworld", "assets/gfx/tilesets/overworld.png",&Constants::Coll::overworld, &Constants::Warp::overworld, 0xFF,0xFF,0xFF,0x52,OUTDOOR);
+	printf("Loading tilesets\n");
+	res.loadTileset("overworld", "assets/gfx/tilesets/overworld.png", &Constants::Coll::overworld, &Constants::Warp::overworld, 0xFF, 0xFF, 0xFF, 0x52, OUTDOOR);
 	res.loadTileset("reds_house", "assets/gfx/tilesets/reds_house.png", &Constants::Coll::redshouse, &Constants::Warp::reds_house, 0xFF, 0xFF, 0xFF, 0xFF, INDOOR);
 	res.loadTileset("mart", "assets/gfx/tilesets/pokecenter.png", &Constants::Coll::mart, &Constants::Warp::mart, 0x18, 0x19, 0x1E, 0xFF, INDOOR);
 	res.loadTileset("forest", "assets/gfx/tilesets/forest.png", &Constants::Coll::forest, &Constants::Warp::forest, 0xFF, 0xFF, 0xFF, 0x20, CAVE);
@@ -187,33 +188,42 @@ void System::load_media()
 	res.loadTileset("club", "assets/gfx/tilesets/club.png", &Constants::Coll::club, &Constants::Warp::club, 0x07, 0x17, 0xFF, 0xFF, INDOOR);
 	res.loadTileset("facility", "assets/gfx/tilesets/facility.png", &Constants::Coll::facility, &Constants::Warp::facility, 0x12, 0xFF, 0xFF, 0xFF, CAVE);
 	res.loadTileset("plateau", "assets/gfx/tilesets/plateau.png", &Constants::Coll::plateau, &Constants::Warp::plateau, 0xFF, 0xFF, 0xFF, 0x45, CAVE);
+}
 
+void System::load_blocksets()
+{
+	printf("Loading blocksets\n");
 	res.loadBlockset("overworld", "overworld", "assets/data/blocksets/overworld.bst");
 	res.loadBlockset("reds_house_1", "reds_house", "assets/data/blocksets/reds_house.bst");
 	res.loadBlockset("reds_house_2", "reds_house", "assets/data/blocksets/reds_house.bst");
-	res.loadBlockset("mart","mart", "assets/data/blocksets/pokecenter.bst");
-	res.loadBlockset("forest","forest", "assets/data/blocksets/forest.bst");
-	res.loadBlockset("dojo","dojo", "assets/data/blocksets/gym.bst");
-	res.loadBlockset("pokecenter","pokecenter", "assets/data/blocksets/pokecenter.bst");
-	res.loadBlockset("gym","gym", "assets/data/blocksets/gym.bst");
-	res.loadBlockset("house","house", "assets/data/blocksets/house.bst");
-	res.loadBlockset("forest_gate","forestgate", "assets/data/blocksets/gate.bst");
-	res.loadBlockset("museum","museum", "assets/data/blocksets/gate.bst");
-	res.loadBlockset("underground","underground", "assets/data/blocksets/underground.bst");
-	res.loadBlockset("gate","gate", "assets/data/blocksets/gate.bst");
-	res.loadBlockset("ship","ship", "assets/data/blocksets/ship.bst");
-	res.loadBlockset("ship_port","shipport", "assets/data/blocksets/ship_port.bst");
-	res.loadBlockset("cemetery","cemetery", "assets/data/blocksets/cemetery.bst");
-	res.loadBlockset("interior","interior", "assets/data/blocksets/interior.bst");
-	res.loadBlockset("cavern","cavern", "assets/data/blocksets/cavern.bst");
-	res.loadBlockset("lobby","lobby", "assets/data/blocksets/lobby.bst");
-	res.loadBlockset("mansion","mansion", "assets/data/blocksets/mansion.bst");
-	res.loadBlockset("lab","lab", "assets/data/blocksets/lab.bst");
-	res.loadBlockset("club","club", "assets/data/blocksets/club.bst");
-	res.loadBlockset("facility","facility", "assets/data/blocksets/facility.bst");
-	res.loadBlockset("plateau","plateau", "assets/data/blocksets/plateau.bst");
+	res.loadBlockset("mart", "mart", "assets/data/blocksets/pokecenter.bst");
+	res.loadBlockset("forest", "forest", "assets/data/blocksets/forest.bst");
+	res.loadBlockset("dojo", "dojo", "assets/data/blocksets/gym.bst");
+	res.loadBlockset("pokecenter", "pokecenter", "assets/data/blocksets/pokecenter.bst");
+	res.loadBlockset("gym", "gym", "assets/data/blocksets/gym.bst");
+	res.loadBlockset("house", "house", "assets/data/blocksets/house.bst");
+	res.loadBlockset("forest_gate", "forestgate", "assets/data/blocksets/gate.bst");
+	res.loadBlockset("museum", "museum", "assets/data/blocksets/gate.bst");
+	res.loadBlockset("underground", "underground", "assets/data/blocksets/underground.bst");
+	res.loadBlockset("gate", "gate", "assets/data/blocksets/gate.bst");
+	res.loadBlockset("ship", "ship", "assets/data/blocksets/ship.bst");
+	res.loadBlockset("ship_port", "shipport", "assets/data/blocksets/ship_port.bst");
+	res.loadBlockset("cemetery", "cemetery", "assets/data/blocksets/cemetery.bst");
+	res.loadBlockset("interior", "interior", "assets/data/blocksets/interior.bst");
+	res.loadBlockset("cavern", "cavern", "assets/data/blocksets/cavern.bst");
+	res.loadBlockset("lobby", "lobby", "assets/data/blocksets/lobby.bst");
+	res.loadBlockset("mansion", "mansion", "assets/data/blocksets/mansion.bst");
+	res.loadBlockset("lab", "lab", "assets/data/blocksets/lab.bst");
+	res.loadBlockset("club", "club", "assets/data/blocksets/club.bst");
+	res.loadBlockset("facility", "facility", "assets/data/blocksets/facility.bst");
+	res.loadBlockset("plateau", "plateau", "assets/data/blocksets/plateau.bst");
+}
 
-
+void System::load_media()
+{
+	
+	load_tilesets();
+	load_blocksets();
 	load_maps();
 
 	res.loadTexture("flower1", "assets/gfx/tilesets/flower/flower1.png");

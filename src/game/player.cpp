@@ -19,7 +19,8 @@ void Player::update()
 		warpIndex++;
 
 	move();
-	if (warpIndex == 47)
+
+	if (warpIndex == 47 && warping)
 		warp();
 
 	if (input.block > 0)
@@ -362,7 +363,7 @@ void Player::warp_check(bool carpet)
 
 	bool check;
 	//bool check_carpet = (newBlock->warp_up[i] && dir == Direction::UP || newBlock->warp_down[i] && dir == Direction::DOWN || newBlock->warp_left[i] && dir == Direction::LEFT || newBlock->warp_right[i] && dir == Direction::RIGHT);
-	bool check_carpet = true;
+	bool check_carpet = !newBlock->warp[i];
 	bool check_normal = newBlock->warp[i];
 	if (carpet)
 		check = check_carpet;
@@ -378,9 +379,7 @@ void Player::warp_check(bool carpet)
 			if (it->at.x == sq.x && it->at.y == sq.y)
 			{
 				nextWarp = &(*it);
-				input.block = 64;
-				for (int i = 0; i < 4; i++)
-					input.keyDown[i] = false;
+				block_input(64);
 				warpIndex = 0;
 				warping = true;
 				return;
@@ -388,6 +387,12 @@ void Player::warp_check(bool carpet)
 		}
 
 	}
+}
+
+void Player::block_input(int time)
+{
+	input.block = time;
+	input.clear();
 }
 
 void Player::warp()
