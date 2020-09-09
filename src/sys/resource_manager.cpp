@@ -196,6 +196,22 @@ void ResourceManager::loadBlockset(std::string blocksetName, std::string tileset
 				}
 
 			}
+			//for ledges
+			switch (j)
+			{
+			case 4:
+				blockset->blocks[i].tile[0] = buffer[j];
+				break;
+			case 6:
+				blockset->blocks[i].tile[1] = buffer[j];
+				break;
+			case 0xC:
+				blockset->blocks[i].tile[2] = buffer[j];
+				break;
+			case 0xE:
+				blockset->blocks[i].tile[3] = buffer[j];
+				break;
+			}
 			//for carpet warp (is 0 2 8 A actually correct? assuming Red's House, but needs testing)
 			if(tileset->permission == INDOOR)
 			{ 

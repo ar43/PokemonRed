@@ -87,6 +87,7 @@ public:
 	bool warp_left[4];
 	bool warp_right[4];
 	bool grassTile[16];
+	Uint8 tile[4];
 	
 	MapAnimation animation[16];
 
@@ -159,6 +160,6 @@ public:
 	Uint32 format;
 	int w;
 	int h;
-	void render(int x, int y);
+	void render(int x, int y, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	void render_grass(int x, int y);
 };

@@ -246,9 +246,31 @@ void Sprite::render_static(int x, int y, Direction dir)
         break;
     }
     }
+    static int y_offset = 0;
+    if (game.player.jumping)
+    {
+        if (game.player.jumpIndex < 16 && game.player.jumpIndex > 1)
+        {
+            if (game.player.jumpIndex % 2 == 1)
+                y_offset -= 2;
+        }
+        else if(game.player.jumpIndex > 1 && game.player.jumpIndex < 31)
+        {
+            if (game.player.jumpIndex % 2 == 1)
+                y_offset += 2;
+        }
+        res.getTexture("shadow")->render(x, y+8, SDL_FLIP_NONE);
+        res.getTexture("shadow")->render(x+8, y+8, SDL_FLIP_HORIZONTAL);
+        res.getTexture("shadow")->render(x, y+8+8, SDL_FLIP_VERTICAL);
+        res.getTexture("shadow")->render(x+8, y + 8+8, (SDL_RendererFlip)(SDL_FLIP_VERTICAL | SDL_FLIP_HORIZONTAL));
+    }
+    else
+    {
+        y_offset = 0;
+    }
 
     SDL_Rect rectSrc = { 0,offset,16,16 };
-    SDL_Rect rectDest = { x,y,16,16 };
+    SDL_Rect rectDest = { x,y+y_offset,16,16 };
 
     if (game.player.warpIndex < 8)
     {

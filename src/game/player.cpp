@@ -72,11 +72,46 @@ void Player::move()
 	else
 	{
 		requestMove = false;
-		if(!moving)
+		if(!moving && !jumping)
 			sprite->animIndex = 0;
 	}
 
-	if (turning)
+	if (jumping)
+	{
+		sprite->animIndex++;
+		if (jumpIndex % 2 == 1)
+		{
+			switch (dir)
+			{
+			case Direction::UP:
+			{
+				pos.y -= 2;
+				break;
+			}
+			case Direction::DOWN:
+			{
+				pos.y += 2;
+				break;
+			}
+			case Direction::LEFT:
+			{
+				pos.x -= 2;
+				break;
+			}
+			case Direction::RIGHT:
+			{
+				pos.x += 2;
+				break;
+			}
+			}
+		}
+		jumpIndex++;
+		if (jumpIndex >= 32)
+		{
+			jumping = false;
+		}
+	}
+	else if (turning)
 	{
 		turning++;
 		if (turning == 3)
@@ -181,6 +216,31 @@ bool Player::collision_check()
 	if (game.debug.noclip)
 		return true;
 
+	Map* currMap = game.world.currentMap;
+
+	//we are not out of bounds, check for current map
+	int index = (pos.y / 32) * currMap->width + pos.x / 32;
+	if (index < 0 || index >= currMap->blocks.size() || pos.x < 0 || pos.x >= currMap->width * 32) //else it would throw error
+		return true;
+
+	Block* currBlock = &currMap->blockset->blocks[currMap->blocks[index]];
+
+	int iOld = 0;
+	if (pos.x % 32 == 0)
+	{
+		if (pos.y % 32 == 0)
+			iOld = 0;
+		else
+			iOld = 2;
+	}
+	else
+	{
+		if (pos.y % 32 == 0)
+			iOld = 1;
+		else
+			iOld = 3;
+	}
+
 	Position newpos = { pos.x,pos.y };
 	switch (dir)
 	{
@@ -206,7 +266,7 @@ bool Player::collision_check()
 		}
 	}
 
-	Map* currMap = game.world.currentMap;
+	
 	Position newpos_s = { newpos.x / 16,newpos.y / 16 };
 	bool outOfBounds = false;
 	Position newpos_ss = { newpos_s.x,newpos_s.y };
@@ -267,7 +327,7 @@ bool Player::collision_check()
 	//end of out of bounds
 
 	//we are not out of bounds, check for current map
-	int index = (newpos.y / 32) * currMap->width + newpos.x / 32;
+	index = (newpos.y / 32) * currMap->width + newpos.x / 32;
 	if (index < 0 || index >= currMap->blocks.size() || newpos.x < 0 || newpos.x >= currMap->width*32) //else it would throw error
 		return true;
 
@@ -290,7 +350,8 @@ bool Player::collision_check()
 	}
 
 	//todo: ledge jumping (check "from" tile and "to" tile)
-
+	if(currMap->blockset->name == "overworld")
+		ledge_check(currBlock, newBlock,iOld,i);
 
 
 	if (!newBlock->solid[i][2]) //if the bottom left tile is solid, block movement, else dont
@@ -299,6 +360,44 @@ bool Player::collision_check()
 		return false;
 
 	
+}
+
+void Player::ledge_check(Block *currBlock,Block* newBlock, int iOld, int iNew)
+{
+	switch (dir)
+	{
+		case Direction::UP:
+		{
+			return;
+		}
+		case Direction::DOWN:
+		{
+			if (currBlock->tile[iOld] == 0x2C && newBlock->tile[iNew] == 0x37 || currBlock->tile[iOld] == 0x39 && newBlock->tile[iNew] == 0x36 || currBlock->tile[iOld] == 0x39 && newBlock->tile[iNew] == 0x37)
+			{
+				jumping = true;
+				jumpIndex = 0;
+			}
+			break;
+		}
+		case Direction::RIGHT:
+		{
+			if (currBlock->tile[iOld] == 0x2C && newBlock->tile[iNew] == 0x0D || currBlock->tile[iOld] == 0x2C && newBlock->tile[iNew] == 0x1D || currBlock->tile[iOld] == 0x39 && newBlock->tile[iNew] == 0x0D)
+			{
+				jumping = true;
+				jumpIndex = 0;
+			}
+			break;
+		}
+		case Direction::LEFT:
+		{
+			if (currBlock->tile[iOld] == 0x2C && newBlock->tile[iNew] == 0x27 || currBlock->tile[iOld] == 0x39 && newBlock->tile[iNew] == 0x27)
+			{
+				jumping = true;
+				jumpIndex = 0;
+			}
+			break;
+		}
+	}
 }
 
 

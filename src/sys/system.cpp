@@ -237,6 +237,7 @@ void System::load_media()
 	res.loadTexture("water4", "assets/gfx/tilesets/water/water4.png");
 
 	res.loadTexture("grass1", "assets/gfx/tilesets/grass/grass.png",true);
+	res.loadTexture("shadow", "assets/gfx/overworld/shadow.png", true);
 
 	res.loadSprite("red", "assets/gfx/sprites/red.png");
 }

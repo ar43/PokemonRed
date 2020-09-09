@@ -24,6 +24,8 @@ public:
 	void warp();
 	void block_input(int time);
 	int warpIndex;
+	bool jumping;
+	int jumpIndex;
 private:
 	Direction dir;
 	Position pos;
@@ -35,6 +37,7 @@ private:
 	void move();
 	void change_map();
 	void warp_check(bool carpet);
+	void ledge_check(Block* currBlock, Block* newBlock, int iOld, int iNew);
 	bool collision_check();
 	std::string lastMap;
 	Warp* nextWarp;

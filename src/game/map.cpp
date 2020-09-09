@@ -229,7 +229,7 @@ void Map::render(int x, int y)
     }
 }
 
-void Texture::render(int x, int y)
+void Texture::render(int x, int y, SDL_RendererFlip flip)
 {
     if (game.player.warpIndex < 8)
     {
@@ -245,7 +245,7 @@ void Texture::render(int x, int y)
     }
 
     SDL_Rect rected = { x,y,w,h };
-    SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, flip);
 }
 
 void Texture::render_grass(int x, int y)
