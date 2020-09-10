@@ -12,7 +12,6 @@ public:
 	void draw_map();
 	void draw_overlay();
 private:
-	void draw_textbox();
 };
 
 class Sprite

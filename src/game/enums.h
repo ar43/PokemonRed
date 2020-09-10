@@ -1,5 +1,13 @@
 #pragma once
 
+enum TextType
+{
+	TYPE_TEXT,
+	TYPE_LINE,
+	TYPE_CONT,
+	TYPE_PARA
+};
+
 enum Direction
 {
 	UP,

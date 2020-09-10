@@ -10,22 +10,14 @@ void Render::render()
     debug();
     game.player.render();
     draw_overlay();
-    draw_textbox();
+    game.textbox.render();
     
 
     SDL_RenderPresent(sys.getRenderer());
 }
 
 
-void Render::draw_textbox()
-{
-    if(input.keycatchers == KEYCATCHERS_TEXTBOX)
-    { 
-        SDL_SetRenderDrawColor(sys.getRenderer(), 255, 255, 255, 255);
-        SDL_Rect screen = { 0,GAME_HEIGHT-TEXTBOX_HEIGHT,TEXTBOX_WIDTH,TEXTBOX_HEIGHT };
-        SDL_RenderFillRect(sys.getRenderer(), &screen);
-    }
-}
+
 
 void Render::draw_overlay()
 {

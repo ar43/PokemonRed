@@ -147,6 +147,8 @@
     <ClCompile Include="src\game\map.cpp" />
     <ClCompile Include="src\game\player.cpp" />
     <ClCompile Include="src\game\sign.cpp" />
+    <ClCompile Include="src\game\text.cpp" />
+    <ClCompile Include="src\game\textbox.cpp" />
     <ClCompile Include="src\game\world.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\sys\console\cmds.cpp" />
@@ -166,6 +168,8 @@
     <ClInclude Include="src\game\map.h" />
     <ClInclude Include="src\game\player.h" />
     <ClInclude Include="src\game\sign.h" />
+    <ClInclude Include="src\game\text.h" />
+    <ClInclude Include="src\game\textbox.h" />
     <ClInclude Include="src\game\world.h" />
     <ClInclude Include="src\sys\console\cmds.h" />
     <ClInclude Include="src\sys\console\console.h" />

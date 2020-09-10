@@ -239,5 +239,13 @@ void System::load_media()
 	res.loadTexture("grass1", "assets/gfx/tilesets/grass/grass.png",true);
 	res.loadTexture("shadow", "assets/gfx/overworld/shadow.png", true);
 
+	res.loadTexture("tb1", "assets/gfx/font/textbox/tb1.png");
+	res.loadTexture("tb2", "assets/gfx/font/textbox/tb2.png");
+	res.loadTexture("tb3", "assets/gfx/font/textbox/tb3.png");
+	res.loadTexture("tb4", "assets/gfx/font/textbox/tb4.png");
+	res.loadTexture("tb5", "assets/gfx/font/textbox/tb5.png");
+	res.loadTexture("tb6", "assets/gfx/font/textbox/tb6.png");
+
 	res.loadSprite("red", "assets/gfx/sprites/red.png");
+	Constants::font = TTF_OpenFont("assets/gfx/font/pokemon.ttf", 8);
 }

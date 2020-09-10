@@ -26,6 +26,8 @@
 #include "../game/world.h"
 #include "../game/constants.h"
 #include "../game/sign.h"
+#include "../game/textbox.h"
+#include "../game/text.h"
 
 #define GAME_WIDTH 160
 #define GAME_HEIGHT 144

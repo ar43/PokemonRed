@@ -2,6 +2,7 @@
 #include "../sys/frame.h"
 #include "player.h"
 #include "world.h"
+#include "textbox.h"
 
 struct Debug
 {
@@ -25,6 +26,7 @@ public:
 	Player player;
 	World world;
 	Debug debug;
+	Textbox textbox;
 	//Action action;
 private:
 };

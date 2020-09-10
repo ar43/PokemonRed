@@ -1,6 +1,7 @@
 #pragma once
 namespace Constants
 {
+	extern TTF_Font* font;
 	namespace Coll
 	{
 		extern std::vector<Uint8> overworld;
