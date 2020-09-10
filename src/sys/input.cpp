@@ -123,6 +123,10 @@ void Input::catchMain(SDL_Event *e)
 		case SDLK_RIGHT:
 			keyDown[ARROW_RIGHT] = true;
 			break;
+
+		case SDLK_y:
+			keyDown[KEY_Y] = true;
+			break;
 		
 
 		default:
@@ -145,6 +149,10 @@ void Input::catchMain(SDL_Event *e)
 			break;
 		case SDLK_RIGHT:
 			keyDown[ARROW_RIGHT] = false;
+			break;
+
+		case SDLK_y:
+			keyDown[KEY_Y] = false;
 			break;
 
 		case SDLK_LSHIFT:

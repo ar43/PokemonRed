@@ -52,6 +52,7 @@ Position *Player::getPosition()
 void Player::move()
 {
 	bool requestMove = true;
+	bool requestUse = false;
 	Direction newDir;
 	if (input.keyDown[ARROW_UP])
 	{
@@ -69,12 +70,21 @@ void Player::move()
 	{
 		newDir = Direction::RIGHT;
 	}
+	else if (input.keyDown[KEY_Y] && canUse)
+	{
+		canUse = false;
+		requestUse = true;
+		requestMove = false;
+	}
 	else
 	{
 		requestMove = false;
 		if(!moving && !jumping)
 			sprite->animIndex = 0;
 	}
+
+	if (!input.keyDown[KEY_Y])
+		canUse = true;
 
 	if (jumping)
 	{
@@ -208,6 +218,79 @@ void Player::move()
 			sprite->animIndex++;
 		}
 	}
+	else if (requestUse)
+	{
+		sign_check();
+	}
+}
+
+
+void Player::sign_check()
+{
+	Map* currMap = game.world.currentMap;
+	Position newpos = { pos.x,pos.y };
+	switch (dir)
+	{
+		case Direction::UP:
+		{
+			newpos.y -= 16;
+			break;
+		}
+		case Direction::DOWN:
+		{
+			newpos.y += 16;
+			break;
+		}
+		case Direction::LEFT:
+		{
+			newpos.x -= 16;
+			break;
+		}
+		case Direction::RIGHT:
+		{
+			newpos.x += 16;
+			break;
+		}
+	}
+
+	Position sq = { newpos.x / 16,newpos.y / 16 };
+	for (std::vector<Sign>::iterator it = currMap->signs.begin(); it != currMap->signs.end(); ++it)
+	{
+		if (it->pos.x == sq.x && it->pos.y == sq.y)
+		{
+			printf("Activating text id: %i\n", it->textID);
+			//todo text activation
+			return;
+		}
+	}
+
+}
+
+bool Player::get_block(Position* p_pos, Map* currMap, Block*& block, int* i)
+{
+
+	//we are not out of bounds, check for current map
+	int index = (p_pos->y / 32) * currMap->width + p_pos->x / 32;
+	if (index < 0 || index >= currMap->blocks.size() || p_pos->x < 0 || p_pos->x >= currMap->width * 32) //else it would throw error
+		return false;
+
+	block = &currMap->blockset->blocks[currMap->blocks[index]];
+
+	if (p_pos->x % 32 == 0)
+	{
+		if (p_pos->y % 32 == 0)
+			*i = 0;
+		else
+			*i = 2;
+	}
+	else
+	{
+		if (p_pos->y % 32 == 0)
+			*i = 1;
+		else
+			*i = 3;
+	}
+	return true;
 }
 
 bool Player::collision_check()
@@ -216,30 +299,16 @@ bool Player::collision_check()
 	if (game.debug.noclip)
 		return true;
 
+
+
 	Map* currMap = game.world.currentMap;
 
-	//we are not out of bounds, check for current map
-	int index = (pos.y / 32) * currMap->width + pos.x / 32;
-	if (index < 0 || index >= currMap->blocks.size() || pos.x < 0 || pos.x >= currMap->width * 32) //else it would throw error
+	Block* currBlock = nullptr;
+	int iOld;
+
+	if (!get_block(&pos, currMap, currBlock, &iOld))
 		return true;
-
-	Block* currBlock = &currMap->blockset->blocks[currMap->blocks[index]];
-
-	int iOld = 0;
-	if (pos.x % 32 == 0)
-	{
-		if (pos.y % 32 == 0)
-			iOld = 0;
-		else
-			iOld = 2;
-	}
-	else
-	{
-		if (pos.y % 32 == 0)
-			iOld = 1;
-		else
-			iOld = 3;
-	}
+	
 
 	Position newpos = { pos.x,pos.y };
 	switch (dir)
@@ -326,30 +395,12 @@ bool Player::collision_check()
 	}
 	//end of out of bounds
 
-	//we are not out of bounds, check for current map
-	index = (newpos.y / 32) * currMap->width + newpos.x / 32;
-	if (index < 0 || index >= currMap->blocks.size() || newpos.x < 0 || newpos.x >= currMap->width*32) //else it would throw error
+	Block* newBlock = nullptr;
+	int i = 0;
+	if (!get_block(&newpos, currMap, newBlock, &i))
 		return true;
 
-	Block* newBlock = &currMap->blockset->blocks[currMap->blocks[index]];
-
-	int i = 0;
-	if (newpos.x % 32 == 0)
-	{
-		if (newpos.y % 32 == 0)
-			i = 0;
-		else
-			i = 2;
-	}
-	else
-	{
-		if (newpos.y % 32 == 0)
-			i = 1;
-		else
-			i = 3;
-	}
-
-	//todo: ledge jumping (check "from" tile and "to" tile)
+	//ledge jumping (check "from" tile and "to" tile)
 	if(currMap->blockset->name == "overworld")
 		ledge_check(currBlock, newBlock,iOld,i);
 
@@ -438,27 +489,13 @@ void Player::warp_check(bool carpet)
 		return;
 	Map* currMap = game.world.currentMap;
 	Position newpos = { pos.x,pos.y };
-	int index = (newpos.y / 32) * currMap->width + newpos.x / 32;
-	if (index < 0 || index >= currMap->blocks.size() || newpos.x < 0 || newpos.x >= currMap->width * 32) //else it would throw error
+
+	Block* newBlock = nullptr;
+
+	int i;
+
+	if (!get_block(&newpos, currMap, newBlock, &i))
 		return;
-
-	Block* newBlock = &currMap->blockset->blocks[currMap->blocks[index]];
-
-	int i = 0;
-	if (newpos.x % 32 == 0)
-	{
-		if (newpos.y % 32 == 0)
-			i = 0;
-		else
-			i = 2;
-	}
-	else
-	{
-		if (newpos.y % 32 == 0)
-			i = 1;
-		else
-			i = 3;
-	}
 
 	bool check;
 	//bool check_carpet = (newBlock->warp_up[i] && dir == Direction::UP || newBlock->warp_down[i] && dir == Direction::DOWN || newBlock->warp_left[i] && dir == Direction::LEFT || newBlock->warp_right[i] && dir == Direction::RIGHT);

@@ -587,6 +587,43 @@ void ResourceManager::loadMap(std::string fileName)
 				map->warps.push_back(newwarp);
 			}
 		}
+		//signs
+		substring = strstr(string, "sign");
+		if (substring != nullptr && strchr(string, ',') != nullptr)
+		{
+			substring += 4;
+			if (*substring != '_')
+			{
+				Sign newsign;
+				char* token;
+				token = strtok(substring, ",");
+				int i = 0;
+				/* walk through other tokens */
+				while (token != NULL) {
+					if (i < 3)
+					{
+						int num = atoi(token);
+						if (i == 0)
+						{
+							newsign.pos.x = num;
+						}
+						else if (i == 1)
+						{
+							newsign.pos.y = num;
+						}
+						else
+						{
+							newsign.textID = num;
+						}
+						//printf("%d\n", num);
+					}
+
+					token = strtok(NULL, ",");
+					i++;
+				}
+				map->signs.push_back(newsign);
+			}
+		}
 		l++;
 	}
 

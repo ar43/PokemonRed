@@ -1,5 +1,6 @@
 #pragma once
 #include "enums.h"
+#include "sign.h"
 
 enum MapAnimation
 {
@@ -148,6 +149,7 @@ public:
 	Connection connection;
 	std::vector<Position> grassEffect;
 	std::vector<Warp> warps;
+	std::vector<Sign> signs;
 	void render(int x, int y);
 };
 

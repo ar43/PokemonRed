@@ -278,11 +278,11 @@ void Sprite::render_static(int x, int y, Direction dir)
     }
     else if (game.player.warpIndex < 16)
     {
-        SDL_SetTextureColorMod(texture, 128, 128, 128);
+        SDL_SetTextureColorMod(texture, 16, 16, 16);
     }
     else if (game.player.warpIndex < 24)
     {
-        SDL_SetTextureColorMod(texture, 16, 16, 16);
+        SDL_SetTextureColorMod(texture, 1, 1, 1);
     }
 
     SDL_RenderCopyEx(sys.getRenderer(), texture, &rectSrc, &rectDest, 0.0f, NULL, flip);
