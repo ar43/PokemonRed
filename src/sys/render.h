@@ -1,6 +1,9 @@
 #pragma once
 #include "../game/enums.h"
 
+#define TEXTBOX_WIDTH 160
+#define TEXTBOX_HEIGHT 48
+
 class Render
 {
 public:
@@ -8,6 +11,8 @@ public:
 	void debug();
 	void draw_map();
 	void draw_overlay();
+private:
+	void draw_textbox();
 };
 
 class Sprite

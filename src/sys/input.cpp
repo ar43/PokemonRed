@@ -29,6 +29,8 @@ void Input::process(SDL_Event *e)
 			catchMain(e);
 		else if (keycatchers == KEYCATCHERS_CONSOLE)
 			sys.console.handleInput(e);
+		else if (keycatchers == KEYCATCHERS_TEXTBOX)
+			catchTextbox(e);
 	}
 }
 
@@ -61,6 +63,27 @@ void Input::catchPriority(SDL_Event *e)
 			break;
 		}
 
+		case SDLK_F1:
+			printf("???\n");
+			game.debug.drawPlayer = !game.debug.drawPlayer;
+			break;
+
+		case SDLK_F2:
+			game.debug.drawSquare = !game.debug.drawSquare;
+			break;
+
+		case SDLK_F3:
+			game.debug.drawColl = !game.debug.drawColl;
+			break;
+
+		case SDLK_F4:
+			game.debug.noclip = !game.debug.noclip;
+			break;
+
+		case SDLK_F5:
+			game.debug.darken = !game.debug.darken;
+			break;
+
 		
 
 		default:
@@ -82,27 +105,6 @@ void Input::catchMain(SDL_Event *e)
 			sys.requestQuit = true;
 			break;
 		}
-
-		case SDLK_F1:
-			printf("???\n");
-			game.debug.drawPlayer = !game.debug.drawPlayer;
-			break;
-
-		case SDLK_F2:
-			game.debug.drawSquare = !game.debug.drawSquare;
-			break;
-
-		case SDLK_F3:
-			game.debug.drawColl = !game.debug.drawColl;
-			break;
-
-		case SDLK_F4:
-			game.debug.noclip = !game.debug.noclip;
-			break;
-
-		case SDLK_F5:
-			game.debug.darken = !game.debug.darken;
-			break;
 
 		case SDLK_LSHIFT:
 			game.debug.fastMode = true;
@@ -164,4 +166,40 @@ void Input::catchMain(SDL_Event *e)
 		}
 	}
 	
+}
+
+void Input::catchTextbox(SDL_Event* e)
+{
+
+	if (e->type == SDL_KEYDOWN)
+	{
+		switch (e->key.keysym.sym)
+		{
+		case SDLK_ESCAPE:
+		{
+			sys.requestQuit = true;
+			break;
+		}
+		case SDLK_y:
+			keyDown[KEY_Y] = true;
+			break;
+
+
+		default:
+			break;
+		}
+	}
+	else if (e->type == SDL_KEYUP)
+	{
+		switch (e->key.keysym.sym)
+		{
+		case SDLK_y:
+			keyDown[KEY_Y] = false;
+			break;
+
+		default:
+			break;
+		}
+	}
+
 }

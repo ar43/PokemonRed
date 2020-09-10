@@ -15,6 +15,9 @@ void Player::init()
 
 void Player::update()
 {
+	if (input.keycatchers == KEYCATCHERS_TEXTBOX)
+		return;
+
 	if (warping)
 		warpIndex++;
 
@@ -83,7 +86,7 @@ void Player::move()
 			sprite->animIndex = 0;
 	}
 
-	if (!input.keyDown[KEY_Y])
+	if (!input.keyDown[KEY_Y] && !canUse)
 		canUse = true;
 
 	if (jumping)
@@ -259,7 +262,9 @@ void Player::sign_check()
 		if (it->pos.x == sq.x && it->pos.y == sq.y)
 		{
 			printf("Activating text id: %i\n", it->textID);
-			//todo text activation
+			input.clear();
+			sprite->animIndex = 0;
+			it->activate();
 			return;
 		}
 	}
@@ -544,7 +549,10 @@ void Player::warp()
 		game.world.currentMap = res.getMap(nextWarp->to);
 
 	if (game.world.currentMap == nullptr)
+	{ 
 		sys.error("Unimplemented warp.");
+		return;
+	}
 
 	pos.x = util::square_to_pixel(game.world.currentMap->warps[nextWarp->warpIn].at.x);
 	pos.y = util::square_to_pixel(game.world.currentMap->warps[nextWarp->warpIn].at.y);
