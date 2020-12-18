@@ -16,7 +16,14 @@ void Player::init()
 void Player::update()
 {
 	if (input.keycatchers == KEYCATCHERS_TEXTBOX)
+	{
+		if (game.debug.forceExitKeycatcher)
+		{
+			if (input.keyDown[KEY_X])
+				input.keycatchers = KEYCATCHERS_NORMAL;
+		}
 		return;
+	}
 
 	if (warping)
 		warpIndex++;
@@ -261,7 +268,6 @@ void Player::sign_check()
 	{
 		if (it->pos.x == sq.x && it->pos.y == sq.y)
 		{
-			printf("Activating text id: %i\n", it->textID);
 			input.clear();
 			sprite->animIndex = 0;
 			it->activate();

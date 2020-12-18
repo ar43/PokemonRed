@@ -14,6 +14,7 @@ enum SomeKeys
 	ARROW_LEFT,
 	ARROW_RIGHT,
 	KEY_Y,
+	KEY_X,
 	NUM_KEYS
 };
 

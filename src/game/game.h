@@ -12,6 +12,7 @@ struct Debug
 	bool fastMode = false;
 	bool noclip = false;
 	bool darken = false;
+	bool forceExitKeycatcher = true;
 };
 
 class Game

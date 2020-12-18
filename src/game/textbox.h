@@ -7,6 +7,10 @@ public:
 	void update();
 	Text *currText;
 	char line[2][32];
-	bool refresh = true;
+	int index;
+	bool cleared;
 	Texture lineText[2];
+private:
+	void clear();
+	void updateRenderer(int num);
 };

@@ -321,9 +321,11 @@ void ResourceManager::loadMap(std::string fileName)
 	std::string pathData = "assets/data/map_data/" + fileName + ".blk";
 	std::string pathObjects = "assets/data/map_objects/" + fileName + ".asm";
 	std::string pathHeaders = "assets/data/map_headers/" + fileName + ".asm";
+	std::string pathTexts = "assets/data/map_texts/" + fileName + ".asm";
 	Map* map = new Map(-1,-1,nullptr, 0, "none",0, "none", 0, "none", 0, "none", 0);
 	map->tileset = nullptr;
 	map->name = "error";
+	map->fileName = fileName;
 	//copy the bytes of map data to a vector
 	std::ifstream file(pathData, std::ios::binary);
 	if (file.fail())
@@ -628,6 +630,114 @@ void ResourceManager::loadMap(std::string fileName)
 	}
 
 	fclose(fp);
+
+	fp = fopen(pathTexts.c_str(), "r");
+	if (!fp)
+		printf("%s has no texts\n", map->name.c_str());
+	l = 0;
+	static const char words[][16] = {
+					"text ",
+					"next ",
+					"line ",
+					"para ",
+					"cont ",
+					"done",
+					"prompt",
+					"page ",
+					"dex ",
+					"text_end",
+					"text_start",
+					"text_ram ",
+					"text_decimal ",
+					"text_bcd "
+	};
+	while (fp && fgets(string, 1024, fp)) {
+		char* substring = strstr(string, "_");
+		if (substring != nullptr)
+		{
+			substring++;
+			for (int i = 0; substring[i]; i++) //find ":"
+			{
+				if (substring[i] == ':')
+				{ 
+					substring[i] = 0;
+					break;
+				}
+			}
+			Textset textset;
+			textset.name = substring;
+			bool foundEnd = false;
+			Text* firstLine = nullptr;
+			Text* prevLine = nullptr;
+			int z = 0;
+			while (true)
+			{
+				Text* line = nullptr;
+				boolean foundsth = false;
+				fgets(string, 1024, fp);
+				l++;
+				for(int i = 0; i < sizeof(words);i++)
+				{ 
+					substring = strstr(string, words[i]);
+					if (substring != nullptr)
+					{
+						foundsth = true;
+						line = new Text();
+						line->type = (TextType)i;
+						if (prevLine != nullptr)
+							prevLine->next = line;
+						if (z == 0)
+							firstLine = line;
+						z++;
+
+						if (line->type == TYPE_TEXT_DECIMAL || line->type == TYPE_TEXT_RAM || line->type == TYPE_TEXT_BCD)
+						{
+							break;
+						}
+						else if (line->type == TYPE_TEXT_START)
+						{
+							SDL_strlcpy(line->text, " ", sizeof(line->text));
+							break;
+						}
+						else if(line->type != TYPE_DONE && line->type != TYPE_TEXT_END && line->type != TYPE_PROMPT)
+						{ 
+							substring += strlen(words[i])+1;
+							for (int i = 0; substring[i]; i++) //find and remove "
+							{
+								if (substring[i] == '\"')
+								{
+									substring[i] = 0;
+									break;
+								}
+							}
+							SDL_strlcpy(line->text, substring, sizeof(line->text));
+							break;
+						}
+						else
+						{
+							foundEnd = true;
+							break;
+						}
+					}
+				}
+				if (foundsth)
+					prevLine = line;
+				else if(strlen(string) > 1)
+					printf("TEXT PARSER: invalid line %s\n", string);
+				if (foundEnd)
+					break;
+
+			}
+			if (z == 0)
+				printf("Text parsing failed for %s\n", map->name.c_str());
+			textset.start = firstLine;
+			map->texts.push_back(textset);
+
+		}
+		l++;
+	}
+	if(fp)
+		fclose(fp);
 
 	printf("%s: (%i, %i)\n", map->name.c_str(), map->height, map->width);
 	mapMap[map->name] = map;

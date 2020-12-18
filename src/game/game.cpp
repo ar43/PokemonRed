@@ -20,6 +20,4 @@ void Game::init()
 {
 	game.world.currentMap = res.getMap("pallet_town");
 	player.init();
-	SDL_strlcpy(game.textbox.line[0], "Technology is", 32);
-	SDL_strlcpy(game.textbox.line[1], "incredible!", 32);
 }

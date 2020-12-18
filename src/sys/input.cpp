@@ -184,6 +184,10 @@ void Input::catchTextbox(SDL_Event* e)
 			keyDown[KEY_Y] = true;
 			break;
 
+		case SDLK_x:
+			keyDown[KEY_X] = true;
+			break;
+
 
 		default:
 			break;
@@ -195,6 +199,10 @@ void Input::catchTextbox(SDL_Event* e)
 		{
 		case SDLK_y:
 			keyDown[KEY_Y] = false;
+			break;
+
+		case SDLK_x:
+			keyDown[KEY_X] = false;
 			break;
 
 		default:
