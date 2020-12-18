@@ -2,6 +2,7 @@
 #include "enums.h"
 #include "sign.h"
 #include "text.h"
+#include "npc.h"
 
 enum MapAnimation
 {
@@ -153,6 +154,7 @@ public:
 	std::vector<Warp> warps;
 	std::vector<Sign> signs;
 	std::vector<Textset> texts;
+	std::vector<Npc> npcs;
 	void render(int x, int y);
 };
 

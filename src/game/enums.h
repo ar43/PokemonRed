@@ -1,6 +1,6 @@
 #pragma once
 
-enum TextType
+enum class TextType
 {
 	TYPE_TEXT,
 	TYPE_NEXT,
@@ -19,7 +19,26 @@ enum TextType
 	NUM_TEXT_TYPE
 };
 
-enum Direction
+enum class NpcMovementMode
+{
+	WALK,
+	STAY
+};
+
+enum class NpcMovementDir
+{
+	ANY_DIR, 
+	UP_DOWN,
+	LEFT_RIGHT,
+	DOWN,
+	UP, 
+	LEFT,
+	RIGHT,
+	NONE,
+	BOULDER_MOVEMENT_BYTE_2
+};
+
+enum class Direction
 {
 	UP,
 	DOWN,
@@ -27,7 +46,7 @@ enum Direction
 	RIGHT
 };
 
-enum Permission
+enum class Permission
 {
 	INDOOR,
 	CAVE,

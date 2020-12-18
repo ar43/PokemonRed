@@ -87,6 +87,9 @@
     <ClCompile Include="src\game\text.cpp">
       <Filter>Source Files\game</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\npc.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sys\system.h">
@@ -141,6 +144,9 @@
       <Filter>Header Files\game</Filter>
     </ClInclude>
     <ClInclude Include="src\game\text.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\npc.h">
       <Filter>Header Files\game</Filter>
     </ClInclude>
   </ItemGroup>

@@ -115,6 +115,11 @@ void System::close()
 	//exit(0);
 }
 
+void System::load_sprites()
+{
+	//todo
+}
+
 void System::load_maps()
 {
 	printf("Loading maps...\n");
@@ -176,29 +181,29 @@ void System::load_tilesets()
 	tileset Plateau_Block,     Plateau_GFX,     Plateau_Coll,     0xFF,0xFF,0xFF, 0x45, CAVE
 */
 	printf("Loading tilesets\n");
-	res.loadTileset("overworld", "assets/gfx/tilesets/overworld.png", &Constants::Coll::overworld, &Constants::Warp::overworld, 0xFF, 0xFF, 0xFF, 0x52, OUTDOOR);
-	res.loadTileset("reds_house", "assets/gfx/tilesets/reds_house.png", &Constants::Coll::redshouse, &Constants::Warp::reds_house, 0xFF, 0xFF, 0xFF, 0xFF, INDOOR);
-	res.loadTileset("mart", "assets/gfx/tilesets/pokecenter.png", &Constants::Coll::mart, &Constants::Warp::mart, 0x18, 0x19, 0x1E, 0xFF, INDOOR);
-	res.loadTileset("forest", "assets/gfx/tilesets/forest.png", &Constants::Coll::forest, &Constants::Warp::forest, 0xFF, 0xFF, 0xFF, 0x20, CAVE);
-	res.loadTileset("dojo", "assets/gfx/tilesets/gym.png", &Constants::Coll::dojo, &Constants::Warp::dojo, 0x3A, 0xFF, 0xFF, 0xFF, INDOOR);//ORIGINAL: OUTDOOR why????
-	res.loadTileset("pokecenter", "assets/gfx/tilesets/pokecenter.png", &Constants::Coll::pokecenter, &Constants::Warp::pokecenter, 0x18, 0x19, 0x1E, 0xFF, INDOOR);
-	res.loadTileset("gym", "assets/gfx/tilesets/gym.png", &Constants::Coll::gym, &Constants::Warp::gym, 0x3A, 0xFF, 0xFF, 0xFF, INDOOR); //ORIGINAL: OUTDOOR why????
-	res.loadTileset("house", "assets/gfx/tilesets/house.png", &Constants::Coll::house, &Constants::Warp::house, 0xFF, 0xFF, 0xFF, 0xFF, INDOOR);
-	res.loadTileset("forestgate", "assets/gfx/tilesets/gate.png", &Constants::Coll::forestgate, &Constants::Warp::forestgate, 0x17, 0x32, 0xFF, 0xFF, INDOOR);
-	res.loadTileset("museum", "assets/gfx/tilesets/gate.png", &Constants::Coll::museum, &Constants::Warp::museum, 0x17, 0x32, 0xFF, 0xFF, INDOOR);
-	res.loadTileset("underground", "assets/gfx/tilesets/underground.png", &Constants::Coll::underground, &Constants::Warp::underground, 0xFF, 0xFF, 0xFF, 0xFF, INDOOR);
-	res.loadTileset("gate", "assets/gfx/tilesets/gate.png", &Constants::Coll::gate, &Constants::Warp::gate, 0x17, 0x32, 0xFF, 0xFF, INDOOR);
-	res.loadTileset("ship", "assets/gfx/tilesets/ship.png", &Constants::Coll::ship, &Constants::Warp::ship, 0xFF, 0xFF, 0xFF, 0xFF, CAVE);
-	res.loadTileset("shipport", "assets/gfx/tilesets/ship_port.png", &Constants::Coll::shipport, &Constants::Warp::shipport, 0xFF, 0xFF, 0xFF, 0xFF, CAVE);
-	res.loadTileset("cemetery", "assets/gfx/tilesets/cemetery.png", &Constants::Coll::cemetery, &Constants::Warp::cemetery, 0x12, 0xFF, 0xFF, 0xFF, INDOOR);
-	res.loadTileset("interior", "assets/gfx/tilesets/interior.png", &Constants::Coll::interior, &Constants::Warp::interior, 0xFF, 0xFF, 0xFF, 0xFF, INDOOR);
-	res.loadTileset("cavern", "assets/gfx/tilesets/cavern.png", &Constants::Coll::cavern, &Constants::Warp::cavern, 0xFF, 0xFF, 0xFF, 0xFF, CAVE);
-	res.loadTileset("lobby", "assets/gfx/tilesets/lobby.png", &Constants::Coll::lobby, &Constants::Warp::lobby, 0x15, 0x36, 0xFF, 0xFF, INDOOR);
-	res.loadTileset("mansion", "assets/gfx/tilesets/mansion.png", &Constants::Coll::mansion, &Constants::Warp::mansion, 0xFF, 0xFF, 0xFF, 0xFF, INDOOR);
-	res.loadTileset("lab", "assets/gfx/tilesets/lab.png", &Constants::Coll::lab, &Constants::Warp::lab, 0xFF, 0xFF, 0xFF, 0xFF, INDOOR);
-	res.loadTileset("club", "assets/gfx/tilesets/club.png", &Constants::Coll::club, &Constants::Warp::club, 0x07, 0x17, 0xFF, 0xFF, INDOOR);
-	res.loadTileset("facility", "assets/gfx/tilesets/facility.png", &Constants::Coll::facility, &Constants::Warp::facility, 0x12, 0xFF, 0xFF, 0xFF, CAVE);
-	res.loadTileset("plateau", "assets/gfx/tilesets/plateau.png", &Constants::Coll::plateau, &Constants::Warp::plateau, 0xFF, 0xFF, 0xFF, 0x45, CAVE);
+	res.loadTileset("overworld", "assets/gfx/tilesets/overworld.png", &Constants::Coll::overworld, &Constants::Warp::overworld, 0xFF, 0xFF, 0xFF, 0x52, Permission::OUTDOOR);
+	res.loadTileset("reds_house", "assets/gfx/tilesets/reds_house.png", &Constants::Coll::redshouse, &Constants::Warp::reds_house, 0xFF, 0xFF, 0xFF, 0xFF, Permission::INDOOR);
+	res.loadTileset("mart", "assets/gfx/tilesets/pokecenter.png", &Constants::Coll::mart, &Constants::Warp::mart, 0x18, 0x19, 0x1E, 0xFF, Permission::INDOOR);
+	res.loadTileset("forest", "assets/gfx/tilesets/forest.png", &Constants::Coll::forest, &Constants::Warp::forest, 0xFF, 0xFF, 0xFF, 0x20, Permission::CAVE);
+	res.loadTileset("dojo", "assets/gfx/tilesets/gym.png", &Constants::Coll::dojo, &Constants::Warp::dojo, 0x3A, 0xFF, 0xFF, 0xFF, Permission::INDOOR);//ORIGINAL: OUTDOOR why????
+	res.loadTileset("pokecenter", "assets/gfx/tilesets/pokecenter.png", &Constants::Coll::pokecenter, &Constants::Warp::pokecenter, 0x18, 0x19, 0x1E, 0xFF, Permission::INDOOR);
+	res.loadTileset("gym", "assets/gfx/tilesets/gym.png", &Constants::Coll::gym, &Constants::Warp::gym, 0x3A, 0xFF, 0xFF, 0xFF, Permission::INDOOR); //ORIGINAL: OUTDOOR why????
+	res.loadTileset("house", "assets/gfx/tilesets/house.png", &Constants::Coll::house, &Constants::Warp::house, 0xFF, 0xFF, 0xFF, 0xFF, Permission::INDOOR);
+	res.loadTileset("forestgate", "assets/gfx/tilesets/gate.png", &Constants::Coll::forestgate, &Constants::Warp::forestgate, 0x17, 0x32, 0xFF, 0xFF, Permission::INDOOR);
+	res.loadTileset("museum", "assets/gfx/tilesets/gate.png", &Constants::Coll::museum, &Constants::Warp::museum, 0x17, 0x32, 0xFF, 0xFF, Permission::INDOOR);
+	res.loadTileset("underground", "assets/gfx/tilesets/underground.png", &Constants::Coll::underground, &Constants::Warp::underground, 0xFF, 0xFF, 0xFF, 0xFF, Permission::INDOOR);
+	res.loadTileset("gate", "assets/gfx/tilesets/gate.png", &Constants::Coll::gate, &Constants::Warp::gate, 0x17, 0x32, 0xFF, 0xFF, Permission::INDOOR);
+	res.loadTileset("ship", "assets/gfx/tilesets/ship.png", &Constants::Coll::ship, &Constants::Warp::ship, 0xFF, 0xFF, 0xFF, 0xFF, Permission::CAVE);
+	res.loadTileset("shipport", "assets/gfx/tilesets/ship_port.png", &Constants::Coll::shipport, &Constants::Warp::shipport, 0xFF, 0xFF, 0xFF, 0xFF, Permission::CAVE);
+	res.loadTileset("cemetery", "assets/gfx/tilesets/cemetery.png", &Constants::Coll::cemetery, &Constants::Warp::cemetery, 0x12, 0xFF, 0xFF, 0xFF, Permission::INDOOR);
+	res.loadTileset("interior", "assets/gfx/tilesets/interior.png", &Constants::Coll::interior, &Constants::Warp::interior, 0xFF, 0xFF, 0xFF, 0xFF, Permission::INDOOR);
+	res.loadTileset("cavern", "assets/gfx/tilesets/cavern.png", &Constants::Coll::cavern, &Constants::Warp::cavern, 0xFF, 0xFF, 0xFF, 0xFF, Permission::CAVE);
+	res.loadTileset("lobby", "assets/gfx/tilesets/lobby.png", &Constants::Coll::lobby, &Constants::Warp::lobby, 0x15, 0x36, 0xFF, 0xFF, Permission::INDOOR);
+	res.loadTileset("mansion", "assets/gfx/tilesets/mansion.png", &Constants::Coll::mansion, &Constants::Warp::mansion, 0xFF, 0xFF, 0xFF, 0xFF, Permission::INDOOR);
+	res.loadTileset("lab", "assets/gfx/tilesets/lab.png", &Constants::Coll::lab, &Constants::Warp::lab, 0xFF, 0xFF, 0xFF, 0xFF, Permission::INDOOR);
+	res.loadTileset("club", "assets/gfx/tilesets/club.png", &Constants::Coll::club, &Constants::Warp::club, 0x07, 0x17, 0xFF, 0xFF, Permission::INDOOR);
+	res.loadTileset("facility", "assets/gfx/tilesets/facility.png", &Constants::Coll::facility, &Constants::Warp::facility, 0x12, 0xFF, 0xFF, 0xFF, Permission::CAVE);
+	res.loadTileset("plateau", "assets/gfx/tilesets/plateau.png", &Constants::Coll::plateau, &Constants::Warp::plateau, 0xFF, 0xFF, 0xFF, 0x45, Permission::CAVE);
 }
 
 void System::load_blocksets()
@@ -259,5 +264,6 @@ void System::load_media()
 	res.loadTexture("tinput", "assets/gfx/font/textbox/input.png");
 
 	res.loadSprite("red", "assets/gfx/sprites/red.png");
+	load_sprites();
 	Constants::font = TTF_OpenFont("assets/gfx/font/pokemon-final.otf", 8);
 }

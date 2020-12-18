@@ -28,6 +28,7 @@
 #include "../game/sign.h"
 #include "../game/textbox.h"
 #include "../game/text.h"
+#include "../game/npc.h"
 
 #define GAME_WIDTH 160
 #define GAME_HEIGHT 144
@@ -40,6 +41,7 @@ public:
 	void init();
 	void close();
 	void load_media();
+	
 	bool requestQuit;
 	SDL_Window* getWindow();
 	SDL_Renderer* getRenderer();
@@ -59,6 +61,7 @@ private:
 	void load_maps();
 	void load_tilesets();
 	void load_blocksets();
+	void load_sprites();
 };
 
 extern System sys;

@@ -6,6 +6,6 @@ TradeCenter_Object:
 	def_signs
 
 	def_objects
-	object SPRITE_RED, 2, 2, STAY, 0, 1 ; person
+	object SPRITE_RED, 2, 2, STAY, ANY_DIR, 1 ; person
 
 	def_warps_to TRADE_CENTER

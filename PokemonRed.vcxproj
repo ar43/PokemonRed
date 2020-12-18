@@ -145,6 +145,7 @@
     <ClCompile Include="src\game\constants.cpp" />
     <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\game\map.cpp" />
+    <ClCompile Include="src\game\npc.cpp" />
     <ClCompile Include="src\game\player.cpp" />
     <ClCompile Include="src\game\sign.cpp" />
     <ClCompile Include="src\game\text.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="src\game\enums.h" />
     <ClInclude Include="src\game\game.h" />
     <ClInclude Include="src\game\map.h" />
+    <ClInclude Include="src\game\npc.h" />
     <ClInclude Include="src\game\player.h" />
     <ClInclude Include="src\game\sign.h" />
     <ClInclude Include="src\game\text.h" />

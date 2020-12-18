@@ -84,7 +84,7 @@ void Textbox::update()
 {
     if (currText == nullptr)
         return;
-    if (currText->type == TYPE_TEXT)
+    if (currText->type == TextType::TYPE_TEXT)
     {
         if (!cleared)
         {
@@ -101,7 +101,7 @@ void Textbox::update()
             return;
         }
     }
-    else if (currText->type == TYPE_LINE)
+    else if (currText->type == TextType::TYPE_LINE)
     {
         if (index < strlen(currText->text) && game.frame.getFrame() % 3 == 0)
         {
@@ -113,7 +113,7 @@ void Textbox::update()
             return;
         }
     }
-    else if (currText->type == TYPE_CONT)
+    else if (currText->type == TextType::TYPE_CONT)
     {
         if (!activated)
         {
@@ -146,7 +146,7 @@ void Textbox::update()
             }
         }
     }
-    else if (currText->type == TYPE_PARA)
+    else if (currText->type == TextType::TYPE_PARA)
     {
         static int delay = 0;
         if (!activated)
@@ -174,7 +174,7 @@ void Textbox::update()
         }
         delay--;
     }
-    else if (currText->type == TYPE_DONE || currText->type == TYPE_TEXT_END)
+    else if (currText->type == TextType::TYPE_DONE || currText->type == TextType::TYPE_TEXT_END)
     {
         if (input.keyDown[KEY_A] && canInput)
         {

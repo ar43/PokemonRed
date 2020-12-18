@@ -84,7 +84,7 @@ void ResourceManager::loadSprite(std::string spriteName, const char* path)
 	sprite->format = gsSurface->format->format;
 	sprite->w = gsSurface->w;
 	sprite->h = gsSurface->h;
-	sprite->size = sprite->h > 3 * 16 ? 6 : 3;
+	sprite->size = sprite->h / 16;
 	sprite->animIndex = 0;
 
 	sprite->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), sprite->surface);
@@ -213,7 +213,7 @@ void ResourceManager::loadBlockset(std::string blocksetName, std::string tileset
 				break;
 			}
 			//for carpet warp (is 0 2 8 A actually correct? assuming Red's House, but needs testing)
-			if(tileset->permission == INDOOR)
+			if(tileset->permission == Permission::INDOOR)
 			{ 
 				if (std::find(Constants::Warp::up.begin(), Constants::Warp::up.end(), buffer[j]) != Constants::Warp::up.end())
 				{
@@ -626,6 +626,100 @@ void ResourceManager::loadMap(std::string fileName)
 				map->signs.push_back(newsign);
 			}
 		}
+		//npcs & trainers & pickups
+		substring = strstr(string, "object");
+		if (substring != nullptr && strchr(string, ',') != nullptr)
+		{
+			substring += 7;
+			int type = 0; //0 - npc, 1 - pickup, 2 - trainer
+			int count = 0;
+
+			//determine the type
+			for (size_t i = 0; i < strlen(substring); i++)
+			{
+				if (substring[i] == ',')
+					count++;
+			}
+			if (count == 5)
+				type = 0;
+			else if (count == 6)
+				type = 1;
+			else if (count == 7)
+				type = 2;
+			else
+				sys.error("unknown object error");
+			
+			if (type == 0)
+			{
+				Npc newNPC;
+				char* token;
+				token = strtok(substring, ",");
+				int i = 0;
+				/* walk through other tokens */
+				while (token != NULL) {
+					if (i <= 5)
+					{
+						//int num = atoi(token);
+						if (i == 0)
+						{
+							newNPC.spriteName = token;
+						}
+						else if (i == 1)
+						{
+							int num = atoi(token);
+							newNPC.pos.x = num;
+						}
+						else if(i == 2)
+						{
+							int num = atoi(token);
+							newNPC.pos.y = num;
+						}
+						else if (i == 3)
+						{
+							if (SDL_strstr(token, "WALK"))
+								newNPC.movMode = NpcMovementMode::WALK;
+							else if (SDL_strstr(token, "STAY"))
+								newNPC.movMode = NpcMovementMode::STAY;
+							else
+								sys.error("bad movMove on parse");
+						}
+						else if (i == 4)
+						{
+							if (SDL_strstr(token, "ANY_DIR"))
+								newNPC.movDir = NpcMovementDir::ANY_DIR;
+							else if (SDL_strstr(token, "UP_DOWN"))
+								newNPC.movDir = NpcMovementDir::UP_DOWN;
+							else if (SDL_strstr(token, "LEFT_RIGHT"))
+								newNPC.movDir = NpcMovementDir::LEFT_RIGHT;
+							else if (SDL_strstr(token, "DOWN"))
+								newNPC.movDir = NpcMovementDir::DOWN;
+							else if (SDL_strstr(token, "UP"))
+								newNPC.movDir = NpcMovementDir::UP;
+							else if (SDL_strstr(token, "LEFT"))
+								newNPC.movDir = NpcMovementDir::LEFT;
+							else if (SDL_strstr(token, "RIGHT"))
+								newNPC.movDir = NpcMovementDir::RIGHT;
+							else if (SDL_strstr(token, "NONE"))
+								newNPC.movDir = NpcMovementDir::NONE;
+							else if (SDL_strstr(token, "BOULDER_MOVEMENT_BYTE_2"))
+								newNPC.movDir = NpcMovementDir::BOULDER_MOVEMENT_BYTE_2;
+							else
+								sys.error("bad movDir on parse");
+						}
+						else if (i == 5)
+						{
+							int num = atoi(token);
+							newNPC.textID = num;
+						}
+						//printf("%d\n", num);
+					}
+
+					token = strtok(NULL, ",");
+					i++;
+				}
+				map->npcs.push_back(newNPC);
+			}
+		}
 		l++;
 	}
 
@@ -676,7 +770,7 @@ void ResourceManager::loadMap(std::string fileName)
 				boolean foundsth = false;
 				fgets(string, 1024, fp);
 				l++;
-				for(int i = 0; i < 14;i++)
+				for(int i = 0; i < (int)TextType::NUM_TEXT_TYPE;i++)
 				{ 
 					substring = strstr(string, words[i]);
 					if (substring != nullptr)
@@ -690,16 +784,16 @@ void ResourceManager::loadMap(std::string fileName)
 							firstLine = line;
 						z++;
 
-						if (line->type == TYPE_TEXT_DECIMAL || line->type == TYPE_TEXT_RAM || line->type == TYPE_TEXT_BCD)
+						if (line->type == TextType::TYPE_TEXT_DECIMAL || line->type == TextType::TYPE_TEXT_RAM || line->type == TextType::TYPE_TEXT_BCD)
 						{
 							break;
 						}
-						else if (line->type == TYPE_TEXT_START)
+						else if (line->type == TextType::TYPE_TEXT_START)
 						{
 							SDL_strlcpy(line->text, " ", sizeof(line->text));
 							break;
 						}
-						else if(line->type != TYPE_DONE && line->type != TYPE_TEXT_END && line->type != TYPE_PROMPT)
+						else if(line->type != TextType::TYPE_DONE && line->type != TextType::TYPE_TEXT_END && line->type != TextType::TYPE_PROMPT)
 						{ 
 							substring += strlen(words[i])+1;
 							for (int i = 0; substring[i]; i++) //find and remove "
