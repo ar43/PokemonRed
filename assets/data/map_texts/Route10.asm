@@ -100,6 +100,9 @@ _Route10AfterBattleText6::
 	done
 
 _Route10Text9::
+	text "ROCK TUNNEL"
+	done
+	
 _Route10Text7::
 	text "ROCK TUNNEL"
 	done

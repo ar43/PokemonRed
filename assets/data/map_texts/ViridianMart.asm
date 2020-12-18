@@ -8,7 +8,7 @@ _ViridianMartText4::
 	line "PALLET TOWN?"
 	done
 
-ViridianMartParcelQuestText::
+_ViridianMartParcelQuestText::
 	text "You know PROF."
 	line "OAK, right?"
 

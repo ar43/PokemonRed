@@ -341,7 +341,7 @@ void ResourceManager::loadMap(std::string fileName)
 	fileSize = file.tellg();
 	file.seekg(0, std::ios::beg);
 
-	map->blocks.reserve(fileSize);
+	map->blocks.reserve((unsigned int)fileSize);
 	map->blocks.insert(map->blocks.begin(),
 		std::istream_iterator<Uint8>(file),
 		std::istream_iterator<Uint8>());
@@ -676,7 +676,7 @@ void ResourceManager::loadMap(std::string fileName)
 				boolean foundsth = false;
 				fgets(string, 1024, fp);
 				l++;
-				for(int i = 0; i < sizeof(words);i++)
+				for(int i = 0; i < 14;i++)
 				{ 
 					substring = strstr(string, words[i]);
 					if (substring != nullptr)

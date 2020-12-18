@@ -66,6 +66,14 @@ void System::init()
 
 void System::error(const char* pMsg)
 {
+
+#ifdef _DEBUG
+	__asm
+	{
+		int 3
+	}
+#endif
+
 	char		msg[4096];
 	strncpy(msg, pMsg, sizeof(msg));
 	SDL_strlcat(msg, "\nGame will exit.", sizeof(msg));
@@ -74,6 +82,9 @@ void System::error(const char* pMsg)
 		msg,
 		NULL);
 	printf("(FATAL ERROR): %s\n", msg);
+
+
+
 	sys.requestQuit = true;
 	close();
 }
@@ -116,7 +127,7 @@ void System::load_maps()
 			SDL_strlcpy(name, ent->d_name, 261);
 			if (name[0] == '.')
 				continue;
-			for (int i = 0; i < strlen(name); i++)
+			for (size_t i = 0; i < strlen(name); i++)
 			{
 				if (name[i] == '.')
 				{
@@ -245,6 +256,7 @@ void System::load_media()
 	res.loadTexture("tb4", "assets/gfx/font/textbox/tb4.png");
 	res.loadTexture("tb5", "assets/gfx/font/textbox/tb5.png");
 	res.loadTexture("tb6", "assets/gfx/font/textbox/tb6.png");
+	res.loadTexture("tinput", "assets/gfx/font/textbox/input.png");
 
 	res.loadSprite("red", "assets/gfx/sprites/red.png");
 	Constants::font = TTF_OpenFont("assets/gfx/font/pokemon-final.otf", 8);

@@ -282,7 +282,7 @@ bool Player::get_block(Position* p_pos, Map* currMap, Block*& block, int* i)
 {
 
 	//we are not out of bounds, check for current map
-	int index = (p_pos->y / 32) * currMap->width + p_pos->x / 32;
+	size_t index = (p_pos->y / 32) * currMap->width + p_pos->x / 32;
 	if (index < 0 || index >= currMap->blocks.size() || p_pos->x < 0 || p_pos->x >= currMap->width * 32) //else it would throw error
 		return false;
 

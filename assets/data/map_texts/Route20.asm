@@ -151,6 +151,9 @@ _Route20AfterBattleText10::
 	done
 
 _Route20Text12::
+	text "SEAFOAM ISLANDS"
+	done
+	
 _Route20Text11::
 	text "SEAFOAM ISLANDS"
 	done

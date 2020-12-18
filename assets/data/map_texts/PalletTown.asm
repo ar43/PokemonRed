@@ -26,7 +26,7 @@ _PalletTownText2::
 	cont "protect me!"
 	done
 
-_PalletTownText3::
+_PalletTownText4::
 	text "Technology is"
 	line "incredible!"
 
@@ -36,7 +36,7 @@ _PalletTownText3::
 	cont "data via PC!"
 	done
 
-_PalletTownText4::
+_PalletTownText3::
 	text "OAK #MON"
 	line "RESEARCH LAB"
 	done

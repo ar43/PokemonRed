@@ -55,7 +55,7 @@ _SaffronGymText_5d173::
 	line "this TM with you!"
 	done
 
-ReceivedTM46Text::
+_ReceivedTM46Text::
 	text "<PLAYER> received"
 	line "TM46!@"
 	text_end

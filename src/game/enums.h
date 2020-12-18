@@ -16,6 +16,7 @@ enum TextType
 	TYPE_TEXT_RAM,
 	TYPE_TEXT_DECIMAL,
 	TYPE_TEXT_BCD,
+	NUM_TEXT_TYPE
 };
 
 enum Direction

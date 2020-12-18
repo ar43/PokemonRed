@@ -160,7 +160,7 @@ public:
 class Texture
 {
 public:
-	SDL_Surface* surface;
+	SDL_Surface* surface; //kind of useless ngl
 	SDL_Texture* texture;
 	Uint32 format;
 	int w;
