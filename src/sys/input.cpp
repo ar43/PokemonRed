@@ -17,6 +17,7 @@ void Input::clear()
 	{
 		keyDown[i] = false;
 	}
+	game.textbox.canInput = false;
 }
 
 void Input::process(SDL_Event *e)
@@ -127,7 +128,7 @@ void Input::catchMain(SDL_Event *e)
 			break;
 
 		case SDLK_y:
-			keyDown[KEY_Y] = true;
+			keyDown[KEY_A] = true;
 			break;
 		
 
@@ -154,7 +155,8 @@ void Input::catchMain(SDL_Event *e)
 			break;
 
 		case SDLK_y:
-			keyDown[KEY_Y] = false;
+			game.textbox.canInput = true;
+			keyDown[KEY_A] = false;
 			break;
 
 		case SDLK_LSHIFT:
@@ -181,11 +183,11 @@ void Input::catchTextbox(SDL_Event* e)
 			break;
 		}
 		case SDLK_y:
-			keyDown[KEY_Y] = true;
+			keyDown[KEY_A] = true;
 			break;
 
 		case SDLK_x:
-			keyDown[KEY_X] = true;
+			keyDown[KEY_B] = true;
 			break;
 
 
@@ -198,11 +200,12 @@ void Input::catchTextbox(SDL_Event* e)
 		switch (e->key.keysym.sym)
 		{
 		case SDLK_y:
-			keyDown[KEY_Y] = false;
+			game.textbox.canInput = true;
+			keyDown[KEY_A] = false;
 			break;
 
 		case SDLK_x:
-			keyDown[KEY_X] = false;
+			keyDown[KEY_B] = false;
 			break;
 
 		default:

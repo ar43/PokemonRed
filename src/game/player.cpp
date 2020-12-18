@@ -19,7 +19,7 @@ void Player::update()
 	{
 		if (game.debug.forceExitKeycatcher)
 		{
-			if (input.keyDown[KEY_X])
+			if (input.keyDown[KEY_B])
 				input.keycatchers = KEYCATCHERS_NORMAL;
 		}
 		return;
@@ -80,7 +80,7 @@ void Player::move()
 	{
 		newDir = Direction::RIGHT;
 	}
-	else if (input.keyDown[KEY_Y] && canUse)
+	else if (input.keyDown[KEY_A] && canUse)
 	{
 		canUse = false;
 		requestUse = true;
@@ -93,7 +93,7 @@ void Player::move()
 			sprite->animIndex = 0;
 	}
 
-	if (!input.keyDown[KEY_Y] && !canUse)
+	if (!input.keyDown[KEY_A] && !canUse)
 		canUse = true;
 
 	if (jumping)
@@ -230,7 +230,8 @@ void Player::move()
 	}
 	else if (requestUse)
 	{
-		sign_check();
+		if(game.textbox.canInput)
+			sign_check();
 	}
 }
 

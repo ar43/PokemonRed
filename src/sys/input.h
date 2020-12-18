@@ -13,8 +13,8 @@ enum SomeKeys
 	ARROW_UP,
 	ARROW_LEFT,
 	ARROW_RIGHT,
-	KEY_Y,
-	KEY_X,
+	KEY_A,
+	KEY_B,
 	NUM_KEYS
 };
 
