@@ -8,6 +8,7 @@ void Render::render()
 
     draw_map();
     debug();
+    draw_npcs();
     game.player.render();
     draw_overlay();
     game.textbox.render();
@@ -16,7 +17,13 @@ void Render::render()
     SDL_RenderPresent(sys.getRenderer());
 }
 
-
+void Render::draw_npcs()
+{
+    for (std::vector<Npc>::iterator it = game.world.currentMap->npcs.begin(); it != game.world.currentMap->npcs.end(); ++it)
+    {
+        it->render();
+    }
+}
 
 
 void Render::draw_overlay()
@@ -274,6 +281,157 @@ void Sprite::render_static(int x, int y, Direction dir)
 
     SDL_Rect rectSrc = { 0,offset,16,16 };
     SDL_Rect rectDest = { x,y+y_offset,16,16 };
+
+    if (game.player.warpIndex < 8)
+    {
+        SDL_SetTextureColorMod(texture, 255, 255, 255);
+    }
+    else if (game.player.warpIndex < 16)
+    {
+        SDL_SetTextureColorMod(texture, 16, 16, 16);
+    }
+    else if (game.player.warpIndex < 24)
+    {
+        SDL_SetTextureColorMod(texture, 1, 1, 1);
+    }
+
+    SDL_RenderCopyEx(sys.getRenderer(), texture, &rectSrc, &rectDest, 0.0f, NULL, flip);
+
+}
+
+bool Sprite::is_on_screen(Position *pos)
+{
+    if (!(pos->x >= 0 && pos->x <= GAME_WIDTH - 16 && pos->y >= 0 && pos->y <= GAME_HEIGHT - 16))
+        return false;
+    else
+        return true;
+}
+
+bool Sprite::is_on_screen_strict(Position* pos)
+{
+    if (!(pos->x >= -15 && pos->x <= GAME_WIDTH - 1 && pos->y >= -15 && pos->y <= GAME_HEIGHT - 1))
+        return false;
+    else
+        return true;
+}
+
+void Sprite::render(Position *pos, Direction dir)
+{
+    int offset = 0;
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
+
+    if (!draw)
+        return;
+
+    switch (dir)
+    {
+    case Direction::DOWN:
+    {
+        if (animIndex % 36 < 9)
+        {
+            offset = 0;
+        }
+        else if (animIndex % 36 < 18)
+        {
+            offset = 48;
+        }
+        else if (animIndex % 36 < 27)
+        {
+            offset = 0;
+        }
+        else
+        {
+            offset = 48;
+            flip = SDL_FLIP_HORIZONTAL;
+        }
+        break;
+    }
+    case Direction::LEFT:
+    {
+        if (animIndex % 18 < 9)
+        {
+            offset = 32;
+        }
+        else
+        {
+            offset = 80;
+        }
+        break;
+    }
+    case Direction::RIGHT:
+    {
+        if (animIndex % 18 < 9)
+        {
+            offset = 32;
+        }
+        else
+        {
+            offset = 80;
+        }
+        flip = SDL_FLIP_HORIZONTAL;
+        break;
+    }
+    case Direction::UP:
+    {
+        if (animIndex % 36 < 9)
+        {
+            offset = 16;
+        }
+        else if (animIndex % 36 < 18)
+        {
+            offset = 64;
+        }
+        else if (animIndex % 36 < 27)
+        {
+            offset = 16;
+        }
+        else
+        {
+            offset = 64;
+            flip = SDL_FLIP_HORIZONTAL;
+        }
+        break;
+    }
+    }
+
+    if (size == 1)
+        offset = 0;
+
+    
+    int offset_x = 0;
+    int offset_y = 0;
+    if(game.player.moving) //the weird effect of the game in emulator, emulated
+    {
+        if (game.player.moveIndex % 2 == 1)
+        {
+            switch (game.player.dir)
+            {
+            case Direction::UP:
+            {
+                offset_y -= 2;
+                break;
+            }
+            case Direction::DOWN:
+            {
+                offset_y += 2;
+                break;
+            }
+            case Direction::LEFT:
+            {
+                offset_x -= 2;
+                break;
+            }
+            case Direction::RIGHT:
+            {
+                offset_x += 2;
+                break;
+            }
+            }
+        }
+    }
+
+    SDL_Rect rectSrc = { 0,offset,16,16 };
+    SDL_Rect rectDest = { pos->x-offset_x,pos->y-offset_y,16,16 };
 
     if (game.player.warpIndex < 8)
     {

@@ -14,8 +14,8 @@ public:
 	void loadTexture(std::string textureName, const char* path, bool transparent = false);
 	Texture* getTexture(std::string textureName);
 
-	void loadSprite(std::string textureName, const char* path);
-	Sprite* getSprite(std::string textureName);
+	void loadSprite(std::string spriteName);
+	Sprite* getSprite(std::string spriteName);
 
 	void loadBlockset(std::string blocksetName, std::string tilesetName, const char* path);
 	Blockset* getBlockset(std::string blocksetName);

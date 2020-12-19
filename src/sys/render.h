@@ -11,6 +11,7 @@ public:
 	void debug();
 	void draw_map();
 	void draw_overlay();
+	void draw_npcs();
 private:
 };
 
@@ -24,8 +25,12 @@ public:
 	int h;
 	int size;
 	int animIndex;
-	void render(int x, int y, Direction dir);
+	void render(Position *pos, Direction dir);
 	void render_static(int x, int y, Direction dir);
+	bool is_on_screen(Position *pos);
+	bool is_on_screen_strict(Position* pos);
+	bool draw;
+	
 };
 
 

@@ -14,5 +14,7 @@ namespace util
 	extern int square_to_pixel(int a);
 
 	extern void remove_spaces(char* s);
+
+	extern void to_lower(char* s);
 }
 

@@ -26,13 +26,15 @@ public:
 	int warpIndex;
 	bool jumping;
 	int jumpIndex;
-private:
+	bool moving;
+	int moveIndex;
 	Direction dir;
+private:
+	
 	Position pos;
 	Direction turnDir;
 	int turning;
-	bool moving;
-	int moveIndex;
+	
 	bool warping;
 	void move();
 	void change_map();

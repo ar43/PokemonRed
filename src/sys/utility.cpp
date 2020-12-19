@@ -51,5 +51,13 @@ namespace util
 			}
 		} while (*s++ = *d++);
 	}
+
+	void to_lower(char* s)
+	{
+		for (size_t i = 0; s[i]; i++)
+		{
+			s[i] = (char)tolower((int)s[i]);
+		}
+	}
 	
 }

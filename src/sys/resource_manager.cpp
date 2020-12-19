@@ -68,12 +68,14 @@ void ResourceManager::loadTexture(std::string textureName, const char* path, boo
 	SDL_FreeSurface(sur);
 }
 
-void ResourceManager::loadSprite(std::string spriteName, const char* path)
+void ResourceManager::loadSprite(std::string spriteName)
 {
-	SDL_Surface* sur = IMG_Load(path);
+	std::string path = "./assets/gfx/sprites/" + spriteName + ".png";
+	SDL_Surface* sur = IMG_Load(path.c_str());
 
 	if (!sur) {
-		sys.error(util::va("IMG_Load: %s\n", IMG_GetError()));
+		printf("Failed to load sprite \"%s\"\n", spriteName.c_str());
+		return;
 		// handle error
 	}
 	//SDL_Surface* gsSurface = SDL_ConvertSurfaceFormat(sur,SDL_PIXELFORMAT_ARGB8888,0);
@@ -86,6 +88,7 @@ void ResourceManager::loadSprite(std::string spriteName, const char* path)
 	sprite->h = gsSurface->h;
 	sprite->size = sprite->h / 16;
 	sprite->animIndex = 0;
+	sprite->draw = true;
 
 	sprite->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), sprite->surface);
 	spriteMap[spriteName] = sprite;
@@ -662,7 +665,16 @@ void ResourceManager::loadMap(std::string fileName)
 						//int num = atoi(token);
 						if (i == 0)
 						{
+							size_t k = 0;
+							for (k = 0; token[k]; k++)
+							{
+								if (token[k] == '_')
+									break;
+							}
+							token += k + 1;
+							util::to_lower(token);
 							newNPC.spriteName = token;
+							newNPC.sprite = getSprite(newNPC.spriteName);
 						}
 						else if (i == 1)
 						{

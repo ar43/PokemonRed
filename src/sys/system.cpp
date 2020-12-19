@@ -117,16 +117,10 @@ void System::close()
 
 void System::load_sprites()
 {
-	//todo
-}
-
-void System::load_maps()
-{
-	printf("Loading maps...\n");
+	printf("Loading sprites...\n");
 	DIR* dir;
 	struct dirent* ent;
-	if ((dir = opendir(".\\assets\\data\\map_headers\\")) != NULL) {
-		/* print all the files and directories within directory */
+	if ((dir = opendir(".\\assets\\gfx\\sprites\\")) != NULL) {
 		while ((ent = readdir(dir)) != NULL) {
 			char name[261];
 			SDL_strlcpy(name, ent->d_name, 261);
@@ -140,14 +134,41 @@ void System::load_maps()
 					break;
 				}
 			}
-			//printf("%s\n", name);
+			res.loadSprite(name);
+		}
+		closedir(dir);
+	}
+	else {
+		sys.error("Could not open directory for loading sprites");
+		return;
+	}
+}
+
+void System::load_maps()
+{
+	printf("Loading maps...\n");
+	DIR* dir;
+	struct dirent* ent;
+	if ((dir = opendir(".\\assets\\data\\map_headers\\")) != NULL) {
+		while ((ent = readdir(dir)) != NULL) {
+			char name[261];
+			SDL_strlcpy(name, ent->d_name, 261);
+			if (name[0] == '.')
+				continue;
+			for (size_t i = 0; i < strlen(name); i++)
+			{
+				if (name[i] == '.')
+				{
+					name[i] = 0;
+					break;
+				}
+			}
 			res.loadMap(name);
 		}
 		closedir(dir);
 	}
 	else {
-		/* could not open directory */
-		perror("");
+		sys.error("Could not open directory for loading maps");
 		return;
 	}
 }
@@ -237,7 +258,7 @@ void System::load_blocksets()
 
 void System::load_media()
 {
-	
+	load_sprites();
 	load_tilesets();
 	load_blocksets();
 	load_maps();
@@ -263,7 +284,7 @@ void System::load_media()
 	res.loadTexture("tb6", "assets/gfx/font/textbox/tb6.png");
 	res.loadTexture("tinput", "assets/gfx/font/textbox/input.png");
 
-	res.loadSprite("red", "assets/gfx/sprites/red.png");
-	load_sprites();
+	//res.loadSprite("red", "assets/gfx/sprites/red.png");
+	
 	Constants::font = TTF_OpenFont("assets/gfx/font/pokemon-final.otf", 8);
 }
