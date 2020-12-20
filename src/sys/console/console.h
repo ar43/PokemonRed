@@ -46,10 +46,13 @@ public:
 	Uint32 lineCount;
 	Uint32 scrollIndex;
 
+	
+
 	Cmds cmds;
 
 private:
 	bool queueUpdate;
-	
+	Texture bufferTex;
+	Texture arrow;
 	
 };

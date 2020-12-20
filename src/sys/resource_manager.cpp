@@ -52,7 +52,7 @@ void ResourceManager::setObject(std::string name, Object* pointer)
 
 Object* ResourceManager::getObject(std::string name)
 {
-	if (!(objectMap.find("name") == objectMap.end()))
+	if (!(objectMap.find(name) == objectMap.end()))
 	{
 		return objectMap[name];
 	}

@@ -59,6 +59,8 @@ void System::init()
 			{
 				sys.error("Font error");
 			}
+			sys.console.init();
+			sys.console.cmds.init();
 		}
 	}
 

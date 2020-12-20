@@ -15,8 +15,6 @@
 #include "timer.h"
 #include "utility.h"
 #include "frame.h"
-#include "console/console.h"
-#include "console/cmds.h"
 #include "input.h"
 #include "render.h"
 #include "../game/game.h"
@@ -32,6 +30,8 @@
 #include "../game/npc.h"
 #include "../game/trainer.h"
 #include "../game/item.h"
+#include "console/console.h"
+#include "console/cmds.h"
 
 #define GAME_WIDTH 160
 #define GAME_HEIGHT 144

@@ -4,7 +4,7 @@ void Console::init()
 {
 	memset(buffer, 0, sizeof(buffer));
 	cursor.blinkTime = 500;
-	//res.loadText("c_arrow", ">", 24, 0, 6);
+	//updateRenderer((char*)">", &arrow);
 	//consoleInfo.loadFromRenderedTextBlended("The Legend of Zelda SDL console", game.colors[COLOR_CONSOLE], tex.fonts.con);
 	//res.loadText("c_consoleinfo", "OGL_Test console", 24, 1920 - 230, 400);
 	queueUpdate = false;
@@ -63,61 +63,78 @@ void Console::renderText()
 	*/
 }
 
+void Com_InitRect(SDL_Rect* rect, int x, int y, int w, int h)
+{
+	rect->y = y;
+	rect->x = x;
+	rect->w = w;
+	rect->h = h;
+}
+
+void R_DrawRect(int x, int y, int w, int h, int r,int g,int b)
+{
+	SDL_Rect rect;
+	Com_InitRect(&rect, x, y, w, h);
+	SDL_SetRenderDrawColor(sys.getRenderer(), r, g, b, 0xFF);
+	SDL_RenderFillRect(sys.getRenderer(), &rect);
+}
+
 void Console::render()
 {
-	/*
 	if (input.keycatchers == KEYCATCHERS_CONSOLE)
 	{
-		glMatrixMode(GL_PROJECTION);
-		glPushMatrix();
-		glLoadIdentity();
-		glOrtho(0.0, sys.screen.width, sys.screen.height, 0.0, -1.0, 10.0);
-		glMatrixMode(GL_MODELVIEW);
-		//glPushMatrix();        ----Not sure if I need this
-		glLoadIdentity();
-		glDisable(GL_CULL_FACE);
-		glDisable(GL_DEPTH_TEST);
 		
-
-		rend.drawRect(0, 1080-420, 1920, 420, 0,0,0); //the console
-		rend.drawRect(0, 1080 - 420, 1920, 25, 48, 48, 48);
-		rend.drawRect(0, 1080 - 26, 1920, 2, 0xc0, 0xc0, 0xc0);
-		cursor.render();
-		//R_DrawRect(0, 1080 - 400, 1920, 32, 48.0f,48.0f,48.0f); //upper gray part
-		//R_DrawRect(0, SCREEN_HEIGHT - 21, SCREEN_WIDTH, 1, COLOR_WHITE); //line above input
-
+		if (queueUpdate && buffer[0])
+		{
+			if(buffer[strlen(buffer) - 1] != '\n')
+				printf("%c", buffer[strlen(buffer) - 1]);
+			queueUpdate = false;
+		}
 		
+		R_DrawRect(0, GAME_HEIGHT - 55, GAME_WIDTH, 400, 0,0,0); //the console
+		R_DrawRect(0, GAME_HEIGHT - 55, GAME_WIDTH, 5, 48,48,48); //upper gray part
+		R_DrawRect(0, GAME_HEIGHT - 12, GAME_WIDTH, 1, 255,255,255); //line above input
+		/*
+		arrow.render(1, GAME_HEIGHT - 12);
+		//consoleInfo.render(SCREEN_WIDTH - consoleInfo.getWidth() - 10, SCREEN_HEIGHT - 400);
+		//cursor.render();
 
-		glMatrixMode(GL_PROJECTION);
-		glPopMatrix();
-		glMatrixMode(GL_MODELVIEW);
-		glEnable(GL_DEPTH_TEST);
+		for (std::vector<ConsoleLine>::size_type i = 0; i < NUM_CONSOLE_LINES; i++)
+		{
+			if (i + scrollIndex < lines.size())
+			{
+				//lines.at(i + scrollIndex)->textTex.render(0, SCREEN_HEIGHT - (i + 2) * 20);
+			}
+			else
+			{
+				break;
+			}
+		}
+		*/
+		//if (buffer[0])
+			//bufferTex.render(12, GAME_HEIGHT - 12);
 	}
-	*/
 }
 
 void Cursor::render()
 {
-	/*
-	if (blink.tick())
-	{
-		show = !show;
-	}
+	//if (game.currentTime - lastBlink >= blinkTime)
+	//{
+	//	show = !show;
+	//	lastBlink = game.currentTime;
+	//}
 
-	if(show)
-	{
-		if (!sys.console.buffer[0])
-		{
-			rend.drawRect(15, 1080-3, 7, 1, 0xc0, 0xc0, 0xc0);
-		}
-		else
-		{
-			//FTBBox box = res.getFont("main")->BBox(sys.console.buffer,-1);
-			res.getFont("main")->FaceSize(24);
-			rend.drawRect(15 + res.getFont("main")->Advance(sys.console.buffer, -1), 1080 - 3, 7, 1, 0xc0, 0xc0, 0xc0);
-		}
-	}
-	*/
+	//if (show)
+	//{
+	//	if (!sys.console.buffer[0])
+	//	{
+		//	R_DrawRect(console.arrow.getWidth() - 1, SCREEN_HEIGHT - 3, 7, 1, COLOR_CONSOLE);
+	//	}
+		//else
+	//	{
+		//	R_DrawRect(console.arrow.getWidth() + console.bufferTex.getWidth(), SCREEN_HEIGHT - 3, 7, 1, COLOR_CONSOLE);
+	//	}
+	//}
 }
 
 ConsoleLine::ConsoleLine(char *pText)
@@ -160,6 +177,7 @@ void Console::addLine(char *text, bool input)
 		lines.insert(it, std::make_unique<ConsoleLine>(text,true));
 	else
 		lines.insert(it, std::make_unique<ConsoleLine>(text));
+	printf("\nCONSOLE INPUT: %s\n", text);
 }
 
 void QDECL Console::print(const char *fmt, ...) 
@@ -214,6 +232,7 @@ void Console::handleInput(SDL_Event* e)
 			memset(buffer, 0, sizeof(buffer));
 			scrollIndex = 0;
 		}
+		/*
 		else if (e->key.keysym.sym == SDLK_UP && history.size() > 0)
 		{
 			
@@ -224,7 +243,7 @@ void Console::handleInput(SDL_Event* e)
 			//Sys_Print(va("%i", historypointer));
 			queueUpdate = true;
 		}
-		else if (e->key.keysym.sym == SDLK_DOWN && historypointer < history.size() - 1)
+		else if (e->key.keysym.sym == SDLK_DOWN && history.at(historypointer) != nullptr)
 		{
 			
 			historypointer++;
@@ -232,6 +251,7 @@ void Console::handleInput(SDL_Event* e)
 			SDL_strlcpy(buffer, history.at(historypointer), MAX_CONSOLE_TEXT);
 			queueUpdate = true;
 		}
+		*/
 	}
 	else if (e->type == SDL_MOUSEWHEEL)
 	{

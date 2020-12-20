@@ -16,6 +16,12 @@ namespace Cmd
 		}
 	}
 
+	void set_active()
+	{
+
+		game.world.set_active(sys.console.cmds.getArgv(1), atoi(sys.console.cmds.getArgv(2)));
+	}
+
 	/*
 	void noclip()
 	{
@@ -35,6 +41,7 @@ void Cmds::init()
 {
 	add("test", Cmd::test);
 	add("cmd_list", Cmd::cmd_list);
+	add("set_active", Cmd::set_active);
 }
 
 void Cmds::handle(char *text_in)
