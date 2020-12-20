@@ -8,6 +8,7 @@ public:
 	Position pos;
 	std::string spriteName;
 	Sprite* sprite;
+	bool spriteDraw;
 	int textID;
 	bool active;
 

@@ -29,7 +29,6 @@ public:
 	void render_static(int x, int y, Direction dir);
 	bool is_on_screen(Position *pos);
 	bool is_on_screen_strict(Position* pos);
-	bool draw;
 	
 };
 

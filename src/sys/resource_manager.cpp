@@ -38,6 +38,31 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 	SDL_FreeSurface(sur);
 }
 
+void ResourceManager::setObject(std::string name, Object* pointer)
+{
+	if (!(objectMap.find("name") == objectMap.end()))
+	{ 
+		sys.error("setObject: object is already in the map");
+	}
+	else
+	{
+		objectMap[name] = pointer;
+	}
+}
+
+Object* ResourceManager::getObject(std::string name)
+{
+	if (!(objectMap.find("name") == objectMap.end()))
+	{
+		return objectMap[name];
+	}
+	else
+	{
+		sys.error(util::va("can not find object in the object map: %s", name.c_str()));
+		return nullptr;
+	}
+}
+
 void ResourceManager::loadTexture(std::string textureName, const char* path, bool transparent)
 {
 	SDL_Surface* sur = IMG_Load(path);
@@ -88,7 +113,6 @@ void ResourceManager::loadSprite(std::string spriteName)
 	sprite->h = gsSurface->h;
 	sprite->size = sprite->h / 16;
 	sprite->animIndex = 0;
-	sprite->draw = true;
 
 	sprite->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), sprite->surface);
 	spriteMap[spriteName] = sprite;

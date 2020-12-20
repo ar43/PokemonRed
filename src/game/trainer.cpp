@@ -17,14 +17,14 @@ void Trainer::update()
 	//system to mimic game's sprite rendering system.
 	if (!sprite->is_on_screen_strict(&loc))
 	{
-		sprite->draw = false;
+		spriteDraw = false;
 	}
-	else if (sprite->draw == false && sprite->is_on_screen(&loc))
+	else if (spriteDraw == false && sprite->is_on_screen(&loc))
 	{
-		sprite->draw = true;
+		spriteDraw = true;
 	}
 
-	if (sprite->draw)
+	if (spriteDraw)
 	{
 		//logic, movement etc
 	}
@@ -37,7 +37,8 @@ void Trainer::render()
 
 	Position loc;
 	get_world_pos(&loc);
-	sprite->render(&loc, Direction::DOWN);
+	if (spriteDraw)
+		sprite->render(&loc, Direction::DOWN);
 }
 
 void Trainer::init()

@@ -65,6 +65,7 @@ private:
 	void load_tilesets();
 	void load_blocksets();
 	void load_sprites();
+	void hide_show_objects();
 };
 
 extern System sys;

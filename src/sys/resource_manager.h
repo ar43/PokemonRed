@@ -22,6 +22,9 @@ public:
 
 	void loadMap(std::string fileName);
 	Map* getMap(std::string mapName);
+
+	void setObject(std::string name, Object* pointer);
+	Object* getObject(std::string);
 	
 private:
 	std::map<std::string, Tileset*> tilesetMap;
@@ -29,4 +32,5 @@ private:
 	std::map<std::string, Sprite*> spriteMap;
 	std::map<std::string, Blockset*> blocksetMap;
 	std::map<std::string, Map*> mapMap;
+	std::map<std::string, Object*> objectMap;
 };

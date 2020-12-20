@@ -256,6 +256,106 @@ void System::load_blocksets()
 	res.loadBlockset("plateau", "plateau", "assets/data/blocksets/plateau.bst");
 }
 
+void System::hide_show_objects()
+{
+	char string[1024] = { 0 };
+	FILE *fp = fopen("assets/data/misc/hide_show_data.asm", "r");
+	if (!fp)
+		sys.error("Cant find hide&show data");
+	int l = 0;
+	int counter = 0;
+	while (fp && fgets(string, 1024, fp)) {
+		if (l < 260)
+		{
+			l++;
+			continue;
+		}
+		char* substring = strstr(string, "db");
+		if (substring == nullptr)
+		{
+			l++;
+			continue;
+		}
+
+		char* token;
+		token = strtok(substring, ",");
+		int i = 0;
+		Map* map = nullptr;
+		unsigned int num = 0;
+		while (token != NULL) 
+		{
+			if (i < 3)
+			{
+				if (i == 0)
+				{
+					char* pnt = SDL_strstr(token, "$FF");
+					if (pnt)
+						return;
+
+					pnt = SDL_strstr(token, "db ");
+					if (pnt)
+					{
+						pnt += 3;
+						util::cleanStr(pnt);
+						util::to_lower(pnt);
+						map = res.getMap(pnt);
+					}
+				}
+				else if (i == 1)
+				{
+					char* pnt = SDL_strstr(token, "$");
+					if (pnt)
+					{
+						pnt += 1;
+						num = strtol(pnt, NULL, 16);
+					}
+				}
+				else
+				{
+					char* pnt = SDL_strstr(token, "SHOW");
+					if (num == 0)
+						sys.error("Invalid num on show&hide");
+
+					num--;
+
+					if (map == nullptr || num >= map->objects.size())
+					{
+						res.setObject(Constants::HS::table[counter], nullptr);
+						counter++;
+						break;
+					}
+
+					Object* obj = map->objects.at(num);
+
+					res.setObject(Constants::HS::table[counter], obj);
+					counter++;
+
+					if(!game.debug.showAllObjects)
+					{ 
+						if (pnt)
+						{
+							obj->active = true;
+						}
+						else
+						{
+							obj->active = false;
+						}
+					}
+					
+				}
+				//printf("%d\n", num);
+			}
+
+			token = strtok(NULL, ",");
+			i++;
+		}
+
+		l++;
+	}
+	if (fp)
+		fclose(fp);
+}
+
 void System::load_media()
 {
 	load_sprites();
@@ -287,4 +387,6 @@ void System::load_media()
 	//res.loadSprite("red", "assets/gfx/sprites/red.png");
 	
 	Constants::font = TTF_OpenFont("assets/gfx/font/pokemon-final.otf", 8);
+
+	hide_show_objects();
 }

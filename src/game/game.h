@@ -13,6 +13,7 @@ struct Debug
 	bool noclip = false;
 	bool darken = false;
 	bool forceExitKeycatcher = true;
+	bool showAllObjects = false;
 };
 
 class Game

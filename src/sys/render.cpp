@@ -301,7 +301,7 @@ void Sprite::render_static(int x, int y, Direction dir)
 
 bool Sprite::is_on_screen(Position *pos)
 {
-    if (!(pos->x >= 0 && pos->x <= GAME_WIDTH - 16 && pos->y >= 0 && pos->y <= GAME_HEIGHT - 16))
+    if (!(pos->x >= 0 && pos->x <= GAME_WIDTH - 16 && pos->y >= -4 && pos->y <= GAME_HEIGHT - 12))
         return false;
     else
         return true;
@@ -309,7 +309,7 @@ bool Sprite::is_on_screen(Position *pos)
 
 bool Sprite::is_on_screen_strict(Position* pos)
 {
-    if (!(pos->x >= -15 && pos->x <= GAME_WIDTH - 1 && pos->y >= -15 && pos->y <= GAME_HEIGHT - 1))
+    if (!(pos->x >= -15 && pos->x <= GAME_WIDTH - 1 && pos->y >= -15 && pos->y <= GAME_HEIGHT - 5))
         return false;
     else
         return true;
@@ -319,9 +319,6 @@ void Sprite::render(Position *pos, Direction dir)
 {
     int offset = 0;
     SDL_RendererFlip flip = SDL_FLIP_NONE;
-
-    if (!draw)
-        return;
 
     switch (dir)
     {
