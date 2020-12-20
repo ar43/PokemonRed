@@ -28,7 +28,10 @@
 #include "../game/sign.h"
 #include "../game/textbox.h"
 #include "../game/text.h"
+#include "../game/object.h"
 #include "../game/npc.h"
+#include "../game/trainer.h"
+#include "../game/item.h"
 
 #define GAME_WIDTH 160
 #define GAME_HEIGHT 144

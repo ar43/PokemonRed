@@ -14,7 +14,7 @@ void Game::update()
 {
 	player.update();
 	
-	for (std::vector<Npc>::iterator it = game.world.currentMap->npcs.begin(); it != game.world.currentMap->npcs.end(); ++it)
+	for (auto it : game.world.currentMap->objects)
 	{
 		it->update();
 	}

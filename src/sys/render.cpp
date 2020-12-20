@@ -8,7 +8,7 @@ void Render::render()
 
     draw_map();
     debug();
-    draw_npcs();
+    draw_objects();
     game.player.render();
     draw_overlay();
     game.textbox.render();
@@ -17,9 +17,9 @@ void Render::render()
     SDL_RenderPresent(sys.getRenderer());
 }
 
-void Render::draw_npcs()
+void Render::draw_objects()
 {
-    for (std::vector<Npc>::iterator it = game.world.currentMap->npcs.begin(); it != game.world.currentMap->npcs.end(); ++it)
+    for (auto it : game.world.currentMap->objects)
     {
         it->render();
     }

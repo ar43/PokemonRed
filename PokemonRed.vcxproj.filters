@@ -31,6 +31,12 @@
     <Filter Include="Header Files\game">
       <UniqueIdentifier>{386d577e-febf-4e56-bf98-4820dc00d9dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\game\object">
+      <UniqueIdentifier>{5cbc312c-0184-4737-8fc7-1cf787592833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game\objects">
+      <UniqueIdentifier>{240c7ffe-20f2-47ab-9acd-4507a2113ad6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -87,8 +93,17 @@
     <ClCompile Include="src\game\text.cpp">
       <Filter>Source Files\game</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\object.cpp">
+      <Filter>Source Files\game\object</Filter>
+    </ClCompile>
     <ClCompile Include="src\game\npc.cpp">
-      <Filter>Source Files\game</Filter>
+      <Filter>Source Files\game\object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\trainer.cpp">
+      <Filter>Source Files\game\object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\item.cpp">
+      <Filter>Source Files\game\object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,7 +162,16 @@
       <Filter>Header Files\game</Filter>
     </ClInclude>
     <ClInclude Include="src\game\npc.h">
-      <Filter>Header Files\game</Filter>
+      <Filter>Header Files\game\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\object.h">
+      <Filter>Header Files\game\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\trainer.h">
+      <Filter>Header Files\game\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\item.h">
+      <Filter>Header Files\game\objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

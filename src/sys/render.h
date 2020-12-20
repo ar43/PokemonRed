@@ -11,7 +11,7 @@ public:
 	void debug();
 	void draw_map();
 	void draw_overlay();
-	void draw_npcs();
+	void draw_objects();
 private:
 };
 

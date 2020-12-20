@@ -1,21 +1,12 @@
-#include "../sys/system.h"
+#include "..\sys\system.h"
 
-
-Npc::Npc()
+Trainer::Trainer()
 {
 	init();
 }
 
 
-void Npc::init()
-{
-	waiting = true;
-	displacement.x = 0;
-	displacement.y = 0;
-}
-
-
-void Npc::update()
+void Trainer::update()
 {
 	if (!active)
 		return;
@@ -25,10 +16,10 @@ void Npc::update()
 
 	//system to mimic game's sprite rendering system.
 	if (!sprite->is_on_screen_strict(&loc))
-	{ 
+	{
 		sprite->draw = false;
 	}
-	else if(sprite->draw == false && sprite->is_on_screen(&loc))
+	else if (sprite->draw == false && sprite->is_on_screen(&loc))
 	{
 		sprite->draw = true;
 	}
@@ -39,7 +30,7 @@ void Npc::update()
 	}
 }
 
-void Npc::render()
+void Trainer::render()
 {
 	if (!active)
 		return;
@@ -47,4 +38,11 @@ void Npc::render()
 	Position loc;
 	get_world_pos(&loc);
 	sprite->render(&loc, Direction::DOWN);
+}
+
+void Trainer::init()
+{
+	waiting = true;
+	displacement.x = 0;
+	displacement.y = 0;
 }

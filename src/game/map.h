@@ -154,7 +154,7 @@ public:
 	std::vector<Warp> warps;
 	std::vector<Sign> signs;
 	std::vector<Textset> texts;
-	std::vector<Npc> npcs;
+	std::vector<Object*> objects;
 	void render(int x, int y);
 };
 

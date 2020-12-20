@@ -144,12 +144,15 @@
   <ItemGroup>
     <ClCompile Include="src\game\constants.cpp" />
     <ClCompile Include="src\game\game.cpp" />
+    <ClCompile Include="src\game\item.cpp" />
     <ClCompile Include="src\game\map.cpp" />
     <ClCompile Include="src\game\npc.cpp" />
+    <ClCompile Include="src\game\object.cpp" />
     <ClCompile Include="src\game\player.cpp" />
     <ClCompile Include="src\game\sign.cpp" />
     <ClCompile Include="src\game\text.cpp" />
     <ClCompile Include="src\game\textbox.cpp" />
+    <ClCompile Include="src\game\trainer.cpp" />
     <ClCompile Include="src\game\world.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\sys\console\cmds.cpp" />
@@ -166,12 +169,15 @@
     <ClInclude Include="src\game\constants.h" />
     <ClInclude Include="src\game\enums.h" />
     <ClInclude Include="src\game\game.h" />
+    <ClInclude Include="src\game\item.h" />
     <ClInclude Include="src\game\map.h" />
     <ClInclude Include="src\game\npc.h" />
+    <ClInclude Include="src\game\object.h" />
     <ClInclude Include="src\game\player.h" />
     <ClInclude Include="src\game\sign.h" />
     <ClInclude Include="src\game\text.h" />
     <ClInclude Include="src\game\textbox.h" />
+    <ClInclude Include="src\game\trainer.h" />
     <ClInclude Include="src\game\world.h" />
     <ClInclude Include="src\sys\console\cmds.h" />
     <ClInclude Include="src\sys\console\console.h" />

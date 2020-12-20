@@ -654,7 +654,7 @@ void ResourceManager::loadMap(std::string fileName)
 			
 			if (type == 0)
 			{
-				Npc newNPC;
+				Npc *newNPC = new Npc();
 				char* token;
 				token = strtok(substring, ",");
 				int i = 0;
@@ -673,55 +673,55 @@ void ResourceManager::loadMap(std::string fileName)
 							}
 							token += k + 1;
 							util::to_lower(token);
-							newNPC.spriteName = token;
-							newNPC.sprite = getSprite(newNPC.spriteName);
+							newNPC->spriteName = token;
+							newNPC->sprite = getSprite(newNPC->spriteName);
 						}
 						else if (i == 1)
 						{
 							int num = atoi(token);
-							newNPC.pos.x = num;
+							newNPC->pos.x = num;
 						}
 						else if(i == 2)
 						{
 							int num = atoi(token);
-							newNPC.pos.y = num;
+							newNPC->pos.y = num;
 						}
 						else if (i == 3)
 						{
 							if (SDL_strstr(token, "WALK"))
-								newNPC.movMode = NpcMovementMode::WALK;
+								newNPC->movMode = NpcMovementMode::WALK;
 							else if (SDL_strstr(token, "STAY"))
-								newNPC.movMode = NpcMovementMode::STAY;
+								newNPC->movMode = NpcMovementMode::STAY;
 							else
 								sys.error("bad movMove on parse");
 						}
 						else if (i == 4)
 						{
 							if (SDL_strstr(token, "ANY_DIR"))
-								newNPC.movDir = NpcMovementDir::ANY_DIR;
+								newNPC->movDir = NpcMovementDir::ANY_DIR;
 							else if (SDL_strstr(token, "UP_DOWN"))
-								newNPC.movDir = NpcMovementDir::UP_DOWN;
+								newNPC->movDir = NpcMovementDir::UP_DOWN;
 							else if (SDL_strstr(token, "LEFT_RIGHT"))
-								newNPC.movDir = NpcMovementDir::LEFT_RIGHT;
+								newNPC->movDir = NpcMovementDir::LEFT_RIGHT;
 							else if (SDL_strstr(token, "DOWN"))
-								newNPC.movDir = NpcMovementDir::DOWN;
+								newNPC->movDir = NpcMovementDir::DOWN;
 							else if (SDL_strstr(token, "UP"))
-								newNPC.movDir = NpcMovementDir::UP;
+								newNPC->movDir = NpcMovementDir::UP;
 							else if (SDL_strstr(token, "LEFT"))
-								newNPC.movDir = NpcMovementDir::LEFT;
+								newNPC->movDir = NpcMovementDir::LEFT;
 							else if (SDL_strstr(token, "RIGHT"))
-								newNPC.movDir = NpcMovementDir::RIGHT;
+								newNPC->movDir = NpcMovementDir::RIGHT;
 							else if (SDL_strstr(token, "NONE"))
-								newNPC.movDir = NpcMovementDir::NONE;
+								newNPC->movDir = NpcMovementDir::NONE;
 							else if (SDL_strstr(token, "BOULDER_MOVEMENT_BYTE_2"))
-								newNPC.movDir = NpcMovementDir::BOULDER_MOVEMENT_BYTE_2;
+								newNPC->movDir = NpcMovementDir::BOULDER_MOVEMENT_BYTE_2;
 							else
 								sys.error("bad movDir on parse");
 						}
 						else if (i == 5)
 						{
 							int num = atoi(token);
-							newNPC.textID = num;
+							newNPC->textID = num;
 						}
 						//printf("%d\n", num);
 					}
@@ -729,7 +729,187 @@ void ResourceManager::loadMap(std::string fileName)
 					token = strtok(NULL, ",");
 					i++;
 				}
-				map->npcs.push_back(newNPC);
+				map->objects.push_back(newNPC);
+			}
+			else if (type == 1)
+			{
+				Item* newItem = new Item();
+				char* token;
+				token = strtok(substring, ",");
+				int i = 0;
+				/* walk through other tokens */
+				while (token != NULL) {
+					if (i <= 6)
+					{
+						//int num = atoi(token);
+						if (i == 0)
+						{
+							size_t k = 0;
+							for (k = 0; token[k]; k++)
+							{
+								if (token[k] == '_')
+									break;
+							}
+							token += k + 1;
+							util::to_lower(token);
+							newItem->spriteName = token;
+							newItem->sprite = getSprite(newItem->spriteName);
+						}
+						else if (i == 1)
+						{
+							int num = atoi(token);
+							newItem->pos.x = num;
+						}
+						else if (i == 2)
+						{
+							int num = atoi(token);
+							newItem->pos.y = num;
+						}
+						else if (i == 3)
+						{
+							if (SDL_strstr(token, "WALK"))
+								newItem->movMode = NpcMovementMode::WALK;
+							else if (SDL_strstr(token, "STAY"))
+								newItem->movMode = NpcMovementMode::STAY;
+							else
+								sys.error("bad movMove on parse");
+						}
+						else if (i == 4)
+						{
+							if (SDL_strstr(token, "ANY_DIR"))
+								newItem->movDir = NpcMovementDir::ANY_DIR;
+							else if (SDL_strstr(token, "UP_DOWN"))
+								newItem->movDir = NpcMovementDir::UP_DOWN;
+							else if (SDL_strstr(token, "LEFT_RIGHT"))
+								newItem->movDir = NpcMovementDir::LEFT_RIGHT;
+							else if (SDL_strstr(token, "DOWN"))
+								newItem->movDir = NpcMovementDir::DOWN;
+							else if (SDL_strstr(token, "UP"))
+								newItem->movDir = NpcMovementDir::UP;
+							else if (SDL_strstr(token, "LEFT"))
+								newItem->movDir = NpcMovementDir::LEFT;
+							else if (SDL_strstr(token, "RIGHT"))
+								newItem->movDir = NpcMovementDir::RIGHT;
+							else if (SDL_strstr(token, "NONE"))
+								newItem->movDir = NpcMovementDir::NONE;
+							else if (SDL_strstr(token, "BOULDER_MOVEMENT_BYTE_2"))
+								newItem->movDir = NpcMovementDir::BOULDER_MOVEMENT_BYTE_2;
+							else
+								sys.error("bad movDir on parse");
+						}
+						else if (i == 5)
+						{
+							int num = atoi(token);
+							newItem->textID = num;
+						}
+						else if (i == 6)
+						{
+							size_t k = 0;
+							for (k = 0; token[k]; k++)
+							{
+								if (token[k] == '\n')
+								{
+									token[k] = 0;
+									break;
+								}
+							}
+							newItem->itemID = token;
+						}
+						//printf("%d\n", num);
+					}
+
+					token = strtok(NULL, ",");
+					i++;
+				}
+				map->objects.push_back(newItem);
+			}
+			else if (type == 2)
+			{
+				Trainer* newNPC = new Trainer();
+				char* token;
+				token = strtok(substring, ",");
+				int i = 0;
+				/* walk through other tokens */
+				while (token != NULL) {
+					if (i <= 7)
+					{
+						//int num = atoi(token);
+						if (i == 0)
+						{
+							size_t k = 0;
+							for (k = 0; token[k]; k++)
+							{
+								if (token[k] == '_')
+									break;
+							}
+							token += k + 1;
+							util::to_lower(token);
+							newNPC->spriteName = token;
+							newNPC->sprite = getSprite(newNPC->spriteName);
+						}
+						else if (i == 1)
+						{
+							int num = atoi(token);
+							newNPC->pos.x = num;
+						}
+						else if (i == 2)
+						{
+							int num = atoi(token);
+							newNPC->pos.y = num;
+						}
+						else if (i == 3)
+						{
+							if (SDL_strstr(token, "WALK"))
+								newNPC->movMode = NpcMovementMode::WALK;
+							else if (SDL_strstr(token, "STAY"))
+								newNPC->movMode = NpcMovementMode::STAY;
+							else
+								sys.error("bad movMove on parse");
+						}
+						else if (i == 4)
+						{
+							if (SDL_strstr(token, "ANY_DIR"))
+								newNPC->movDir = NpcMovementDir::ANY_DIR;
+							else if (SDL_strstr(token, "UP_DOWN"))
+								newNPC->movDir = NpcMovementDir::UP_DOWN;
+							else if (SDL_strstr(token, "LEFT_RIGHT"))
+								newNPC->movDir = NpcMovementDir::LEFT_RIGHT;
+							else if (SDL_strstr(token, "DOWN"))
+								newNPC->movDir = NpcMovementDir::DOWN;
+							else if (SDL_strstr(token, "UP"))
+								newNPC->movDir = NpcMovementDir::UP;
+							else if (SDL_strstr(token, "LEFT"))
+								newNPC->movDir = NpcMovementDir::LEFT;
+							else if (SDL_strstr(token, "RIGHT"))
+								newNPC->movDir = NpcMovementDir::RIGHT;
+							else if (SDL_strstr(token, "NONE"))
+								newNPC->movDir = NpcMovementDir::NONE;
+							else if (SDL_strstr(token, "BOULDER_MOVEMENT_BYTE_2"))
+								newNPC->movDir = NpcMovementDir::BOULDER_MOVEMENT_BYTE_2;
+							else
+								sys.error("bad movDir on parse");
+						}
+						else if (i == 5)
+						{
+							int num = atoi(token);
+							newNPC->textID = num;
+						}
+						else if (i == 6)
+						{
+							newNPC->trainerClass = token; //needs testing
+						}
+						else if (i == 7)
+						{
+							int num = atoi(token);
+							newNPC->rosterID = num;
+						}
+						//printf("%d\n", num);
+					}
+
+					token = strtok(NULL, ",");
+					i++;
+				}
+				map->objects.push_back(newNPC);
 			}
 		}
 		l++;

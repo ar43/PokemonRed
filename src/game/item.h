@@ -1,14 +1,13 @@
 #pragma once
-
 #include "object.h"
 
-class Npc : public Object
+class Item : public Object 
 {
 private:
-	Position displacement;
-	bool waiting;
 public:
-	Npc();
+	Item();
+
+	std::string itemID;
 
 	void update();
 	void init();

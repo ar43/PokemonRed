@@ -60,4 +60,9 @@ namespace Constants
 		extern std::vector<Uint8> left;
 		extern std::vector<Uint8> right;
 	}
+
+	namespace HS
+	{
+		extern std::string table[];
+	}
 }
