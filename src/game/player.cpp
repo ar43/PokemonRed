@@ -278,33 +278,6 @@ void Player::sign_check()
 
 }
 
-bool Player::get_block(Position* p_pos, Map* currMap, Block*& block, int* i)
-{
-
-	//we are not out of bounds, check for current map
-	size_t index = (p_pos->y / 32) * currMap->width + p_pos->x / 32;
-	if (index < 0 || index >= currMap->blocks.size() || p_pos->x < 0 || p_pos->x >= currMap->width * 32) //else it would throw error
-		return false;
-
-	block = &currMap->blockset->blocks[currMap->blocks[index]];
-
-	if (p_pos->x % 32 == 0)
-	{
-		if (p_pos->y % 32 == 0)
-			*i = 0;
-		else
-			*i = 2;
-	}
-	else
-	{
-		if (p_pos->y % 32 == 0)
-			*i = 1;
-		else
-			*i = 3;
-	}
-	return true;
-}
-
 bool Player::collision_check()
 {
 
@@ -318,7 +291,7 @@ bool Player::collision_check()
 	Block* currBlock = nullptr;
 	int iOld;
 
-	if (!get_block(&pos, currMap, currBlock, &iOld))
+	if (!util::get_block(&pos, currMap, currBlock, &iOld))
 		return true;
 	
 
@@ -409,7 +382,7 @@ bool Player::collision_check()
 
 	Block* newBlock = nullptr;
 	int i = 0;
-	if (!get_block(&newpos, currMap, newBlock, &i))
+	if (!util::get_block(&newpos, currMap, newBlock, &i))
 		return true;
 
 	//ledge jumping (check "from" tile and "to" tile)
@@ -468,31 +441,38 @@ void Player::change_map()
 {
 	Position newpos;
 	getSquarePosition(&newpos);
+	bool changed = false;
 	if (newpos.x < 0)
 	{
 		pos.y -= util::square_to_pixel(game.world.currentMap->connection.westOffset * 2);
 		game.world.currentMap = res.getMap(game.world.currentMap->connection.west);
 		pos.x = util::square_to_pixel(game.world.currentMap->width * 2 - 1);
-
+		changed = true;
 	}
 	else if (newpos.x >= game.world.currentMap->width * 2)
 	{
 		pos.y -= util::square_to_pixel(game.world.currentMap->connection.eastOffset * 2);
 		game.world.currentMap = res.getMap(game.world.currentMap->connection.east);
 		pos.x = util::square_to_pixel(0);
+		changed = true;
 	}
 	else if (newpos.y < 0)
 	{
 		pos.x -= util::square_to_pixel(game.world.currentMap->connection.northOffset * 2);
 		game.world.currentMap = res.getMap(game.world.currentMap->connection.north);
 		pos.y = util::square_to_pixel(game.world.currentMap->height * 2 - 1);
+		changed = true;
 	}
 	else if (newpos.y >= game.world.currentMap->height * 2)
 	{
 		pos.x -= util::square_to_pixel(game.world.currentMap->connection.southOffset * 2);
 		game.world.currentMap = res.getMap(game.world.currentMap->connection.south);
 		pos.y = util::square_to_pixel(0);
+		changed = true;
 	}
+
+	if (changed)
+		game.world.on_map_change();
 }
 
 void Player::warp_check(bool carpet)
@@ -506,7 +486,7 @@ void Player::warp_check(bool carpet)
 
 	int i;
 
-	if (!get_block(&newpos, currMap, newBlock, &i))
+	if (!util::get_block(&newpos, currMap, newBlock, &i))
 		return;
 
 	bool check;
@@ -571,4 +551,5 @@ void Player::warp()
 	}
 	warpIndex = 0;
 	warping = false;
+	game.world.on_map_change();
 }

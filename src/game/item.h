@@ -12,4 +12,5 @@ public:
 	void update();
 	void init();
 	void render();
+	void get_world_pos(Position* pnt);
 };

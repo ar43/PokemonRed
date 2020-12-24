@@ -44,6 +44,6 @@ private:
 	std::string lastMap;
 	Warp* nextWarp;
 	bool canUse;
-	bool get_block(Position* p_pos, Map* currMap, Block*& block, int* i);
+	//bool get_block(Position* p_pos, Map* currMap, Block*& block, int* i);
 	void sign_check();
 };

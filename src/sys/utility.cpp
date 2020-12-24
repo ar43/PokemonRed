@@ -1,4 +1,5 @@
 #include "system.h"
+#include <cassert>
 
 namespace util
 {
@@ -58,6 +59,42 @@ namespace util
 		{
 			s[i] = (char)tolower((int)s[i]);
 		}
+	}
+
+	int random(int min, int max)
+	{
+		assert("min < max");
+		int n = max - min;
+		int ret = (rand() % (n + 1)) + min;
+		assert("ret >= min && ret <= max");
+		return ret;
+	}
+
+	bool get_block(Position* p_pos, Map* currMap, Block*& block, int* i)
+	{
+
+		//we are not out of bounds, check for current map
+		size_t index = (p_pos->y / 32) * currMap->width + p_pos->x / 32;
+		if (index < 0 || index >= currMap->blocks.size() || p_pos->x < 0 || p_pos->x >= currMap->width * 32) //else it would throw error
+			return false;
+
+		block = &currMap->blockset->blocks[currMap->blocks[index]];
+
+		if (p_pos->x % 32 == 0)
+		{
+			if (p_pos->y % 32 == 0)
+				*i = 0;
+			else
+				*i = 2;
+		}
+		else
+		{
+			if (p_pos->y % 32 == 0)
+				*i = 1;
+			else
+				*i = 3;
+		}
+		return true;
 	}
 	
 }

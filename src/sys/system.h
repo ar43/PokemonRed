@@ -1,4 +1,6 @@
 #pragma once
+#undef QDECL
+#define	QDECL	__cdecl
 
 #include <stdio.h>
 #include <Windows.h>
@@ -13,7 +15,6 @@
 #include <iostream>
 
 #include "timer.h"
-#include "utility.h"
 #include "frame.h"
 #include "input.h"
 #include "render.h"
@@ -32,6 +33,7 @@
 #include "../game/item.h"
 #include "console/console.h"
 #include "console/cmds.h"
+#include "utility.h"
 
 #define GAME_WIDTH 160
 #define GAME_HEIGHT 144

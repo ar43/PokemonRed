@@ -18,5 +18,6 @@ public:
 	virtual void update() = 0;
 	virtual void init() = 0;
 	virtual void render() = 0;
-	void get_world_pos(Position* pnt);
+	virtual void get_world_pos(Position* pnt) = 0;
+	void movDir_to_dir();
 };

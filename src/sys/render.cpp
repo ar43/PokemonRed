@@ -45,6 +45,8 @@ void Render::draw_overlay()
             }
 
             //npc grass effect TODO: fix graphical error when player is above or below npc (prolly done after collision)
+            //if player is above, turn off grass for player's feet
+            //if npc is above, turn off grass for npc feet
             for (auto obj : game.world.currentMap->objects)
             {
                 if (!obj->active || !obj->spriteDraw)
@@ -416,7 +418,10 @@ void Sprite::render(Position *pos, Direction dir)
     }
 
     if (size == 1)
+    { 
+        flip = SDL_FLIP_NONE;
         offset = 0;
+    }
 
     
     int offset_x = 0;

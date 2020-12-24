@@ -754,6 +754,7 @@ void ResourceManager::loadMap(std::string fileName)
 					i++;
 				}
 				map->objects.push_back(newNPC);
+				newNPC->init();
 			}
 			else if (type == 1)
 			{
@@ -846,6 +847,7 @@ void ResourceManager::loadMap(std::string fileName)
 					i++;
 				}
 				map->objects.push_back(newItem);
+				newItem->init();
 			}
 			else if (type == 2)
 			{
@@ -934,6 +936,7 @@ void ResourceManager::loadMap(std::string fileName)
 					i++;
 				}
 				map->objects.push_back(newNPC);
+				newNPC->init();
 			}
 		}
 		l++;
@@ -1049,7 +1052,7 @@ void ResourceManager::loadMap(std::string fileName)
 	if(fp)
 		fclose(fp);
 
-	printf("%s: (%i, %i)\n", map->name.c_str(), map->height, map->width);
+	//printf("%s: (%i, %i)\n", map->name.c_str(), map->height, map->width);
 	mapMap[map->name] = map;
 
 }

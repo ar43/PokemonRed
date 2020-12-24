@@ -7,6 +7,10 @@ System::System()
 	requestQuit = false;
 	window = NULL;
 	renderer = NULL;
+
+	//init random stuff
+	srand((unsigned int)time(0));
+	//printf("Seq: %i %i %i %i %i %i %i\n",util::random(12,15), util::random(12, 15), util::random(12, 15), util::random(12, 15), util::random(12, 15), util::random(12, 15), util::random(12, 15));
 }
 
 void System::init()

@@ -3,6 +3,7 @@
 #include "sign.h"
 #include "text.h"
 #include "npc.h"
+#include <vector>
 
 enum MapAnimation
 {

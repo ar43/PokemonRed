@@ -2,7 +2,7 @@
 
 Trainer::Trainer()
 {
-	init();
+	//init();
 }
 
 
@@ -38,7 +38,7 @@ void Trainer::render()
 	Position loc;
 	get_world_pos(&loc);
 	if (spriteDraw)
-		sprite->render(&loc, Direction::DOWN);
+		sprite->render(&loc, dir);
 }
 
 void Trainer::init()
@@ -46,4 +46,11 @@ void Trainer::init()
 	waiting = true;
 	displacement.x = 0;
 	displacement.y = 0;
+	movDir_to_dir();
+}
+
+void Trainer::get_world_pos(Position* pnt)
+{
+	pnt->x = pos.x * 16 + GAME_WIDTH / 2 - game.player.getPosition()->x - WORLD_OFFSET_X;
+	pnt->y = pos.y * 16 + GAME_WIDTH / 2 - game.player.getPosition()->y - WORLD_OFFSET_Y - 12;
 }

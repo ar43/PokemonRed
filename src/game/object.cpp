@@ -1,13 +1,39 @@
 #include "..\sys\system.h"
-
-void Object::get_world_pos(Position* pnt)
-{
-	pnt->x = pos.x * 16 + GAME_WIDTH / 2 - game.player.getPosition()->x - WORLD_OFFSET_X;
-	pnt->y = pos.y * 16 + GAME_WIDTH / 2 - game.player.getPosition()->y - WORLD_OFFSET_Y - 12;
-}
  
 Object::Object()
 {
 	active = true;
 	spriteDraw = false;
+}
+
+void Object::movDir_to_dir()
+{
+	switch (movDir)
+	{
+		case NpcMovementDir::UP:
+		{
+			dir = Direction::UP;
+			break;
+		}
+		case NpcMovementDir::LEFT:
+		{
+			dir = Direction::LEFT;
+			break;
+		}
+		case NpcMovementDir::RIGHT:
+		{
+			dir = Direction::RIGHT;
+			break;
+		}
+		case NpcMovementDir::LEFT_RIGHT:
+		{
+			dir = Direction::RIGHT;
+			break;
+		}
+		default:
+		{
+			dir = Direction::DOWN;
+			break;
+		}
+	}
 }
