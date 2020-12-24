@@ -3,68 +3,41 @@
 Trainer::Trainer()
 {
 	//init();
-	displacement.x = 0;
-	displacement.y = 0;
+	moving = false;
+	moveIndex = 0;
+	
 }
 
 
 void Trainer::update()
 {
-	if (!active)
-		return;
-
-	Position loc;
-	get_screen_pos(&loc);
-
-	//system to mimic game's sprite rendering system.
-	if (!sprite->is_on_screen_strict(&loc))
-	{
-		spriteDraw = false;
-	}
-	else if (spriteDraw == false && sprite->is_on_screen(&loc))
-	{
-		spriteDraw = true;
-	}
-
-	if (spriteDraw)
-	{
-		//logic, movement etc
-	}
+	Npc::update();
+	
 }
 
 void Trainer::render()
 {
-	if (!active)
-		return;
-
-	Position loc;
-	get_screen_pos(&loc);
-	if (spriteDraw)
-		sprite->render(&loc, dir);
+	Npc::render();
 }
 
 void Trainer::init()
 {
-	waiting = true;
-	displacement.x = 0;
-	displacement.y = 0;
-	movDir_to_dir();
+	Npc::init();
+	if (movMode == NpcMovementMode::WALK)
+		printf("WARNING: Trainer %s walks\n", trainerClass.c_str());
 }
 
 void Trainer::get_screen_pos(Position* pnt)
 {
-	pnt->x = pos.x * 16 + displacement.x + GAME_WIDTH / 2 - game.player.getPosition()->x - WORLD_OFFSET_X;
-	pnt->y = pos.y * 16 + displacement.y + GAME_WIDTH / 2 - game.player.getPosition()->y - WORLD_OFFSET_Y - 12;
+	Npc::get_screen_pos(pnt);
 }
 
 void Trainer::get_block_pos(Position* pos)
 {
-	pos->x = this->pos.x + displacement.x / 16;
-	pos->y = this->pos.y + displacement.y / 16;
+	Npc::get_block_pos(pos);
 }
 
 void Trainer::get_world_pos(Position* pos)
 {
-	pos->x = this->pos.x * 16 + displacement.x;
-	pos->y = this->pos.y * 16 + displacement.y;
+	Npc::get_world_pos(pos);
 }

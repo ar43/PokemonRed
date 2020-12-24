@@ -4,7 +4,7 @@
 
 class Npc : public Object
 {
-private:
+protected:
 	
 	int waitIndex;
 	int moveIndex;

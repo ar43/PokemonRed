@@ -664,6 +664,8 @@ void ResourceManager::loadMap(std::string fileName)
 			//determine the type
 			for (size_t i = 0; i < strlen(substring); i++)
 			{
+				if (substring[i] == ';')
+					break;
 				if (substring[i] == ',')
 					count++;
 			}
@@ -922,7 +924,8 @@ void ResourceManager::loadMap(std::string fileName)
 						}
 						else if (i == 6)
 						{
-							newNPC->trainerClass = token; //needs testing
+							util::remove_spaces(token);
+							newNPC->trainerClass = util::cleanStr(token); //needs testing
 						}
 						else if (i == 7)
 						{

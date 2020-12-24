@@ -1,16 +1,12 @@
 #pragma once
 #include "object.h"
 
-class Trainer : public Object 
+class Trainer : public Npc 
 {
 private:
-	Position displacement;
-	bool waiting;
+	
 public:
 	Trainer();
-
-	NpcMovementMode movMode;
-	NpcMovementDir movDir;
 
 	std::string trainerClass;
 	int rosterID;
