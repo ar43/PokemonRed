@@ -296,27 +296,58 @@ bool Player::collision_check()
 	
 
 	Position newpos = { pos.x,pos.y };
+	Position screen_offset = { 0,0 };
 	switch (dir)
 	{
 		case Direction::UP:
 		{
 			newpos.y -= 16;
+			screen_offset.y -= 16;
 			break;
 		}
 		case Direction::DOWN:
 		{
 			newpos.y += 16;
+			screen_offset.y += 16;
 			break;
 		}
 		case Direction::LEFT:
 		{
 			newpos.x -= 16;
+			screen_offset.x -= 16;
 			break;
 		}
 		case Direction::RIGHT:
 		{
 			newpos.x += 16;
+			screen_offset.x += 16;
 			break;
+		}
+	}
+
+	for (auto it : game.world.currentMap->objects)
+	{
+		if(it->active && it->spriteDraw)
+		{ 
+			Position loc;
+			it->get_screen_pos(&loc);
+			SDL_Rect a = { loc.x,loc.y,16,16 };
+			SDL_Rect b = { PLAYER_OFFSET_X+screen_offset.x,PLAYER_OFFSET_Y+ screen_offset.y,16,16 };
+			if (SDL_HasIntersection(&a, &b))
+				return false;
+			/*
+			Position loc;
+			it->get_world_pos(&loc);
+			Position offset;
+			offset.x = loc.x % 16;
+			offset.y = loc.y % 16;
+			bool condition_a = newpos.x == loc.x - offset.x && newpos.y == loc.y - offset.y;
+			bool condition_b = newpos.x == loc.x - offset.x + 16 && newpos.y == loc.y && offset.x != 0;
+			bool condition_c = newpos.x == loc.x - offset.x && newpos.y == loc.y - offset.y+16 && offset.y != 0;
+			if (condition_a || condition_b || condition_c)
+				return false;
+			*/
+			//printf("name: %s , loc.x: %i, loc.y: %i, myloc.x: %i, myloc.y: %i\n", it->spriteName.c_str(), loc.x, loc.y,newpos.x,newpos.y);
 		}
 	}
 

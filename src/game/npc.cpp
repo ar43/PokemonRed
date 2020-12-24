@@ -19,6 +19,18 @@ void Npc::init()
 	//printf("init called\n");
 }
 
+void Npc::get_block_pos(Position* pos)
+{
+	pos->x = this->pos.x + displacement.x / 16;
+	pos->y = this->pos.y + displacement.y / 16;
+}
+
+void Npc::get_world_pos(Position* pos)
+{
+	pos->x = this->pos.x * 16 + displacement.x;
+	pos->y = this->pos.y * 16 + displacement.y;
+}
+
 
 void Npc::update()
 {
@@ -26,7 +38,7 @@ void Npc::update()
 		return;
 
 	Position loc;
-	get_world_pos(&loc);
+	get_screen_pos(&loc);
 
 	//system to mimic game's sprite rendering system.
 	if (!sprite->is_on_screen_strict(&loc))
@@ -106,20 +118,28 @@ bool Npc::collision_check()
 	}
 
 	Position loc;
-	get_world_pos(&loc,&newpos);
+	get_screen_pos(&loc,&newpos);
 	if (!sprite->is_on_screen_strict(&loc)) // block walk if npc will no longer be on screen
 		return false;
 
 	//applying npc movement clauses found in glitchcity
 	//this will cause the movement to be glitched https://archives.glitchcity.info/wiki/NPC_walking_behavior_glitches.html
 	//maybe add a setting to fix this?
-	if (dir == Direction::UP && displacement.y % 16 == 8)
+	if (dir == Direction::UP && displacement.y / 16 == 8)
 		return false;
 
-	if (dir != Direction::UP && (displacement.y % 16 >= 5))
+	if (dir != Direction::UP && (displacement.y / 16 >= 5))
 		return false;
 
-	if (dir == Direction::LEFT && (displacement.x % 16 == 8))
+	if (dir == Direction::LEFT && (displacement.x / 16 == 8))
+		return false;
+
+	//is player there?
+
+	SDL_Rect a = {loc.x,loc.y,16,16};
+	SDL_Rect b = { PLAYER_OFFSET_X,PLAYER_OFFSET_Y,16,16 };
+
+	if (SDL_HasIntersection(&a,&b))
 		return false;
 
 
@@ -284,13 +304,13 @@ void Npc::move()
 	}
 }
 
-void Npc::get_world_pos(Position* pnt)
+void Npc::get_screen_pos(Position* pnt)
 {
 	pnt->x = pos.x * 16 + displacement.x + GAME_WIDTH / 2 - game.player.getPosition()->x - WORLD_OFFSET_X;
 	pnt->y = pos.y * 16 + displacement.y + GAME_WIDTH / 2 - game.player.getPosition()->y - WORLD_OFFSET_Y - 12;
 }
 
-void Npc::get_world_pos(Position* pnt,Position *custompos)
+void Npc::get_screen_pos(Position* pnt,Position *custompos)
 {
 	pnt->x = custompos->x + GAME_WIDTH / 2 - game.player.getPosition()->x - WORLD_OFFSET_X;
 	pnt->y = custompos->y + GAME_WIDTH / 2 - game.player.getPosition()->y - WORLD_OFFSET_Y - 12;
@@ -302,7 +322,7 @@ void Npc::render()
 		return;
 
 	Position loc;
-	get_world_pos(&loc);
+	get_screen_pos(&loc);
 	if(spriteDraw)
 		sprite->render(&loc, dir);
 }

@@ -53,7 +53,7 @@ void Render::draw_overlay()
                     continue;
 
                 Position obj_pos;
-                obj->get_world_pos(&obj_pos);
+                obj->get_screen_pos(&obj_pos);
 
                 if (it->y > obj_pos.y + 4 && it->y < obj_pos.y + 4 + 16 && it->x >= obj_pos.x && it->x < obj_pos.x + 16)
                 {
@@ -198,6 +198,18 @@ void Render::debug()
         SDL_SetRenderDrawColor(sys.getRenderer(), 255, 0, 0, 255);
         SDL_Rect rect = { PLAYER_OFFSET_X, PLAYER_OFFSET_Y,16,16 };
         SDL_RenderFillRect(sys.getRenderer(), &rect);
+
+        for (auto it : game.world.currentMap->objects)
+        {
+            if (it->active && it->spriteDraw)
+            {
+                Position loc;
+                it->get_screen_pos(&loc);
+                SDL_SetRenderDrawColor(sys.getRenderer(), 255, 0, 0, 255);
+                SDL_Rect rect = { loc.x, loc.y,16,16 };
+                SDL_RenderFillRect(sys.getRenderer(), &rect);
+            }
+        }
     }
 
     if (game.debug.drawSquare)

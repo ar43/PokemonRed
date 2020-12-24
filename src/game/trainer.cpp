@@ -3,6 +3,8 @@
 Trainer::Trainer()
 {
 	//init();
+	displacement.x = 0;
+	displacement.y = 0;
 }
 
 
@@ -12,7 +14,7 @@ void Trainer::update()
 		return;
 
 	Position loc;
-	get_world_pos(&loc);
+	get_screen_pos(&loc);
 
 	//system to mimic game's sprite rendering system.
 	if (!sprite->is_on_screen_strict(&loc))
@@ -36,7 +38,7 @@ void Trainer::render()
 		return;
 
 	Position loc;
-	get_world_pos(&loc);
+	get_screen_pos(&loc);
 	if (spriteDraw)
 		sprite->render(&loc, dir);
 }
@@ -49,8 +51,20 @@ void Trainer::init()
 	movDir_to_dir();
 }
 
-void Trainer::get_world_pos(Position* pnt)
+void Trainer::get_screen_pos(Position* pnt)
 {
-	pnt->x = pos.x * 16 + GAME_WIDTH / 2 - game.player.getPosition()->x - WORLD_OFFSET_X;
-	pnt->y = pos.y * 16 + GAME_WIDTH / 2 - game.player.getPosition()->y - WORLD_OFFSET_Y - 12;
+	pnt->x = pos.x * 16 + displacement.x + GAME_WIDTH / 2 - game.player.getPosition()->x - WORLD_OFFSET_X;
+	pnt->y = pos.y * 16 + displacement.y + GAME_WIDTH / 2 - game.player.getPosition()->y - WORLD_OFFSET_Y - 12;
+}
+
+void Trainer::get_block_pos(Position* pos)
+{
+	pos->x = this->pos.x + displacement.x / 16;
+	pos->y = this->pos.y + displacement.y / 16;
+}
+
+void Trainer::get_world_pos(Position* pos)
+{
+	pos->x = this->pos.x * 16 + displacement.x;
+	pos->y = this->pos.y * 16 + displacement.y;
 }
