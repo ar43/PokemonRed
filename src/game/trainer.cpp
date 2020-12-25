@@ -27,6 +27,11 @@ void Trainer::init()
 		printf("WARNING: Trainer %s walks\n", trainerClass.c_str());
 }
 
+void Trainer::activate()
+{
+
+}
+
 void Trainer::get_screen_pos(Position* pnt)
 {
 	Npc::get_screen_pos(pnt);

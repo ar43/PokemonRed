@@ -62,3 +62,8 @@ void Item::get_world_pos(Position* pos)
 	pos->x = this->pos.x * 16;
 	pos->y = this->pos.y * 16;
 }
+
+void Item::activate()
+{
+
+}

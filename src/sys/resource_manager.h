@@ -24,7 +24,10 @@ public:
 	Map* getMap(std::string mapName);
 
 	void setObject(std::string name, Object* pointer);
-	Object* getObject(std::string);
+	Object* getObject(std::string name);
+
+	void addTextRedefinition(std::string in, std::string out);
+	std::string getTextRedefinition(std::string in);
 	
 private:
 	std::map<std::string, Tileset*> tilesetMap;
@@ -33,4 +36,5 @@ private:
 	std::map<std::string, Blockset*> blocksetMap;
 	std::map<std::string, Map*> mapMap;
 	std::map<std::string, Object*> objectMap;
+	std::map<std::string, std::string> textRedefinitionMap;
 };

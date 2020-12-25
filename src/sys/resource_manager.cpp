@@ -40,7 +40,7 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 
 void ResourceManager::setObject(std::string name, Object* pointer)
 {
-	if (!(objectMap.find("name") == objectMap.end()))
+	if (!(objectMap.find(name) == objectMap.end()))
 	{ 
 		sys.error("setObject: object is already in the map");
 	}
@@ -60,6 +60,30 @@ Object* ResourceManager::getObject(std::string name)
 	{
 		sys.error(util::va("can not find object in the object map: %s", name.c_str()));
 		return nullptr;
+	}
+}
+
+void ResourceManager::addTextRedefinition(std::string in, std::string out)
+{
+	if (!(textRedefinitionMap.find(in) == textRedefinitionMap.end()))
+	{
+		sys.error("addTextRedefinition: redefinition is already in the map");
+	}
+	else
+	{
+		textRedefinitionMap[in] = out;
+	}
+}
+
+std::string ResourceManager::getTextRedefinition(std::string in)
+{
+	if (!(textRedefinitionMap.find(in) == textRedefinitionMap.end()))
+	{
+		return textRedefinitionMap[in];
+	}
+	else
+	{
+		return in;
 	}
 }
 

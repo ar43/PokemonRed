@@ -67,6 +67,7 @@ private:
 	void load_tilesets();
 	void load_blocksets();
 	void load_sprites();
+	void load_text_redefinitions();
 	void hide_show_objects();
 };
 

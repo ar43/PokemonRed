@@ -193,6 +193,7 @@ void Textbox::update()
 bool Textbox::show(std::string idString)
 {
 
+    idString = res.getTextRedefinition(idString);
     for (std::vector<Textset>::iterator it2 = game.world.currentMap->texts.begin(); it2 != game.world.currentMap->texts.end(); ++it2)
     {
         if (SDL_strcmp(idString.c_str(), it2->name.c_str()) == 0)

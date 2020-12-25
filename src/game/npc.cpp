@@ -8,6 +8,43 @@ Npc::Npc()
 	moveIndex = 0;
 }
 
+void Npc::activate()
+{
+	if (!moving)
+	{
+		switch (game.player.dir)
+		{
+			case Direction::DOWN:
+			{
+				dir = Direction::UP;
+				break;
+			}
+			case Direction::LEFT:
+			{
+				dir = Direction::RIGHT;
+				break;
+			}
+			case Direction::UP:
+			{
+				dir = Direction::DOWN;
+				break;
+			}
+			case Direction::RIGHT:
+			{
+				dir = Direction::LEFT;
+				break;
+			}
+		}
+		std::string textStr = game.world.currentMap->fileName + "Text" + std::to_string(textID);
+		printf("Activating text id: %i\nString: %s\n", textID, textStr.c_str());
+		if (!game.textbox.show(textStr))
+		{ 
+			printf("ERROR:Could not find text %s", textStr.c_str());
+			return;
+		}
+	}
+}
+
 
 void Npc::init()
 {
@@ -34,7 +71,7 @@ void Npc::get_world_pos(Position* pos)
 
 void Npc::update()
 {
-	if (!active)
+	if (!active || input.keycatchers == KEYCATCHERS_TEXTBOX)
 		return;
 
 	Position loc;

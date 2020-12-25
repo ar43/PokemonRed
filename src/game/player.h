@@ -46,4 +46,5 @@ private:
 	bool canUse;
 	//bool get_block(Position* p_pos, Map* currMap, Block*& block, int* i);
 	void sign_check();
+	void object_check();
 };

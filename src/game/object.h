@@ -22,4 +22,5 @@ public:
 	void movDir_to_dir();
 	virtual void get_world_pos(Position* pos) = 0;
 	virtual void get_block_pos(Position* pos) = 0;
+	virtual void activate() = 0;
 };

@@ -179,6 +179,55 @@ void System::load_maps()
 	}
 }
 
+void System::load_text_redefinitions()
+{
+	std::string pathData = "assets/data/misc/redefinitions.pkd";
+	FILE* fp = fopen(pathData.c_str(), "r");
+	if (!fp)
+		sys.error("Cant find the map header file");
+	int l = 0;
+	char string[1024];
+	while (fgets(string, 1024, fp)) 
+	{
+		if (!SDL_strstr(string, ":"))
+		{
+			l++;
+			continue;
+		}
+		else
+		{
+			char* token;
+			token = strtok(string, ":");
+			int i = 0;
+			std::string a = "error";
+			std::string b = "error";
+			/* walk through other tokens */
+			while (token != NULL) 
+			{
+				if (i == 0)
+				{
+					
+					a = util::cleanStr(token);
+
+				}
+				else if (i == 1)
+				{
+					b = util::cleanStr(token);
+				}
+				else
+				{
+					break;
+				}
+				token = strtok(NULL, ",");
+				i++;
+			}
+			res.addTextRedefinition(a, b);
+
+		}
+		l++;
+	}
+}
+
 void System::load_tilesets()
 {
 	/*
@@ -395,4 +444,5 @@ void System::load_media()
 	Constants::font = TTF_OpenFont("assets/gfx/font/pokemon-final.otf", 8);
 
 	hide_show_objects();
+	load_text_redefinitions();
 }

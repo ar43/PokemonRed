@@ -80,18 +80,19 @@ void Player::move()
 	{
 		newDir = Direction::RIGHT;
 	}
-	else if (input.keyDown[KEY_A] && canUse)
-	{
-		canUse = false;
-		requestUse = true;
-		requestMove = false;
-	}
 	else
 	{
 		requestMove = false;
-		if(!moving && !jumping)
+		if (!moving && !jumping)
 			sprite->animIndex = 0;
 	}
+
+	if (input.keyDown[KEY_A] && canUse)
+	{
+		canUse = false;
+		requestUse = true;
+	}
+	
 
 	if (!input.keyDown[KEY_A] && !canUse)
 		canUse = true;
@@ -205,6 +206,14 @@ void Player::move()
 			
 		}
 	}
+	else if (requestUse)
+	{
+		if (game.textbox.canInput)
+		{
+			sign_check();
+			object_check();
+		}
+	}
 	else if (requestMove)
 	{
 		if (newDir != dir)
@@ -228,11 +237,7 @@ void Player::move()
 			sprite->animIndex++;
 		}
 	}
-	else if (requestUse)
-	{
-		if(game.textbox.canInput)
-			sign_check();
-	}
+	
 }
 
 
@@ -273,6 +278,55 @@ void Player::sign_check()
 			sprite->animIndex = 0;
 			it->activate();
 			return;
+		}
+	}
+
+}
+
+void Player::object_check()
+{
+	Map* currMap = game.world.currentMap;
+	Position newpos = { pos.x,pos.y };
+	switch (dir)
+	{
+	case Direction::UP:
+	{
+		newpos.y -= 16;
+		break;
+	}
+	case Direction::DOWN:
+	{
+		newpos.y += 16;
+		break;
+	}
+	case Direction::LEFT:
+	{
+		newpos.x -= 16;
+		break;
+	}
+	case Direction::RIGHT:
+	{
+		newpos.x += 16;
+		break;
+	}
+	}
+
+	Position sq = { newpos.x / 16,newpos.y / 16 };
+	Position sqo;
+
+	for (auto it : game.world.currentMap->objects)
+	{
+		if(it->active && it->spriteDraw)
+		{ 
+			it->get_block_pos(&sqo);
+			printf("sqo.x: %i, sqo.y: %i, sq.x: %i, sq.y: %i\n", sqo.x, sqo.y, sq.x, sq.y);
+			if (sqo.x == sq.x && sqo.y == sq.y)
+			{
+				input.clear();
+				sprite->animIndex = 0;
+				it->activate();
+				return;
+			}
 		}
 	}
 

@@ -15,4 +15,5 @@ public:
 	void get_screen_pos(Position* pnt);
 	void get_world_pos(Position* pos);
 	void get_block_pos(Position* pos);
+	void activate();
 };
