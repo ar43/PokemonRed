@@ -2,6 +2,15 @@
 #undef QDECL
 #define	QDECL	__cdecl
 
+extern "C"
+{
+	#include "../include/lua/lua.h"
+	#include "../include/lua/lauxlib.h"
+	#include "../include/lua/lualib.h"
+}
+
+#include "../include/LuaBridge/LuaBridge.h"
+
 #include <stdio.h>
 #include <Windows.h>
 #include <math.h>

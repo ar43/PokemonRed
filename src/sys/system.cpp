@@ -411,6 +411,18 @@ void System::hide_show_objects()
 		fclose(fp);
 }
 
+void test_lua()
+{
+	lua_State* L = luaL_newstate();
+	luaL_openlibs(L);
+	int ret = luaL_dofile(L, "assets/lua/test.lua");
+	luabridge::LuaRef get_a = luabridge::getGlobal(L, "luafunc");
+	luabridge::LuaRef get_b = luabridge::getGlobal(L, "b");
+	int a = get_a(20);
+	int b = get_b;
+	printf("LUA: a: %i b: %i\n", a,b);
+}
+
 void System::load_media()
 {
 	load_sprites();
@@ -445,4 +457,5 @@ void System::load_media()
 
 	hide_show_objects();
 	load_text_redefinitions();
+	test_lua();
 }

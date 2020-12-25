@@ -39,7 +39,7 @@ void Npc::activate()
 		printf("Activating text id: %i\nString: %s\n", textID, textStr.c_str());
 		if (!game.textbox.show(textStr))
 		{ 
-			printf("ERROR:Could not find text %s", textStr.c_str());
+			printf("ERROR:Could not find text %s\n", textStr.c_str());
 			return;
 		}
 	}

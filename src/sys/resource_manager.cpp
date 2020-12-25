@@ -67,7 +67,8 @@ void ResourceManager::addTextRedefinition(std::string in, std::string out)
 {
 	if (!(textRedefinitionMap.find(in) == textRedefinitionMap.end()))
 	{
-		sys.error("addTextRedefinition: redefinition is already in the map");
+		printf("Something went wrong in redefinitions file\n");
+		return;
 	}
 	else
 	{
