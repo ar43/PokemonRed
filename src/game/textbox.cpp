@@ -5,6 +5,9 @@ Textbox::Textbox()
 {
     canInput = true;
     drawArrow = false;
+    autoTextbox = false;
+    delay = 2;
+    autoClose = true;
 }
 
 void Textbox::render()
@@ -119,7 +122,7 @@ void Textbox::update()
         {
             drawArrow = true;
         }
-        if (!activated && input.keyDown[KEY_A] && canInput)
+        if (!activated && input.keyDown[KEY_A] && canInput || autoTextbox)
         {
             activated = true;
             scrollAnim = true;
@@ -153,7 +156,7 @@ void Textbox::update()
         {
             drawArrow = true;
         }
-        if (!activated && input.keyDown[KEY_A] && canInput)
+        if (!activated && input.keyDown[KEY_A] && canInput || autoTextbox)
         {
             activated = true;
             drawArrow = false;
@@ -176,11 +179,18 @@ void Textbox::update()
     }
     else if (currText->type == TextType::TYPE_DONE || currText->type == TextType::TYPE_TEXT_END)
     {
-        if (input.keyDown[KEY_A] && canInput)
+        if (input.keyDown[KEY_A] && canInput || autoTextbox)
         {
-            input.keycatchers = KEYCATCHERS_NORMAL;
-            currText = nullptr;
-            input.clear();
+            if (delay)
+            {
+                delay--;
+                return;
+            }
+            game.canRunScript = true;
+            if(autoClose)
+            { 
+                close();
+            }
             return;
         }
     }
@@ -188,6 +198,13 @@ void Textbox::update()
     {
         sys.error(util::va("unimplemented type: %i\n",(int)currText->type));
     }
+}
+
+void Textbox::close()
+{
+    input.keycatchers = KEYCATCHERS_NORMAL;
+    currText = nullptr;
+    input.clear();
 }
 
 bool Textbox::show(std::string idString)
@@ -202,6 +219,7 @@ bool Textbox::show(std::string idString)
             game.textbox.index = 0;
             game.textbox.cleared = false;
             input.keycatchers = KEYCATCHERS_TEXTBOX;
+            game.canRunScript = false;
             return true;
         }
     }
@@ -219,12 +237,17 @@ void Textbox::update_text(int num)
         //clear filtered text at each transition
     }
     int times = 1;
-    if (input.keyDown[KEY_A]) //text speedup
+    if (input.keyDown[KEY_A] && !autoTextbox) //text speedup
         times = 3;
     for(int i = 0; i < times;i++)
     { 
         if(index < strlen(currText->text))
         { 
+            if (currText->text[index] == '@')
+            {
+                index = strlen(currText->text);
+                break;
+            }
             SDL_snprintf(line[num], sizeof(line[num]), "%s%c", line[num], currText->text[index]);
             index++;
         }

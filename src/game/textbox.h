@@ -13,6 +13,10 @@ public:
 	bool canInput;
 	bool cleared;
 	Texture lineText[2];
+	bool autoTextbox;
+	void close();
+	
+	bool autoClose;
 private:
 	void clear();
 	void updateRenderer(int num);
@@ -28,4 +32,5 @@ private:
 	void transition();
 	void render_arrow();
 	void render_anim();
+	int delay;
 };

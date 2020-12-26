@@ -5,6 +5,7 @@ Player::Player()
 	pos.x = util::square_to_pixel(1);
 	pos.y = util::square_to_pixel(2);
 	dir = Direction::DOWN;
+	emoteTime = 0;
 }
 
 void Player::init()
@@ -13,8 +14,22 @@ void Player::init()
 	lastMap = "pallet_town";
 }
 
+void Player::set_emote(EmotionBubble index)
+{
+	emote = index;
+	emoteTime = 60;
+}
+
+int Player::get_emote_time()
+{
+	return emoteTime;
+}
+
 void Player::update()
 {
+	if (emoteTime)
+		emoteTime--;
+
 	if (input.keycatchers == KEYCATCHERS_TEXTBOX)
 	{
 		if (game.debug.forceExitKeycatcher)
@@ -40,6 +55,27 @@ void Player::update()
 void Player::render()
 {
 	sprite->render_static(PLAYER_OFFSET_X, PLAYER_OFFSET_Y,dir);
+	if (emoteTime)
+	{
+		switch (emote)
+		{
+			case EmotionBubble::HAPPY:
+			{
+				res.getTexture("happy")->render(PLAYER_OFFSET_X, PLAYER_OFFSET_Y - 16);
+				break;
+			}
+			case EmotionBubble::QUESTION:
+			{
+				res.getTexture("question")->render(PLAYER_OFFSET_X, PLAYER_OFFSET_Y - 16);
+				break;
+			}
+			case EmotionBubble::SHOCK:
+			{
+				res.getTexture("shock")->render(PLAYER_OFFSET_X, PLAYER_OFFSET_Y - 16);
+				break;
+			}
+		}
+	}
 }
 
 void Player::getSquarePosition(Position *position)

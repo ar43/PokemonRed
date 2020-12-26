@@ -6,4 +6,14 @@ namespace lua
 	extern Position* get_player_pos();
 	extern void print_error(int ret);
 	extern lua_State* L;
+	extern bool check_event(std::string eventName);
+	extern void set_event(std::string eventName, bool set);
+	extern void set_player_dir(int dir);
+	extern void display_text(std::string textId, bool autoClose);
+	extern void close_text();
+	extern int get_current_script();
+	extern void set_current_script(int id);
+	extern void text_auto_scroll(bool flag);
+	extern void set_emote(int i, int emote);
+	extern int get_emote_time(int i);
 }

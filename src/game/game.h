@@ -23,6 +23,10 @@ public:
 	void update();
 	void prelogic();
 	void init();
+	void setEvent(std::string eventName, bool set);
+	bool checkEvent(std::string eventName);
+	void runDebugScript();
+	bool canRunScript;
 	//Camera camera;
 	Frame frame;
 	Player player;
@@ -31,4 +35,5 @@ public:
 	Textbox textbox;
 	//Action action;
 private:
+	std::map<std::string, bool> eventMap;
 };

@@ -53,6 +53,13 @@ enum class Permission
 	OUTDOOR
 };
 
+enum class EmotionBubble
+{
+	SHOCK,
+	QUESTION,
+	HAPPY
+};
+
 struct Position
 {
 	int x;

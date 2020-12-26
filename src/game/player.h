@@ -22,6 +22,8 @@ public:
 	void init();
 	void render();
 	void warp();
+	void set_emote(EmotionBubble index);
+	int get_emote_time();
 	void block_input(int time);
 	int warpIndex;
 	bool jumping;
@@ -34,7 +36,9 @@ private:
 	Position pos;
 	Direction turnDir;
 	int turning;
-	
+	int emoteTime;
+	EmotionBubble emote;
+
 	bool warping;
 	void move();
 	void change_map();

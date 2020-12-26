@@ -85,6 +85,10 @@ void Input::catchPriority(SDL_Event *e)
 			game.debug.darken = !game.debug.darken;
 			break;
 
+		case SDLK_F11:
+			game.runDebugScript();
+			break;
+
 		
 
 		default:

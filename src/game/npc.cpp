@@ -6,6 +6,7 @@ Npc::Npc()
 	//init();
 	moving = false;
 	moveIndex = 0;
+	emoteTime = 0;
 }
 
 void Npc::activate()
@@ -362,4 +363,37 @@ void Npc::render()
 	get_screen_pos(&loc);
 	if(spriteDraw)
 		sprite->render(&loc, dir);
+
+	if (emoteTime)
+	{
+		switch (emote)
+		{
+			case EmotionBubble::HAPPY:
+			{
+				res.getTexture("happy")->render(loc.x, loc.y - 16);
+				break;
+			}
+			case EmotionBubble::QUESTION:
+			{
+				res.getTexture("question")->render(loc.x, loc.y - 16);
+				break;
+			}
+			case EmotionBubble::SHOCK:
+			{
+				res.getTexture("shock")->render(loc.x, loc.y - 16);
+				break;
+			}
+		}
+	}
+}
+
+void Npc::set_emote(EmotionBubble index)
+{
+	emote = index;
+	emoteTime = 60;
+}
+
+int Npc::get_emote_time()
+{
+	return emoteTime;
 }

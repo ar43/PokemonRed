@@ -445,6 +445,10 @@ void System::load_media()
 
 	res.loadTexture("grass1", "assets/gfx/tilesets/grass/grass.png",true);
 	res.loadTexture("shadow", "assets/gfx/overworld/shadow.png", true);
+	
+	res.loadTexture("happy", "assets/gfx/emotes/happy.png", true);
+	res.loadTexture("shock", "assets/gfx/emotes/shock.png", true);
+	res.loadTexture("question", "assets/gfx/emotes/question.png", true);
 
 	res.loadTexture("tb1", "assets/gfx/font/textbox/tb1.png");
 	res.loadTexture("tb2", "assets/gfx/font/textbox/tb2.png");

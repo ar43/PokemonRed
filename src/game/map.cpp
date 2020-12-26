@@ -206,8 +206,10 @@ void Block::render(int x, int y)
 
 void Map::runScript()
 {
+    if (!game.canRunScript)
+        return;
     char filename[128] = { 0 };
-    SDL_snprintf(filename, sizeof(filename), "assets/scripts/maps/%s/%i.lua", fileName.c_str(), currentScript);
+    SDL_snprintf(filename, sizeof(filename), "assets/scripts/maps/%s/main.lua", fileName.c_str());
     if (!util::file_exists(filename))
         return;
 
@@ -216,16 +218,29 @@ void Map::runScript()
         lua::L = luaL_newstate();
         luaL_openlibs(lua::L);
         luabridge::getGlobalNamespace(lua::L)
-            .beginNamespace("world")
+            .beginNamespace("pkm")
                 .beginClass <Position>("pos")
                     .addProperty("x", &Position::x)
                     .addProperty("y", &Position::y)
                 .endClass()
                 .addFunction("set_active", lua::set_active)
                 .addFunction("get_player_pos", lua::get_player_pos)
+                .addFunction("set_player_dir", lua::set_player_dir)
+                .addFunction("set_event", lua::set_event)
+                .addFunction("check_event", lua::check_event)
+                .addFunction("display_text", lua::display_text)
+                .addFunction("close_text", lua::close_text)
+                .addFunction("text_auto_scroll", lua::text_auto_scroll)
+                .addFunction("get_script",lua::get_current_script)
+                .addFunction("set_script", lua::set_current_script)
+                .addFunction("set_emote", lua::set_emote)
+                .addFunction("get_emote_time", lua::get_emote_time)
             .endNamespace();
         luaL_dostring(lua::L, "time = 0\n");
+        luaL_dostring(lua::L, "delay = 0\n");
     }
+
+    
     
     int ret = luaL_dofile(lua::L, filename);
     lua::print_error(ret);
