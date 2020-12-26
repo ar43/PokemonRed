@@ -145,6 +145,7 @@
     <ClCompile Include="src\game\constants.cpp" />
     <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\game\item.cpp" />
+    <ClCompile Include="src\game\lua.cpp" />
     <ClCompile Include="src\game\map.cpp" />
     <ClCompile Include="src\game\npc.cpp" />
     <ClCompile Include="src\game\object.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="src\game\enums.h" />
     <ClInclude Include="src\game\game.h" />
     <ClInclude Include="src\game\item.h" />
+    <ClInclude Include="src\game\lua.h" />
     <ClInclude Include="src\game\map.h" />
     <ClInclude Include="src\game\npc.h" />
     <ClInclude Include="src\game\object.h" />

@@ -105,6 +105,9 @@
     <ClCompile Include="src\game\item.cpp">
       <Filter>Source Files\game\object</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\lua.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sys\system.h">
@@ -172,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="src\game\item.h">
       <Filter>Header Files\game\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\lua.h">
+      <Filter>Header Files\game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

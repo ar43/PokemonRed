@@ -15,5 +15,7 @@ namespace util
 	extern int random(int min, int max);
 
 	extern bool get_block(Position* p_pos, Map* currMap, Block*& block, int* i);
+
+	extern bool file_exists(const std::string& Filename);
 }
 

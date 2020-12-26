@@ -413,6 +413,7 @@ void System::hide_show_objects()
 
 void test_lua()
 {
+	/*
 	lua_State* L = luaL_newstate();
 	luaL_openlibs(L);
 	int ret = luaL_dofile(L, "assets/lua/test.lua");
@@ -421,6 +422,8 @@ void test_lua()
 	int a = get_a(20);
 	int b = get_b;
 	printf("LUA: a: %i b: %i\n", a,b);
+	*/
+
 }
 
 void System::load_media()
@@ -457,5 +460,5 @@ void System::load_media()
 
 	hide_show_objects();
 	load_text_redefinitions();
-	test_lua();
+	//test_lua();
 }

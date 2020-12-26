@@ -204,6 +204,34 @@ void Block::render(int x, int y)
 
 }
 
+void Map::runScript()
+{
+    char filename[128] = { 0 };
+    SDL_snprintf(filename, sizeof(filename), "assets/scripts/maps/%s/%i.lua", fileName.c_str(), currentScript);
+    if (!util::file_exists(filename))
+        return;
+
+    if(lua::L == nullptr)
+    { 
+        lua::L = luaL_newstate();
+        luaL_openlibs(lua::L);
+        luabridge::getGlobalNamespace(lua::L)
+            .beginNamespace("world")
+                .beginClass <Position>("pos")
+                    .addProperty("x", &Position::x)
+                    .addProperty("y", &Position::y)
+                .endClass()
+                .addFunction("set_active", lua::set_active)
+                .addFunction("get_player_pos", lua::get_player_pos)
+            .endNamespace();
+        luaL_dostring(lua::L, "time = 0\n");
+    }
+    
+    int ret = luaL_dofile(lua::L, filename);
+    lua::print_error(ret);
+       
+}
+
 void Block::render_static(int x, int y)
 {
     if (!valid)

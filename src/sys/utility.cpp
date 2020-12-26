@@ -1,6 +1,13 @@
 #include "system.h"
 #include <cassert>
 
+#ifdef _WIN32
+#include <io.h> 
+#define access    _access_s
+#else
+#include <unistd.h>
+#endif
+
 namespace util
 {
 
@@ -95,6 +102,11 @@ namespace util
 				*i = 3;
 		}
 		return true;
+	}
+
+	bool file_exists(const std::string& Filename)
+	{
+		return access(Filename.c_str(), 0) == 0;
 	}
 	
 }

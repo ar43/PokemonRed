@@ -43,6 +43,7 @@ extern "C"
 #include "console/console.h"
 #include "console/cmds.h"
 #include "utility.h"
+#include "../game/lua.h"
 
 #define GAME_WIDTH 160
 #define GAME_HEIGHT 144

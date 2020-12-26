@@ -13,6 +13,8 @@ void Game::prelogic()
 void Game::update()
 {
 	player.update();
+
+	world.currentMap->runScript();
 	
 	for (auto it : game.world.currentMap->objects)
 	{

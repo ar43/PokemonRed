@@ -141,6 +141,7 @@ public:
 		connection.southOffset = southOffset;
 		connection.east = east;
 		connection.eastOffset = eastOffset;
+		currentScript = 0;
 	}
 	std::string name;
 	std::string fileName;
@@ -157,6 +158,8 @@ public:
 	std::vector<Textset> texts;
 	std::vector<Object*> objects;
 	void render(int x, int y);
+	int currentScript;
+	void runScript();
 };
 
 
