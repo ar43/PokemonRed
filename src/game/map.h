@@ -172,5 +172,5 @@ public:
 	int w;
 	int h;
 	void render(int x, int y, SDL_RendererFlip flip = SDL_FLIP_NONE);
-	void render_grass(int x, int y);
+	void render_grass(int x, int y, bool upper);
 };

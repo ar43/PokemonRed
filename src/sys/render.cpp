@@ -31,22 +31,10 @@ void Render::draw_overlay()
 {
     if (!game.world.currentMap->grassEffect.empty())
     {
+        bool obj_nearby = false;
         for (std::vector<Position>::iterator it = game.world.currentMap->grassEffect.begin(); it != game.world.currentMap->grassEffect.end(); ++it)
         {
-            if (it->y > PLAYER_OFFSET_Y + 4 && it->y < PLAYER_OFFSET_Y + 4 + 16 && it->x >= PLAYER_OFFSET_X && it->x < PLAYER_OFFSET_X + 16)
-            {
-                Texture* grass = res.getTexture(game.world.currentMap->tileset->grassName);
-                grass->render(it->x, it->y);
-            }
-            else if (it->y > PLAYER_OFFSET_Y && it->y < PLAYER_OFFSET_Y + 16 && it->x >= PLAYER_OFFSET_X && it->x < PLAYER_OFFSET_X+16)
-            {
-                Texture* grass = res.getTexture(game.world.currentMap->tileset->grassName);
-                grass->render_grass(it->x, it->y);
-            }
-
-            //npc grass effect TODO: fix graphical error when player is above or below npc (prolly done after collision)
-            //if player is above, turn off grass for player's feet
-            //if npc is above, turn off grass for npc feet
+            
             for (auto obj : game.world.currentMap->objects)
             {
                 if (!obj->active || !obj->spriteDraw)
@@ -55,18 +43,45 @@ void Render::draw_overlay()
                 Position obj_pos;
                 obj->get_screen_pos(&obj_pos);
 
-                if (it->y > obj_pos.y + 4 && it->y < obj_pos.y + 4 + 16 && it->x >= obj_pos.x && it->x < obj_pos.x + 16)
+                if (obj_pos.y == PLAYER_OFFSET_Y + 16 || obj_pos.y == PLAYER_OFFSET_Y - 16)
+                    obj_nearby = true;
+
+                if (it->y > obj_pos.y + 4 && it->y < obj_pos.y + 20 && it->x >= obj_pos.x && it->x < obj_pos.x + 16)
                 {
+                    
                     Texture* grass = res.getTexture(game.world.currentMap->tileset->grassName);
-                    grass->render(it->x, it->y);
+                    if (obj_nearby)
+                        grass->render_grass(it->x, it->y, false);
+                    else
+                        grass->render(it->x, it->y);
+                    //printf("x: %i y: %i\n", obj_pos.x, obj_pos.y);
                 }
                 else if (it->y > obj_pos.y && it->y < obj_pos.y + 16 && it->x >= obj_pos.x && it->x < obj_pos.x + 16)
                 {
                     Texture* grass = res.getTexture(game.world.currentMap->tileset->grassName);
-                    grass->render_grass(it->x, it->y);
+                    grass->render_grass(it->x, it->y,true);
                 }
 
             }
+
+            if (it->y > PLAYER_OFFSET_Y + 4 && it->y < PLAYER_OFFSET_Y + 20 && it->x >= PLAYER_OFFSET_X && it->x < PLAYER_OFFSET_X + 16)
+            {
+                Texture* grass = res.getTexture(game.world.currentMap->tileset->grassName);
+                if (obj_nearby)
+                    grass->render_grass(it->x, it->y, false);
+                else
+                    grass->render(it->x, it->y);
+            }
+            else if (it->y > PLAYER_OFFSET_Y && it->y < PLAYER_OFFSET_Y + 16 && it->x >= PLAYER_OFFSET_X && it->x < PLAYER_OFFSET_X+16)
+            {
+                Texture* grass = res.getTexture(game.world.currentMap->tileset->grassName);
+                grass->render_grass(it->x, it->y,true);
+            }
+
+            //npc grass effect TODO: fix graphical error when player is above or below npc (prolly done after collision)
+            //if player is above, turn off grass for player's feet
+            //if npc is above, turn off grass for npc feet
+            
             
         }
     }

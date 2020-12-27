@@ -69,7 +69,7 @@ elseif(pkm.get_script() == 6) then
 			pkm.set_script(7)
 		else
 			pkm.speedup(1,true)
-			
+			pkm.set_object_dir(1,0)
 				
 			pkm.add_movement(1,1,5)
 			pkm.add_movement(1,2,1)

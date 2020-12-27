@@ -296,7 +296,7 @@ void Texture::render(int x, int y, SDL_RendererFlip flip)
     SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, flip);
 }
 
-void Texture::render_grass(int x, int y)
+void Texture::render_grass(int x, int y, bool upper)
 {
     if (game.player.warpIndex < 8)
     {
@@ -311,7 +311,32 @@ void Texture::render_grass(int x, int y)
         SDL_SetTextureColorMod(texture, 16, 16, 16);
     }
 
-    SDL_Rect rect1 = { 0,4,8,4 };
-    SDL_Rect rect2 = { x,y+4,8,4 };
+    int a, b, c, d, e, f, g, h;
+    if (!upper)
+    {
+        a = 0;
+        b = 0;
+        c = w;
+        d = 4;
+        e = x;
+        f = y;
+        g = w;
+        h = 4;
+    }
+    else
+    {
+        a = 0;
+        b = 4;
+        c = 8;
+        d = 4;
+        e = x;
+        f = y + 4;
+        g = 8;
+        h = 4;
+    }
+
+    SDL_Rect rect1 = { a,b,c,d };
+    SDL_Rect rect2 = { e,f,g,h };
+
     SDL_RenderCopyEx(sys.getRenderer(), texture, &rect1, &rect2, 0.0f, NULL, SDL_FLIP_NONE);
 }
