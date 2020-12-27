@@ -24,6 +24,67 @@ namespace lua
 		}
 	}
 
+	void set_freeze(int i, bool flag)
+	{
+		if (i == 0)
+		{
+			game.player.freeze = flag;
+		}
+		else
+		{
+			i--;
+			if (i < 0 || i >= (int)game.world.currentMap->objects.size())
+			{
+				printf("ERROR: set_freeze index out of range");
+				return;
+			}
+			Npc* npc = (Npc*)game.world.currentMap->objects.at(i);
+			npc->freeze = flag;
+		}
+	}
+
+	int get_keycatchers()
+	{
+		return (int)input.keycatchers;
+	}
+
+	void speedup(int i, bool flag)
+	{
+		if (i == 0)
+		{
+		}
+		else
+		{
+			i--;
+			if (i < 0 || i >= (int)game.world.currentMap->objects.size())
+			{
+				printf("ERROR: speedup index out of range");
+				return;
+			}
+			Npc* npc = (Npc*)game.world.currentMap->objects.at(i);
+			npc->speedup = flag;
+		}
+	}
+
+	void add_movement(int i, int dir, int times)
+	{
+		if (i == 0)
+		{
+			game.player.addMovement((Direction)dir, times);
+		}
+		else
+		{
+			i--;
+			if (i < 0 || i >= (int)game.world.currentMap->objects.size())
+			{
+				printf("ERROR: add_movement index out of range");
+				return;
+			}
+			Npc* npc = (Npc*)game.world.currentMap->objects.at(i);
+			npc->addMovement((Direction)dir, times);
+		}
+	}
+
 	bool check_event(std::string eventName)
 	{
 		return game.checkEvent(eventName);
@@ -34,9 +95,42 @@ namespace lua
 		game.setEvent(eventName, set);
 	}
 
-	void set_player_dir(int dir)
+	void set_object_dir(int i, int dir)
 	{
-		game.player.dir = (Direction)dir;
+		if (i == 0)
+		{
+			game.player.dir = (Direction)dir;
+		}
+		else
+		{
+			i--;
+			if (i < 0 || i >= (int)game.world.currentMap->objects.size())
+			{
+				printf("ERROR: set_object_dir index out of range");
+				return;
+			}
+			Npc* npc = (Npc*)game.world.currentMap->objects.at(i);
+			npc->dir = (Direction)dir;
+		}
+	}
+
+	bool is_mq_empty(int i)
+	{
+		if (i == 0)
+		{
+			return game.player.is_mq_empty();
+		}
+		else
+		{
+			i--;
+			if (i < 0 || i >= (int)game.world.currentMap->objects.size())
+			{
+				printf("ERROR: is_mq_empty index out of range");
+				return false;
+			}
+			Npc* npc = (Npc*)game.world.currentMap->objects.at(i);
+			return npc->is_mq_empty() && npc->sprite->animIndex == 0;
+		}
 	}
 
 	void text_auto_scroll(bool flag)
@@ -47,6 +141,10 @@ namespace lua
 	void display_text(std::string textId, bool autoClose)
 	{
 		game.player.sprite->animIndex = 0;
+		//for (auto it : game.world.currentMap->objects)
+		//{
+			//it->sprite->animIndex = 0;
+		//}
 		game.textbox.autoClose = autoClose;
 		if (!game.textbox.show(textId))
 			sys.error(util::va("Could not find text %s", textId.c_str()));
@@ -65,6 +163,12 @@ namespace lua
 		}
 		else
 		{
+			i--;
+			if (i < 0 || i >= (int)game.world.currentMap->objects.size())
+			{
+				printf("ERROR: set_emote index out of range");
+				return;
+			}
 			Npc *npc = (Npc*)game.world.currentMap->objects.at(i);
 			npc->set_emote((EmotionBubble)emote);
 		}

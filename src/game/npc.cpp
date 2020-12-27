@@ -7,6 +7,8 @@ Npc::Npc()
 	moving = false;
 	moveIndex = 0;
 	emoteTime = 0;
+	freeze = false;
+	speedup = false;
 }
 
 void Npc::activate()
@@ -69,9 +71,20 @@ void Npc::get_world_pos(Position* pos)
 	pos->y = this->pos.y * 16 + displacement.y;
 }
 
+void Npc::addMovement(Direction dir, int times)
+{
+	for (int i = 0; i < times; i++)
+	{
+		movementQueue.push(dir);
+	}
+}
+
 
 void Npc::update()
 {
+	if (emoteTime)
+		emoteTime--;
+
 	if (!active || input.keycatchers == KEYCATCHERS_TEXTBOX)
 		return;
 
@@ -89,10 +102,15 @@ void Npc::update()
 	}
 
 	if (spriteDraw)
-	{
-		 
+	{	 
+		static int delay = 0;
 		if (moving)
 		{
+			if (speedup && delay)
+			{
+				delay--;
+				return;
+			}
 			move();
 		}
 		else
@@ -100,7 +118,21 @@ void Npc::update()
 			sprite->animIndex = 0;
 		}
 
-		if (waitIndex == 0)
+		if (!movementQueue.empty() && !moving)
+		{
+			static Direction lastdir = Direction::DOWN;
+			
+			dir = movementQueue.front();
+			if (lastdir != dir && speedup)
+				delay = 6;
+			moving = true;
+			moveIndex = 0;
+			sprite->animIndex = 1;
+			
+			wait(); //just in case to avoid catastrophe
+			lastdir = dir;
+		}
+		else if (waitIndex == 0 && !freeze)
 		{
 			generateDir();
 			if (collision_check() && movMode == NpcMovementMode::WALK)
@@ -308,6 +340,13 @@ void Npc::generateDir()
 
 void Npc::move()
 {
+	int step = 1;
+	int maxframe = 32;
+	if (speedup)
+	{
+		step = 2;
+		maxframe = 16;
+	}
 	sprite->animIndex++;
 	if (moveIndex % 2 == 1)
 	{
@@ -315,31 +354,38 @@ void Npc::move()
 		{
 		case Direction::UP:
 		{
-			displacement.y -= 1;
+			displacement.y -= step;
 			break;
 		}
 		case Direction::DOWN:
 		{
-			displacement.y += 1;
+			displacement.y += step;
 			break;
 		}
 		case Direction::LEFT:
 		{
-			displacement.x -= 1;
+			displacement.x -= step;
 			break;
 		}
 		case Direction::RIGHT:
 		{
-			displacement.x += 1;
+			displacement.x += step;
 			break;
 		}
 		}
 	}
 	moveIndex++;
-	if (moveIndex >= 32)
+	if (moveIndex >= maxframe)
 	{
 		moving = false;
+		if(!movementQueue.empty())
+			movementQueue.pop();
 	}
+}
+
+bool Npc::is_mq_empty()
+{
+	return movementQueue.empty();
 }
 
 void Npc::get_screen_pos(Position* pnt)
@@ -362,7 +408,7 @@ void Npc::render()
 	Position loc;
 	get_screen_pos(&loc);
 	if(spriteDraw)
-		sprite->render(&loc, dir);
+		sprite->render(&loc, dir,speedup);
 
 	if (emoteTime)
 	{

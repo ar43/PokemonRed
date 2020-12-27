@@ -6,6 +6,8 @@ Player::Player()
 	pos.y = util::square_to_pixel(2);
 	dir = Direction::DOWN;
 	emoteTime = 0;
+	freeze = false;
+	forcedMovement = false;
 }
 
 void Player::init()
@@ -52,6 +54,11 @@ void Player::update()
 		input.block--;
 }
 
+bool Player::is_mq_empty()
+{
+	return movementQueue.empty();
+}
+
 void Player::render()
 {
 	sprite->render_static(PLAYER_OFFSET_X, PLAYER_OFFSET_Y,dir);
@@ -95,35 +102,44 @@ Position *Player::getPosition()
 	return &pos;
 }
 
+void Player::addMovement(Direction dir, int times)
+{
+	for (int i = 0; i < times; i++)
+	{
+		movementQueue.push(dir);
+	}
+}
+
 void Player::move()
 {
 	bool requestMove = true;
 	bool requestUse = false;
+	static bool queueGoNext = true;
 	Direction newDir;
-	if (input.keyDown[ARROW_UP])
+	if (input.keyDown[ARROW_UP] && !freeze)
 	{
 		newDir = Direction::UP;
 	}
-	else if (input.keyDown[ARROW_DOWN])
+	else if (input.keyDown[ARROW_DOWN] && !freeze)
 	{
 		newDir = Direction::DOWN;
 	}
-	else if (input.keyDown[ARROW_LEFT])
+	else if (input.keyDown[ARROW_LEFT] && !freeze)
 	{
 		newDir = Direction::LEFT;
 	}
-	else if (input.keyDown[ARROW_RIGHT])
+	else if (input.keyDown[ARROW_RIGHT] && !freeze)
 	{
 		newDir = Direction::RIGHT;
 	}
 	else
 	{
 		requestMove = false;
-		if (!moving && !jumping)
+		if (!moving && !jumping && movementQueue.empty())
 			sprite->animIndex = 0;
 	}
 
-	if (input.keyDown[KEY_A] && canUse)
+	if (input.keyDown[KEY_A] && canUse && !freeze)
 	{
 		canUse = false;
 		requestUse = true;
@@ -132,6 +148,14 @@ void Player::move()
 
 	if (!input.keyDown[KEY_A] && !canUse)
 		canUse = true;
+
+	if (!movementQueue.empty())
+	{
+		requestMove = true;
+		newDir = movementQueue.front();
+		forcedMovement = true;
+		queueGoNext = false;
+	}
 
 	if (jumping)
 	{
@@ -239,6 +263,12 @@ void Player::move()
 			moving = false;
 			change_map();
 			warp_check(false);
+			if(!movementQueue.empty())
+			{ 
+				forcedMovement = false;
+				movementQueue.pop();
+			}
+			
 			
 		}
 	}
@@ -250,7 +280,7 @@ void Player::move()
 			object_check();
 		}
 	}
-	else if (requestMove)
+	else if (requestMove && (!freeze || forcedMovement))
 	{
 		if (newDir != dir)
 		{
@@ -260,11 +290,12 @@ void Player::move()
 		}
 		else
 		{
-			bool canMove = collision_check();
+			bool canMove = collision_check() || forcedMovement;
 			if(canMove)
 			{ 
 				moving = true;
 				moveIndex = 0;
+				forcedMovement = false;
 			}
 			else
 			{

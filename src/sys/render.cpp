@@ -353,7 +353,7 @@ bool Sprite::is_on_screen_strict(Position* pos)
         return true;
 }
 
-void Sprite::render(Position *pos, Direction dir)
+void Sprite::render(Position *pos, Direction dir, bool speedup)
 {
     int offset = 0;
     SDL_RendererFlip flip = SDL_FLIP_NONE;
@@ -466,6 +466,11 @@ void Sprite::render(Position *pos, Direction dir)
             }
             }
         }
+    }
+    if (speedup)
+    {
+        offset_x = 0;
+        offset_y = 0;
     }
 
     SDL_Rect rectSrc = { 0,offset,16,16 };

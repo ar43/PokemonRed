@@ -31,6 +31,9 @@ public:
 	bool moving;
 	int moveIndex;
 	Direction dir;
+	bool freeze;
+	void addMovement(Direction dir, int times);
+	bool is_mq_empty();
 private:
 	
 	Position pos;
@@ -38,6 +41,8 @@ private:
 	int turning;
 	int emoteTime;
 	EmotionBubble emote;
+	std::queue<Direction> movementQueue;
+	bool forcedMovement;
 
 	bool warping;
 	void move();

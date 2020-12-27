@@ -12,7 +12,7 @@ struct Debug
 	bool fastMode = false;
 	bool noclip = false;
 	bool darken = false;
-	bool forceExitKeycatcher = true;
+	bool forceExitKeycatcher = false;
 	bool showAllObjects = false;
 };
 

@@ -2,7 +2,7 @@
 
 class Object {
 protected:
-	Direction dir;
+	
 public:
 	Object();
 	Position pos;
@@ -11,7 +11,8 @@ public:
 	bool spriteDraw;
 	int textID;
 	bool active;
-	
+	Direction dir;
+
 	NpcMovementMode movMode;
 	NpcMovementDir movDir;
 

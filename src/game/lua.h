@@ -8,7 +8,7 @@ namespace lua
 	extern lua_State* L;
 	extern bool check_event(std::string eventName);
 	extern void set_event(std::string eventName, bool set);
-	extern void set_player_dir(int dir);
+	extern void set_object_dir(int i, int dir);
 	extern void display_text(std::string textId, bool autoClose);
 	extern void close_text();
 	extern int get_current_script();
@@ -16,4 +16,9 @@ namespace lua
 	extern void text_auto_scroll(bool flag);
 	extern void set_emote(int i, int emote);
 	extern int get_emote_time(int i);
+	extern void set_freeze(int i, bool flag);
+	extern void add_movement(int i, int dir, int times);
+	extern bool is_mq_empty(int i);
+	extern int get_keycatchers();
+	extern void speedup(int i, bool flag);
 }
