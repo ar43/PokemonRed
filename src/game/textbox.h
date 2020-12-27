@@ -9,6 +9,7 @@ public:
 	bool show(std::string idString);
 	Text *currText;
 	char line[2][32];
+	std::string filteredText;
 	size_t index;
 	bool canInput;
 	bool cleared;

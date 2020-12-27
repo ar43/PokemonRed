@@ -27,6 +27,7 @@ public:
 	bool checkEvent(std::string eventName);
 	void runDebugScript();
 	bool canRunScript;
+	std::string rivalName;
 	//Camera camera;
 	Frame frame;
 	Player player;

@@ -8,6 +8,7 @@ Player::Player()
 	emoteTime = 0;
 	freeze = false;
 	forcedMovement = false;
+	name = "RED";
 }
 
 void Player::init()

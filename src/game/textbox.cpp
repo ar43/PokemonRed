@@ -1,5 +1,5 @@
 #include "../sys/system.h"
-
+#include <regex>
 
 Textbox::Textbox()
 {
@@ -8,6 +8,7 @@ Textbox::Textbox()
     autoTextbox = false;
     delay = 2;
     autoClose = true;
+    filteredText.clear();
 }
 
 void Textbox::render()
@@ -94,11 +95,11 @@ void Textbox::update()
             clear();
             //input.keyDown[KEY_A] = false;
         }
-        if(index < strlen(currText->text) && game.frame.getFrame() % 3 == 0) //add a char
+        if(index < filteredText.length() && game.frame.getFrame() % 3 == 0) //add a char
         { 
             update_text(0);
         }
-        if (index >= strlen(currText->text)) //go next
+        if (index >= filteredText.length()) //go next
         {
             transition();
             return;
@@ -106,11 +107,11 @@ void Textbox::update()
     }
     else if (currText->type == TextType::TYPE_LINE)
     {
-        if (index < strlen(currText->text) && game.frame.getFrame() % 3 == 0)
+        if (index < filteredText.length() && game.frame.getFrame() % 3 == 0)
         {
             update_text(1);
         }
-        if (index >= strlen(currText->text))
+        if (index >= filteredText.length())
         {
             transition();
             return;
@@ -131,7 +132,7 @@ void Textbox::update()
         }
         if (activated && !scrollAnim)
         {
-            if (index < strlen(currText->text) && game.frame.getFrame() % 3 == 0)
+            if (index < filteredText.length() && game.frame.getFrame() % 3 == 0)
             {
                 if (index == 0)
                 {
@@ -142,7 +143,7 @@ void Textbox::update()
                 }
                 update_text(1);
             }
-            if (index >= strlen(currText->text))
+            if (index >= filteredText.length())
             {
                 transition();
                 return;
@@ -165,11 +166,11 @@ void Textbox::update()
         }
         if (activated && delay <= 0)
         {
-            if (index < strlen(currText->text) && game.frame.getFrame() % 3 == 0)
+            if (index < filteredText.length() && game.frame.getFrame() % 3 == 0)
             {
                 update_text(0);
             }
-            if (index >= strlen(currText->text))
+            if (index >= filteredText.length())
             {
                 transition();
                 return;
@@ -215,10 +216,11 @@ bool Textbox::show(std::string idString)
     {
         if (SDL_strcmp(idString.c_str(), it2->name.c_str()) == 0)
         {
-            game.textbox.currText = it2->start;
-            game.textbox.index = 0;
-            game.textbox.cleared = false;
+            currText = it2->start;
+            index = 0;
+            cleared = false;
             input.keycatchers = KEYCATCHERS_TEXTBOX;
+            filteredText = currText->text;
             game.canRunScript = false;
             return true;
         }
@@ -231,24 +233,29 @@ void Textbox::update_text(int num)
 {
     if (index == 0)
     {
-        //todo: call a function that replaces <PLAYER> etc with proper strings, reference: charmap.asm
-        //actually maybe call it somewhere else... put it in filteredText or sth.
-        //maybe at start of update? check if filtered text is null, then put text to filtered text, and
-        //clear filtered text at each transition
+        filteredText = std::regex_replace(filteredText, std::regex("#"), "POKé");
+        filteredText = std::regex_replace(filteredText, std::regex("<PLAYER>"), game.player.name);
+        filteredText = std::regex_replace(filteredText, std::regex("<RIVAL>"), game.rivalName);
+        filteredText = std::regex_replace(filteredText, std::regex("<PC>"), "PC");
+        filteredText = std::regex_replace(filteredText, std::regex("<TM>"), "TM");
+        filteredText = std::regex_replace(filteredText, std::regex("<TRAINER>"), "TRAINER");
+        filteredText = std::regex_replace(filteredText, std::regex("<ROCKET>"), "ROCKET");
     }
     int times = 1;
     if (input.keyDown[KEY_A] && !autoTextbox) //text speedup
         times = 3;
     for(int i = 0; i < times;i++)
     { 
-        if(index < strlen(currText->text))
+
+        size_t length = filteredText.length();
+        if(index < length)
         { 
-            if (currText->text[index] == '@')
+            if (filteredText.c_str()[index] == '@')
             {
-                index = strlen(currText->text);
+                index = length;
                 break;
             }
-            SDL_snprintf(line[num], sizeof(line[num]), "%s%c", line[num], currText->text[index]);
+            SDL_snprintf(line[num], sizeof(line[num]), "%s%c", line[num], filteredText.c_str()[index]);
             index++;
         }
     }
@@ -258,6 +265,7 @@ void Textbox::update_text(int num)
 void Textbox::transition()
 {
     currText = currText->next;
+    filteredText = currText->text;
     index = 0;
     animIndex = 0;
     activated = false;

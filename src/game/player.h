@@ -34,6 +34,7 @@ public:
 	bool freeze;
 	void addMovement(Direction dir, int times);
 	bool is_mq_empty();
+	std::string name;
 private:
 	
 	Position pos;
