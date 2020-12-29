@@ -12,6 +12,7 @@ public:
 	Tileset *getTileset(std::string textureName);
 
 	void loadTexture(std::string textureName, const char* path, bool transparent = false);
+	void loadTexture(std::string textureName, std::string path, bool transparent = false);
 	Texture* getTexture(std::string textureName);
 
 	void loadSprite(std::string spriteName);

@@ -60,6 +60,16 @@ enum class EmotionBubble
 	HAPPY
 };
 
+enum class GrowthRate
+{
+	GROWTH_MEDIUM_FAST,
+	GROWTH_SLIGHTLY_FAST,
+	GROWTH_SLIGHTLY_SLOW,
+	GROWTH_MEDIUM_SLOW,
+	GROWTH_FAST,
+	GROWTH_SLOW
+};
+
 struct Position
 {
 	int x;

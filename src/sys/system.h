@@ -40,6 +40,7 @@ extern "C"
 #include "../game/npc.h"
 #include "../game/trainer.h"
 #include "../game/item.h"
+#include "../game/pokemon_data.h"
 #include "console/console.h"
 #include "console/cmds.h"
 #include "utility.h"
@@ -77,6 +78,7 @@ private:
 	void load_tilesets();
 	void load_blocksets();
 	void load_sprites();
+	void load_pkm_textures();
 	void load_text_redefinitions();
 	void hide_show_objects();
 };

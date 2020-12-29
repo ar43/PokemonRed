@@ -65,4 +65,10 @@ namespace Constants
 	{
 		extern std::string table[];
 	}
+
+	namespace Pokemon
+	{
+		extern std::vector<std::string> physical;
+		extern std::vector<std::string> special;
+	}
 }

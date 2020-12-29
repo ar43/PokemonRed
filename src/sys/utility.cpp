@@ -108,5 +108,15 @@ namespace util
 	{
 		return access(Filename.c_str(), 0) == 0;
 	}
+
+	bool is_special(const std::string& type_name)
+	{
+		return std::find(Constants::Pokemon::special.begin(), Constants::Pokemon::special.end(), type_name) != Constants::Pokemon::special.end();
+	}
+
+	bool is_physical(const std::string& type_name)
+	{
+		return std::find(Constants::Pokemon::physical.begin(), Constants::Pokemon::physical.end(), type_name) != Constants::Pokemon::physical.end();
+	}
 	
 }

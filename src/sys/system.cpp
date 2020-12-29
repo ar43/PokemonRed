@@ -150,6 +150,58 @@ void System::load_sprites()
 	}
 }
 
+void System::load_pkm_textures()
+{
+	printf("Loading pokemon textures...\n");
+	DIR* dir;
+	struct dirent* ent;
+	if ((dir = opendir(".\\assets\\gfx\\pokemon\\back\\")) != NULL) {
+		while ((ent = readdir(dir)) != NULL) {
+			char name[261];
+			SDL_strlcpy(name, ent->d_name, 261);
+			if (name[0] == '.')
+				continue;
+			for (size_t i = 0; i < strlen(name); i++)
+			{
+				if (name[i] == '.')
+				{
+					name[i] = 0;
+					break;
+				}
+			}
+			res.loadTexture(name, "./assets/gfx/pokemon/back/" + std::string(name) + ".png",true);
+		}
+		closedir(dir);
+	}
+	else {
+		sys.error("Could not open directory for loading pkm textures");
+		return;
+	}
+
+	if ((dir = opendir(".\\assets\\gfx\\pokemon\\front\\")) != NULL) {
+		while ((ent = readdir(dir)) != NULL) {
+			char name[261];
+			SDL_strlcpy(name, ent->d_name, 261);
+			if (name[0] == '.')
+				continue;
+			for (size_t i = 0; i < strlen(name); i++)
+			{
+				if (name[i] == '.')
+				{
+					name[i] = 0;
+					break;
+				}
+			}
+			res.loadTexture(name, "./assets/gfx/pokemon/front/" + std::string(name) + ".png", true);
+		}
+		closedir(dir);
+	}
+	else {
+		sys.error("Could not open directory for loading pkm textures");
+		return;
+	}
+}
+
 void System::load_maps()
 {
 	printf("Loading maps...\n");
@@ -429,6 +481,7 @@ void test_lua()
 void System::load_media()
 {
 	load_sprites();
+	load_pkm_textures();
 	load_tilesets();
 	load_blocksets();
 	load_maps();

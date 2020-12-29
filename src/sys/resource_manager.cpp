@@ -88,6 +88,11 @@ std::string ResourceManager::getTextRedefinition(std::string in)
 	}
 }
 
+void ResourceManager::loadTexture(std::string textureName, std::string path, bool transparent)
+{
+	loadTexture(textureName, path.c_str(), transparent);
+}
+
 void ResourceManager::loadTexture(std::string textureName, const char* path, bool transparent)
 {
 	SDL_Surface* sur = IMG_Load(path);

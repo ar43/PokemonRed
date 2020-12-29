@@ -426,4 +426,25 @@ namespace Constants
 
 		};
 	}
+
+	namespace Pokemon
+	{
+		std::vector<std::string> physical{  "NORMAL",
+											"FIGHTING",
+											"FLYING",
+											"POISON",
+											"GROUND",
+											"ROCK",
+											"BIRD",
+											"BUG",
+											"GHOST" };
+
+		std::vector<std::string> special{   "FIRE",
+											"WATER",
+											"GRASS",
+											"ELECTRIC",
+											"PSYCHIC_TYPE",
+											"ICE",
+											"DRAGON" };
+	}
 }

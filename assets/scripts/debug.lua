@@ -1,5 +1,5 @@
 --print(pkm.get_script())
-pkm.set_script(0)
+pkm.set_script(10)
 --print(pkm.get_player_pos().x / 16)
 --pkm.set_emote(0,0)
 --pkm.set_emote(2,0)
