@@ -373,6 +373,306 @@ void ResourceManager::loadBlockset(std::string blocksetName, std::string tileset
 	blocksetMap[blocksetName] = blockset;
 }
 
+void ResourceManager::loadPokemonData(std::string pokemonName)
+{
+	std::string path = "assets/data/pokemon/base_stats/" + pokemonName + ".asm";
+	PokemonData *data = new PokemonData();
+
+	bool tmhm = false;
+	char string[1024];
+
+	FILE* fp = fopen(path.c_str(), "r");
+	if (!fp)
+		sys.error("Cant find the pokemon data file");
+	int l = 0;
+	while (fgets(string, 1024, fp)) {
+		if (l == 0) //DEX entry name
+		{
+			char* substring = SDL_strstr(string, "db ");
+			if (substring)
+			{
+				substring += 3;
+				for (auto i = 0; substring[i]; i++)
+				{
+					if(substring[i] == ' ')
+					{ 
+						substring[i] = 0;
+						break;
+					}
+				}
+				data->dexId = std::string(substring);
+			}
+			else
+			{
+				sys.error("pkm data: error at line 1");
+			}
+		}
+		else if (l == 2) //pokemon stats
+		{
+			char* substring = SDL_strstr(string, "db ");
+			if (substring)
+			{
+				substring += 3;
+				char* token;
+				token = strtok(substring, ",");
+				int i = 0;
+				/* walk through other tokens */
+				while (token != NULL) 
+				{
+					int num = atoi(token);
+					if (i == 0)
+					{
+						data->baseStats.hp = num;
+					}
+					else if (i == 1)
+					{
+						data->baseStats.attack = num;
+					}
+					else if(i == 2)
+					{
+						data->baseStats.defense = num;
+					}
+					else if (i == 3)
+					{
+						data->baseStats.speed = num;
+					}
+					else if (i == 4)
+					{
+						data->baseStats.special = num;
+					}
+					token = strtok(NULL, ",");
+					i++;
+				}
+				
+			}
+			else
+			{
+				sys.error("pkm data: error at line 3");
+			}
+		}
+		else if (l == 5) //pokemon type
+		{
+			char* substring = SDL_strstr(string, "db ");
+			if (substring)
+			{
+				substring += 3;
+				char* token;
+				token = strtok(substring, ",");
+				int i = 0;
+				/* walk through other tokens */
+				while (token != NULL) 
+				{
+					util::remove_spaces(token);
+					for (auto j = 0; token[j]; j++)
+					{
+						if (token[j] == ';')
+						{
+							token[j] = 0;
+							break;
+						}
+					}
+
+					if (i <= 1)
+					{
+						data->type[i] = token;
+						
+					}
+					token = strtok(NULL, ",");
+					i++;
+				}
+
+			}
+			else
+			{
+				sys.error("pkm data: error at line 6");
+			}
+		}
+		else if (l == 6) //catchrate
+		{
+			char* substring = SDL_strstr(string, "db ");
+			if (substring)
+			{
+				substring += 3;
+				for (auto i = 0; substring[i]; i++)
+				{
+					if (substring[i] == ' ')
+					{
+						substring[i] = 0;
+						break;
+					}
+				}
+				data->catchRate = atoi(substring);
+			}
+			else
+			{
+				sys.error("pkm data: error at line 7");
+			}
+		}
+		else if (l == 7) //basexp
+		{
+			char* substring = SDL_strstr(string, "db ");
+			if (substring)
+			{
+				substring += 3;
+				for (auto i = 0; substring[i]; i++)
+				{
+					if (substring[i] == ' ')
+					{
+						substring[i] = 0;
+						break;
+					}
+				}
+				data->baseEXP = atoi(substring);
+			}
+			else
+			{
+				sys.error("pkm data: error at line 8");
+			}
+		}
+		else if (l == 12) //pokemon learnset
+		{
+			char* substring = SDL_strstr(string, "db ");
+			if (substring)
+			{
+				substring += 3;
+				char* token;
+				token = strtok(substring, ",");
+				int i = 0;
+				/* walk through other tokens */
+				while (token != NULL) 
+				{
+					if (i <= 3)
+					{
+						util::remove_spaces(token);
+						for (auto j = 0; token[j]; j++)
+						{
+							if (token[j] == ';')
+							{
+								token[j] = 0;
+								break;
+							}
+						}
+						data->baseLearnset[i] = token;
+						
+					}
+					token = strtok(NULL, ",");
+					i++;
+				}
+
+			}
+			else
+			{
+				sys.error("pkm data: error at line 13");
+			}
+		}
+		if (l == 13) //catchrate
+		{
+			char* substring = SDL_strstr(string, "db ");
+			if (substring)
+			{
+				substring += 3;
+				for (auto i = 0; substring[i]; i++)
+				{
+					if (substring[i] == ' ')
+					{
+						substring[i] = 0;
+						break;
+					}
+				}
+				/*GROWTH_MEDIUM_FAST,
+				GROWTH_SLIGHTLY_FAST,
+				GROWTH_SLIGHTLY_SLOW,
+				GROWTH_MEDIUM_SLOW,
+				GROWTH_FAST,
+				GROWTH_SLOW*/
+				if (SDL_strstr(substring, "GROWTH_MEDIUM_FAST"))
+				{
+					data->growthRate = GrowthRate::GROWTH_MEDIUM_FAST;
+				}
+				else if (SDL_strstr(substring, "GROWTH_MEDIUM_SLOW"))
+				{
+					data->growthRate = GrowthRate::GROWTH_MEDIUM_SLOW;
+				}
+				else if (SDL_strstr(substring, "GROWTH_SLIGHTLY_FAST"))
+				{
+					data->growthRate = GrowthRate::GROWTH_SLIGHTLY_FAST;
+				}
+				else if (SDL_strstr(substring, "GROWTH_SLIGHTLY_SLOW"))
+				{
+					data->growthRate = GrowthRate::GROWTH_SLIGHTLY_SLOW;
+				}
+				else if (SDL_strstr(substring, "GROWTH_SLOW"))
+				{
+					data->growthRate = GrowthRate::GROWTH_SLOW;
+				}
+				else if (SDL_strstr(substring, "GROWTH_FAST"))
+				{
+					data->growthRate = GrowthRate::GROWTH_FAST;
+				}
+				else
+				{
+					sys.error("error parsing growth");
+				}
+			}
+			else
+			{
+				sys.error("pkm data: error at line 14");
+			}
+		}
+		else if(l > 13)
+		{
+			char* substring = SDL_strstr(string, "tmhm ");
+			if (SDL_strstr(string, "; end"))
+			{
+				break;
+			}
+			else if (substring)
+			{
+				substring += 5;
+				char* token;
+				token = strtok(substring, ",");
+				int i = 0;
+				/* walk through other tokens */
+				while (token != NULL)
+				{
+					
+					util::remove_spaces(util::cleanStr(token));
+					if (isalpha(token[0]))
+					{
+						data->learnset.push_back(std::string(token));
+					}
+					token = strtok(NULL, ",");
+					i++;
+				}
+			}
+			else if(SDL_strstr(string,","))
+			{
+				char* token;
+				token = strtok(string, ",");
+				int i = 0;
+				/* walk through other tokens */
+				while (token != NULL)
+				{
+
+					util::remove_spaces(util::cleanStr(token));
+					if (isalpha(token[0]))
+					{
+						data->learnset.push_back(std::string(token));
+					}
+					token = strtok(NULL, ",");
+					i++;
+				}
+			}
+		}
+
+		l++;
+	}
+	std::string name = data->getId();
+	data->front = res.getTexture(pokemonName);
+	data->back = res.getTexture(pokemonName+"b");
+	pokemonDataMap[name] = data;
+}
+
 void ResourceManager::loadMap(std::string fileName)
 {
 	std::string pathData = "assets/data/map_data/" + fileName + ".blk";

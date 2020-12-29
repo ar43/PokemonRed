@@ -24,6 +24,9 @@ public:
 	void loadMap(std::string fileName);
 	Map* getMap(std::string mapName);
 
+	void loadPokemonData(std::string pokemonName);
+	PokemonData* getPokemonData(std::string pokemonName);
+
 	void setObject(std::string name, Object* pointer);
 	Object* getObject(std::string name);
 
@@ -36,6 +39,7 @@ private:
 	std::map<std::string, Sprite*> spriteMap;
 	std::map<std::string, Blockset*> blocksetMap;
 	std::map<std::string, Map*> mapMap;
+	std::map<std::string, PokemonData*> pokemonDataMap;
 	std::map<std::string, Object*> objectMap;
 	std::map<std::string, std::string> textRedefinitionMap;
 };

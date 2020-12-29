@@ -150,7 +150,7 @@
     <ClCompile Include="src\game\npc.cpp" />
     <ClCompile Include="src\game\object.cpp" />
     <ClCompile Include="src\game\player.cpp" />
-    <ClCompile Include="src\game\PokemonData.cpp" />
+    <ClCompile Include="src\game\pokemon_data.cpp" />
     <ClCompile Include="src\game\sign.cpp" />
     <ClCompile Include="src\game\text.cpp" />
     <ClCompile Include="src\game\textbox.cpp" />

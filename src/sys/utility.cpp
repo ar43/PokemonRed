@@ -54,7 +54,7 @@ namespace util
 	void remove_spaces(char* s) {
 		const char* d = s;
 		do {
-			while (*d == ' ') {
+			while (*d == ' ' || *d == '\t') {
 				++d;
 			}
 		} while (*s++ = *d++);

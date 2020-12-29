@@ -231,6 +231,35 @@ void System::load_maps()
 	}
 }
 
+void System::load_pkm_data()
+{
+	printf("Loading maps...\n");
+	DIR* dir;
+	struct dirent* ent;
+	if ((dir = opendir(".\\assets\\data\\pokemon\\base_stats\\")) != NULL) {
+		while ((ent = readdir(dir)) != NULL) {
+			char name[261];
+			SDL_strlcpy(name, ent->d_name, 261);
+			if (name[0] == '.')
+				continue;
+			for (size_t i = 0; i < strlen(name); i++)
+			{
+				if (name[i] == '.')
+				{
+					name[i] = 0;
+					break;
+				}
+			}
+			res.loadPokemonData(name);
+		}
+		closedir(dir);
+	}
+	else {
+		sys.error("Could not open directory for loading maps");
+		return;
+	}
+}
+
 void System::load_text_redefinitions()
 {
 	std::string pathData = "assets/data/misc/redefinitions.pkd";
@@ -482,6 +511,7 @@ void System::load_media()
 {
 	load_sprites();
 	load_pkm_textures();
+	load_pkm_data();
 	load_tilesets();
 	load_blocksets();
 	load_maps();
