@@ -3,7 +3,6 @@
 enum Keycatchers
 {
 	KEYCATCHERS_NORMAL,
-	KEYCATCHERS_CONSOLE,
 	KEYCATCHERS_TEXTBOX
 };
 
@@ -34,8 +33,5 @@ public:
 private:
 	void catchMain(SDL_Event *e);
 	void catchTextbox(SDL_Event* e);
-	void catchConsole(SDL_Event *e);
 	void catchPriority(SDL_Event *e);
-	bool clicked;
-	void clickOn(int x, int y);
 };

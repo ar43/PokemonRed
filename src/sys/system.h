@@ -42,8 +42,6 @@ extern "C"
 #include "../game/npc.h"
 #include "../game/trainer.h"
 #include "../game/item.h"
-#include "console/console.h"
-#include "console/cmds.h"
 #include "utility.h"
 #include "../game/lua.h"
 
@@ -64,7 +62,6 @@ public:
 	SDL_Renderer* getRenderer();
 	void error(const char* pMsg);
 	//void loadMedia();
-	Console console;
 
 private:
 	//void loadFonts();

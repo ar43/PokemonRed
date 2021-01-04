@@ -12,7 +12,6 @@ void Render::render()
     game.player.render();
     draw_overlay();
     game.textbox.render();
-    sys.console.render();
     
 
     SDL_RenderPresent(sys.getRenderer());

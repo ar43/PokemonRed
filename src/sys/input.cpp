@@ -28,8 +28,6 @@ void Input::process(SDL_Event *e)
 
 		if (keycatchers == KEYCATCHERS_NORMAL)
 			catchMain(e);
-		else if (keycatchers == KEYCATCHERS_CONSOLE)
-			sys.console.handleInput(e);
 		else if (keycatchers == KEYCATCHERS_TEXTBOX)
 			catchTextbox(e);
 	}
@@ -47,22 +45,6 @@ void Input::catchPriority(SDL_Event *e)
 
 		switch (e->key.keysym.sym)
 		{
-		case 184: //tilde key
-		{
-
-			if (keycatchers == KEYCATCHERS_CONSOLE)
-			{
-				keycatchers = KEYCATCHERS_NORMAL;
-				sys.console.close();
-			}
-			else if (keycatchers == KEYCATCHERS_NORMAL)
-			{
-				keycatchers = KEYCATCHERS_CONSOLE;
-				sys.console.open();
-			}
-			
-			break;
-		}
 
 		case SDLK_F1:
 			printf("???\n");

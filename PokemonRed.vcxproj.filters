@@ -19,12 +19,6 @@
     <Filter Include="Header Files\sys">
       <UniqueIdentifier>{15638a5b-aac4-414e-bc31-6e4a78282d93}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\sys\console">
-      <UniqueIdentifier>{fe9f4859-bebe-48e9-937c-9f3e2f4756ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\sys\console">
-      <UniqueIdentifier>{741a541d-7da7-4228-bd62-b3977a072a38}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\game">
       <UniqueIdentifier>{6c179e9c-684f-4211-8a45-1d4cf0e5a8ca}</UniqueIdentifier>
     </Filter>
@@ -59,12 +53,6 @@
     </ClCompile>
     <ClCompile Include="src\sys\frame.cpp">
       <Filter>Source Files\sys</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sys\console\cmds.cpp">
-      <Filter>Source Files\sys\console</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sys\console\console.cpp">
-      <Filter>Source Files\sys\console</Filter>
     </ClCompile>
     <ClCompile Include="src\sys\input.cpp">
       <Filter>Source Files\sys</Filter>
@@ -133,12 +121,6 @@
     </ClInclude>
     <ClInclude Include="src\sys\frame.h">
       <Filter>Header Files\sys</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sys\console\cmds.h">
-      <Filter>Header Files\sys\console</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sys\console\console.h">
-      <Filter>Header Files\sys\console</Filter>
     </ClInclude>
     <ClInclude Include="src\sys\input.h">
       <Filter>Header Files\sys</Filter>
