@@ -118,5 +118,31 @@ namespace util
 	{
 		return std::find(Constants::Pokemon::physical.begin(), Constants::Pokemon::physical.end(), type_name) != Constants::Pokemon::physical.end();
 	}
+
+	void clearStats(PokemonStats* stats)
+	{
+		stats->attack = 0;
+		stats->hp = 0;
+		stats->defense = 0;
+		stats->special = 0;
+		stats->speed = 0;
+	}
+
+	int ipow(int base, int exp)
+	{
+		assert(base >= 0 && exp >= 0);
+		int result = 1;
+		for (;;)
+		{
+			if (exp & 1)
+				result *= base;
+			exp >>= 1;
+			if (!exp)
+				break;
+			base *= base;
+		}
+
+		return result;
+	}
 	
 }

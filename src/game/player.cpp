@@ -9,6 +9,7 @@ Player::Player()
 	freeze = false;
 	forcedMovement = false;
 	name = "RED";
+	trainerId = util::random(0, UINT16_MAX);
 }
 
 void Player::init()

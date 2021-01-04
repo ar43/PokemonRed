@@ -40,6 +40,9 @@
     <Filter Include="Header Files\game\pokemon">
       <UniqueIdentifier>{527b753c-87ab-472d-8f9f-6794fb3d6355}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\game\pokemon">
+      <UniqueIdentifier>{a0ef9a50-1ee4-4fa2-9f19-410dc9f28c01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -112,7 +115,10 @@
       <Filter>Source Files\game</Filter>
     </ClCompile>
     <ClCompile Include="src\game\pokemon_data.cpp">
-      <Filter>Source Files\game</Filter>
+      <Filter>Source Files\game\pokemon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\pokemon.cpp">
+      <Filter>Source Files\game\pokemon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +192,9 @@
       <Filter>Header Files\game</Filter>
     </ClInclude>
     <ClInclude Include="src\game\pokemon_data.h">
+      <Filter>Header Files\game\pokemon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\pokemon.h">
       <Filter>Header Files\game\pokemon</Filter>
     </ClInclude>
   </ItemGroup>

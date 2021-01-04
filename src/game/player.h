@@ -35,6 +35,7 @@ public:
 	void addMovement(Direction dir, int times);
 	bool is_mq_empty();
 	std::string name;
+	int trainerId;
 private:
 	
 	Position pos;

@@ -150,6 +150,7 @@
     <ClCompile Include="src\game\npc.cpp" />
     <ClCompile Include="src\game\object.cpp" />
     <ClCompile Include="src\game\player.cpp" />
+    <ClCompile Include="src\game\pokemon.cpp" />
     <ClCompile Include="src\game\pokemon_data.cpp" />
     <ClCompile Include="src\game\sign.cpp" />
     <ClCompile Include="src\game\text.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="src\game\npc.h" />
     <ClInclude Include="src\game\object.h" />
     <ClInclude Include="src\game\player.h" />
+    <ClInclude Include="src\game\pokemon.h" />
     <ClInclude Include="src\game\pokemon_data.h" />
     <ClInclude Include="src\game\sign.h" />
     <ClInclude Include="src\game\text.h" />
