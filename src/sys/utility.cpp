@@ -144,5 +144,10 @@ namespace util
 
 		return result;
 	}
+
+	void error(const char* pMsg)
+	{
+		sys.error(pMsg);
+	}
 	
 }

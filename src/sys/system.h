@@ -28,8 +28,8 @@ extern "C"
 #include "input.h"
 #include "render.h"
 #include "../game/game.h"
-#include "../game/player.h"
 #include "../game/pokemon.h"
+#include "../game/player.h"
 #include "../game/pokemon_data.h"
 #include "resource_manager.h"
 #include "../game/map.h"
@@ -44,6 +44,7 @@ extern "C"
 #include "../game/item.h"
 #include "utility.h"
 #include "../game/lua.h"
+#include "../game/inventory.h"
 
 #define GAME_WIDTH 160
 #define GAME_HEIGHT 144

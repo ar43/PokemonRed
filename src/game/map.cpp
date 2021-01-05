@@ -240,6 +240,7 @@ void Map::runScript()
                 .addFunction("is_mq_empty", lua::is_mq_empty)
                 .addFunction("get_keycatchers",lua::get_keycatchers)
                 .addFunction("speedup",lua::speedup)
+                .addFunction("give_pokemon", lua::give_pokemon)
             .endNamespace();
         luaL_dostring(lua::L, "time = 0\n");
         luaL_dostring(lua::L, "delay = 0\n");

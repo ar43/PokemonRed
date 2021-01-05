@@ -196,4 +196,9 @@ namespace lua
 	{
 		return game.world.currentMap->currentScript;
 	}
+
+	void give_pokemon(std::string monName, int level)
+	{
+		game.player.inv.addPokemon(new Pokemon(res.getPokemonData(monName), level));
+	}
 }

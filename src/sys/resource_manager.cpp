@@ -373,6 +373,19 @@ void ResourceManager::loadBlockset(std::string blocksetName, std::string tileset
 	blocksetMap[blocksetName] = blockset;
 }
 
+PokemonData* ResourceManager::getPokemonData(std::string pokemonName)
+{
+	if (!(pokemonDataMap.find(pokemonName) == pokemonDataMap.end()))
+	{
+		return pokemonDataMap[pokemonName];
+	}
+	else
+	{
+		sys.error(util::va("can not find pokemonData in the storage: %s", pokemonName.c_str()));
+		return nullptr;
+	}
+}
+
 void ResourceManager::loadPokemonData(std::string pokemonName)
 {
 	std::string path = "assets/data/pokemon/base_stats/" + pokemonName + ".asm";

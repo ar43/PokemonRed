@@ -3,6 +3,7 @@
 #include "../sys/render.h"
 #include "map.h"
 #include "enums.h"
+#include "inventory.h"
 
 #define PLAYER_OFFSET_X 64
 #define PLAYER_OFFSET_Y 60
@@ -36,10 +37,12 @@ public:
 	bool is_mq_empty();
 	std::string name;
 	int trainerId;
+	Inventory inv;
 private:
 	
 	Position pos;
 	Direction turnDir;
+	
 	int turning;
 	int emoteTime;
 	EmotionBubble emote;
@@ -58,4 +61,5 @@ private:
 	//bool get_block(Position* p_pos, Map* currMap, Block*& block, int* i);
 	void sign_check();
 	void object_check();
+	
 };

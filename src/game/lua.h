@@ -21,4 +21,5 @@ namespace lua
 	extern bool is_mq_empty(int i);
 	extern int get_keycatchers();
 	extern void speedup(int i, bool flag);
+	extern void give_pokemon(std::string monName, int level);
 }

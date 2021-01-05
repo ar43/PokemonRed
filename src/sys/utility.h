@@ -21,5 +21,7 @@ namespace util
 	extern void clearStats(PokemonStats* stats);
 
 	extern int ipow(int base, int exp);
+
+	extern void error(const char* pMsg);
 }
 

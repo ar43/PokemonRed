@@ -37,6 +37,12 @@
     <Filter Include="Source Files\game\pokemon">
       <UniqueIdentifier>{a0ef9a50-1ee4-4fa2-9f19-410dc9f28c01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\game\player">
+      <UniqueIdentifier>{04ade856-cd34-40ac-91b4-29840eadb95e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\player">
+      <UniqueIdentifier>{830c08ac-6412-441b-97fb-5d291d8cf1f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -61,9 +67,6 @@
       <Filter>Source Files\sys</Filter>
     </ClCompile>
     <ClCompile Include="src\game\game.cpp">
-      <Filter>Source Files\game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\player.cpp">
       <Filter>Source Files\game</Filter>
     </ClCompile>
     <ClCompile Include="src\sys\resource_manager.cpp">
@@ -108,6 +111,12 @@
     <ClCompile Include="src\game\pokemon.cpp">
       <Filter>Source Files\game\pokemon</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\player.cpp">
+      <Filter>Source Files\game\player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\inventory.cpp">
+      <Filter>Source Files\game\player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sys\system.h">
@@ -129,9 +138,6 @@
       <Filter>Header Files\sys</Filter>
     </ClInclude>
     <ClInclude Include="src\game\game.h">
-      <Filter>Header Files\game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\player.h">
       <Filter>Header Files\game</Filter>
     </ClInclude>
     <ClInclude Include="src\sys\resource_manager.h">
@@ -178,6 +184,12 @@
     </ClInclude>
     <ClInclude Include="src\game\pokemon.h">
       <Filter>Header Files\game\pokemon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\player.h">
+      <Filter>Header Files\game\player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\inventory.h">
+      <Filter>Header Files\game\player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
