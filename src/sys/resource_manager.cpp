@@ -19,16 +19,78 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 
 	Tileset *tileset = new Tileset();
 	tileset->surface = gsSurface;
+	tileset->texture[BRIGHTNESS_NORMAL] = SDL_CreateTextureFromSurface(sys.getRenderer(), tileset->surface);
 	//darken:
-	//for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
-	//{
-	//	Uint32* pixels = (Uint32*)gsSurface->pixels;
-	//	pixels[i] -= 0x555555;
-	//
-	//	if (pixels[i] < 0xff000000)
-	//		pixels[i] = 0xff000000;
-	//	//printf("%x: %x\n", i, pixels[i]);
-	//}
+	for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
+	{
+		Uint32* pixels = (Uint32*)gsSurface->pixels;
+		pixels[i] -= 0x555555;
+	
+		if (pixels[i] < 0xff000000)
+			pixels[i] = 0xff000000;
+		//printf("%x: %x\n", i, pixels[i]);
+	}
+	tileset->texture[BRIGHTNESS_DARK1] = SDL_CreateTextureFromSurface(sys.getRenderer(), tileset->surface);
+	for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
+	{
+		Uint32* pixels = (Uint32*)gsSurface->pixels;
+		pixels[i] -= 0x555555;
+
+		if (pixels[i] < 0xff000000)
+			pixels[i] = 0xff000000;
+		//printf("%x: %x\n", i, pixels[i]);
+	}
+	tileset->texture[BRIGHTNESS_DARK2] = SDL_CreateTextureFromSurface(sys.getRenderer(), tileset->surface);
+	for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
+	{
+		Uint32* pixels = (Uint32*)gsSurface->pixels;
+		pixels[i] -= 0x555555;
+
+		if (pixels[i] < 0xff000000)
+			pixels[i] = 0xff000000;
+		//printf("%x: %x\n", i, pixels[i]);
+	}
+	tileset->texture[BRIGHTNESS_DARK3] = SDL_CreateTextureFromSurface(sys.getRenderer(), tileset->surface);
+
+
+	SDL_FreeSurface(sur);
+	sur = IMG_Load(path);
+	gsSurface = SDL_ConvertSurfaceFormat(sur,
+		SDL_PIXELFORMAT_ARGB8888,
+		0);
+	tileset->surface = gsSurface;
+	//lighten:
+	for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
+	{
+		Uint32* pixels = (Uint32*)gsSurface->pixels;
+
+		if (pixels[i] < 0xffffffff)
+			pixels[i] += 0x555555;
+
+		//printf("%x: %x\n", i, pixels[i]);
+	}
+	tileset->texture[BRIGHTNESS_LIGHT1] = SDL_CreateTextureFromSurface(sys.getRenderer(), tileset->surface);
+	for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
+	{
+		Uint32* pixels = (Uint32*)gsSurface->pixels;
+
+		if (pixels[i] < 0xffffffff)
+			pixels[i] += 0x555555;
+
+		//printf("%x: %x\n", i, pixels[i]);
+	}
+	tileset->texture[BRIGHTNESS_LIGHT2] = SDL_CreateTextureFromSurface(sys.getRenderer(), tileset->surface);
+	for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
+	{
+		Uint32* pixels = (Uint32*)gsSurface->pixels;
+
+		if (pixels[i] < 0xffffffff)
+			pixels[i] += 0x555555;
+
+		//printf("%x: %x\n", i, pixels[i]);
+	}
+	tileset->texture[BRIGHTNESS_LIGHT3] = SDL_CreateTextureFromSurface(sys.getRenderer(), tileset->surface);
+
 
 	tileset->format = gsSurface->format->format;
 	tileset->collData = collData;
@@ -45,7 +107,7 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 	}
 	tileset->permission = permission;
 
-	tileset->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), tileset->surface);
+	
 	
 	tilesetMap[textureName] = tileset;
 	SDL_FreeSurface(sur);
@@ -134,6 +196,8 @@ void ResourceManager::loadTexture(std::string textureName, const char* path, boo
 
 	textureMap[textureName] = texture;
 
+
+	//LIGHT TEXTURE CODE
 	gsSurface = SDL_ConvertSurfaceFormat(sur,SDL_PIXELFORMAT_ARGB8888,0);
 	//lighten by one level:
 	for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
@@ -155,6 +219,8 @@ void ResourceManager::loadTexture(std::string textureName, const char* path, boo
 	textureLight->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), textureLight->surface);
 
 	textureMap[textureName + "Light"] = textureLight;
+	//LIGHT TEXTURE CODE END
+
 
 	SDL_FreeSurface(sur);
 }
@@ -215,19 +281,25 @@ void ResourceManager::loadBlockset(std::string blocksetName, std::string tileset
 	{ 
 		char buffer[16];
 		ifs.read(buffer, 16);
-		blockset->blocks[i].texture = SDL_CreateTexture(sys.getRenderer(), tileset->format, SDL_TEXTUREACCESS_TARGET, 32, 32);
-		if (!blockset->blocks[i].texture)
+		for (int b = 0; b < NUM_BRIGHTNESS; b++)
 		{
-			sys.error(util::va("SDL_CreateTexture failed: %s\n", SDL_GetError()));
-			break;
+			blockset->blocks[i].texture[b] = SDL_CreateTexture(sys.getRenderer(), tileset->format, SDL_TEXTUREACCESS_TARGET, 32, 32);
+			if (!blockset->blocks[i].texture[b])
+			{
+				sys.error(util::va("SDL_CreateTexture failed: %s\n", SDL_GetError()));
+				break;
+			}
+			SDL_SetRenderTarget(sys.getRenderer(), blockset->blocks[i].texture[b]);
+			SDL_RenderClear(sys.getRenderer());
+			for (int j = 0; j < 16; j++)
+			{
+				SDL_Rect src = { ((Uint8)buffer[j] % 16) * 8,((Uint8)buffer[j] / 16) * 8,8,8 };
+				SDL_Rect dest = { (j % 4) * 8,(j / 4) * 8,8,8 };
+				SDL_RenderCopy(sys.getRenderer(), tileset->texture[b], &src, &dest);
+			}
 		}
-		SDL_SetRenderTarget(sys.getRenderer(), blockset->blocks[i].texture);
-		SDL_RenderClear(sys.getRenderer());
 		for (int j = 0; j < 16; j++)
 		{
-			SDL_Rect src = { ((Uint8)buffer[j] % 16) * 8,((Uint8)buffer[j] / 16) * 8,8,8 };
-			SDL_Rect dest = { (j % 4) * 8,(j / 4) * 8,8,8 };
-			SDL_RenderCopy(sys.getRenderer(), tileset->texture, &src, &dest);
 			if (std::find(tileset->collData->begin(), tileset->collData->end(), buffer[j]) != tileset->collData->end())
 			{
 				switch(j)

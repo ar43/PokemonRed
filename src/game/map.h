@@ -12,11 +12,23 @@ enum MapAnimation
 	ANIMATION_WATER
 };
 
+enum BRIGHTNESS
+{
+	BRIGHTNESS_LIGHT3,
+	BRIGHTNESS_LIGHT2,
+	BRIGHTNESS_LIGHT1,
+	BRIGHTNESS_NORMAL,
+	BRIGHTNESS_DARK1,
+	BRIGHTNESS_DARK2,
+	BRIGHTNESS_DARK3,
+	NUM_BRIGHTNESS
+};
+
 class Tileset
 {
 public:
 	SDL_Surface* surface;
-	SDL_Texture* texture;
+	SDL_Texture* texture[NUM_BRIGHTNESS];
 	Uint32 format;
 	std::vector<Uint8>* collData;
 	std::vector<Uint8>* warpData;
@@ -36,7 +48,11 @@ public:
 		height = 32;
 		valid = false;
 		surface = NULL;
-		texture = NULL;
+		for (int i = 0; i < NUM_BRIGHTNESS; i++)
+		{
+			texture[i] = NULL;
+		}
+		
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -78,7 +94,7 @@ public:
 		}
 	}
 	SDL_Surface* surface;
-	SDL_Texture* texture;
+	SDL_Texture* texture[NUM_BRIGHTNESS];
 
 	int width;
 	int height;

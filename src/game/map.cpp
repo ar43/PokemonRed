@@ -12,26 +12,27 @@ void Block::render(int x, int y)
     y = y * 32;
     int final_x = x + GAME_WIDTH / 2 - game.player.getPosition()->x - WORLD_OFFSET_X;
     int final_y = y + GAME_HEIGHT / 2 - game.player.getPosition()->y - WORLD_OFFSET_Y;
+    size_t brightness = BRIGHTNESS_NORMAL;
 
     //check if we can see the block (save our CPU)
     if (!(final_x > -64 && final_x < GAME_WIDTH + 64 && final_y > -64 && final_y < GAME_HEIGHT + 64))
         return;
 
-    if (game.player.warpIndex < 8)
+    if (game.player.warpIndex >= 8)
     {
-        SDL_SetTextureColorMod(texture, 255, 255, 255);
+        brightness = BRIGHTNESS_DARK1;
     }
-    else if (game.player.warpIndex < 16)
+    else if (game.player.warpIndex >= 16)
     {
-        SDL_SetTextureColorMod(texture, 128, 128, 128);
+        brightness = BRIGHTNESS_DARK2;
     }
-    else if (game.player.warpIndex < 24)
+    else if (game.player.warpIndex >= 24)
     {
-        SDL_SetTextureColorMod(texture, 16, 16, 16);
+        brightness = BRIGHTNESS_DARK3;
     }
 
     SDL_Rect rected = { final_x,final_y,32,32 };
-    SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(sys.getRenderer(), texture[brightness], NULL, &rected, 0.0f, NULL, SDL_FLIP_NONE);
 
     //handle animation & grass
     for (int i = 0; i < 16; i++)
@@ -263,7 +264,7 @@ void Block::render_static(int x, int y)
     x = x * 32;
     y = y * 32;
     SDL_Rect rected = { x ,y ,32,32 };
-    SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(sys.getRenderer(), texture[BRIGHTNESS_NORMAL], NULL, &rected, 0.0f, NULL, SDL_FLIP_NONE);
 }
 
 
