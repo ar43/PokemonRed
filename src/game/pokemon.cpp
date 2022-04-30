@@ -11,7 +11,7 @@ Pokemon::Pokemon(PokemonData* p_data, int p_level)
 	calculateStats();
 	hp = maxHp();
 	status = PokemonStatus::NONE;
-	calculateEXP();
+	exp = calculateEXP(level);
 }
 
 int Pokemon::maxHp()
@@ -37,42 +37,50 @@ void Pokemon::generateIV()
 	iv.hp = ((iv.attack & 1) << 3) | ((iv.defense & 1) << 2) | ((iv.speed & 1) << 1) | (iv.special & 1);
 }
 
-void Pokemon::calculateEXP()
+int Pokemon::calculateEXP(int level)
 {
+	int xp = 0;
 	switch (data->growthRate)
 	{
 		case GrowthRate::GROWTH_FAST:
 		{
-			exp = (4 / 5) * util::ipow(level,3);
+			xp = (4 / 5) * util::ipow(level,3);
 			break;
 		}
 		case GrowthRate::GROWTH_SLOW:
 		{
-			exp = (5 / 4) * util::ipow(level, 3);
+			xp = (5 / 4) * util::ipow(level, 3);
 			break;
 		}
 		case GrowthRate::GROWTH_MEDIUM_SLOW:
 		{
-			exp = (6 / 5) * util::ipow(level, 3) - 15*util::ipow(level, 2) + 100*level-140;
+			xp = (6 / 5) * util::ipow(level, 3) - 15*util::ipow(level, 2) + 100*level-140;
 			break;
 		}
 		case GrowthRate::GROWTH_MEDIUM_FAST:
 		{
-			exp = util::ipow(level, 3);
+			xp = util::ipow(level, 3);
 			break;
 		}
 		case GrowthRate::GROWTH_SLIGHTLY_FAST:
 		{
-			exp = (3/4)*util::ipow(level, 3)+10 * util::ipow(level, 2)-30;
+			xp = (3/4)*util::ipow(level, 3)+10 * util::ipow(level, 2)-30;
 			break;
 		}
 		case GrowthRate::GROWTH_SLIGHTLY_SLOW:
 		{
-			exp = (3 / 4) * util::ipow(level, 3) + 20 * util::ipow(level, 2) - 70;
+			xp = (3 / 4) * util::ipow(level, 3) + 20 * util::ipow(level, 2) - 70;
+			break;
+		}
+		default:
+		{
+			sys.error("Invalid growthRate at Pokemon::calculateEXP");
 			break;
 		}
 	}
-	if (exp < 0)
-		exp = 0;
+	if (xp < 0)
+		xp = 0;
+	return xp;
+
 }
 

@@ -30,5 +30,5 @@ public:
 
 	void calculateStats();
 	void generateIV();
-	void calculateEXP();
+	int calculateEXP(int level);
 };
