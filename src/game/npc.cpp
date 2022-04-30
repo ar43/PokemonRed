@@ -103,13 +103,14 @@ void Npc::update()
 
 	if (spriteDraw)
 	{	 
-		static int delay = 0;
 		if (moving)
 		{
-			if (speedup && delay)
+			if (speedup)
 			{
-				delay--;
-				return;
+				if (moveIndex % 2 == game.player.moveIndex % 2 && !game.player.is_mq_empty())
+				{
+					return;
+				}
 			}
 			move();
 		}
@@ -123,11 +124,10 @@ void Npc::update()
 			static Direction lastdir = Direction::DOWN;
 			
 			dir = movementQueue.front();
-			if (lastdir != dir && speedup)
-				delay = 6;
+				
 			moving = true;
 			moveIndex = 0;
-			sprite->animIndex = 1;
+			sprite->animIndex = 0;
 			
 			wait(); //just in case to avoid catastrophe
 			lastdir = dir;
@@ -139,7 +139,7 @@ void Npc::update()
 			{ 
 				moving = true;
 				moveIndex = 0;
-				sprite->animIndex = 1;
+				sprite->animIndex = 0;
 			}
 			wait();
 		}
@@ -391,24 +391,24 @@ bool Npc::is_mq_empty()
 void Npc::get_screen_pos(Position* pnt)
 {
 	pnt->x = pos.x * 16 + displacement.x + GAME_WIDTH / 2 - game.player.getPosition()->x - WORLD_OFFSET_X;
-	pnt->y = pos.y * 16 + displacement.y + GAME_WIDTH / 2 - game.player.getPosition()->y - WORLD_OFFSET_Y - 12;
+	pnt->y = pos.y * 16 + displacement.y + GAME_HEIGHT / 2 - game.player.getPosition()->y - 12;
 }
 
 void Npc::get_screen_pos(Position* pnt,Position *custompos)
 {
 	pnt->x = custompos->x + GAME_WIDTH / 2 - game.player.getPosition()->x - WORLD_OFFSET_X;
-	pnt->y = custompos->y + GAME_WIDTH / 2 - game.player.getPosition()->y - WORLD_OFFSET_Y - 12;
+	pnt->y = custompos->y + GAME_HEIGHT / 2 - game.player.getPosition()->y - 12;
 }
 
 void Npc::render()
 {
-	if (!active)
+	if (!active || !spriteDraw)
 		return;
 
 	Position loc;
 	get_screen_pos(&loc);
-	if(spriteDraw)
-		sprite->render(&loc, dir,speedup);
+	sprite->render(&loc, dir,speedup);
+	//printf("drew npc at: %i %i; player pos: %i %i; displacement: %i %i; \n", loc.x, loc.y,game.player.getPosition()->x,game.player.getPosition()->y, displacement.x, displacement.y);
 
 	if (emoteTime)
 	{

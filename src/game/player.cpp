@@ -159,6 +159,12 @@ void Player::move()
 		queueGoNext = false;
 	}
 
+	if (turning)
+	{
+		turning = 0;
+		dir = turnDir;
+	}
+
 	if (jumping)
 	{
 		sprite->animIndex++;
@@ -192,15 +198,6 @@ void Player::move()
 		if (jumpIndex >= 32)
 		{
 			jumping = false;
-		}
-	}
-	else if (turning)
-	{
-		turning++;
-		if (turning == 3)
-		{
-			turning = 0;
-			dir = turnDir;
 		}
 	}
 	else if (moving)
@@ -259,6 +256,7 @@ void Player::move()
 				}
 			}
 		}
+		//printf("new pos: %i %i\n", pos.x, pos.y);
 		moveIndex++;
 		if (moveIndex >= 16)
 		{

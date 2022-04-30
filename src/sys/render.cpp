@@ -452,40 +452,35 @@ void Sprite::render(Position *pos, Direction dir, bool speedup)
     
     int offset_x = 0;
     int offset_y = 0;
-    if(game.player.moving) //the weird effect of the game in emulator, emulated
-    {
-        if (game.player.moveIndex % 2 == 1)
-        {
-            switch (game.player.dir)
-            {
-            case Direction::UP:
-            {
-                offset_y -= 2;
-                break;
-            }
-            case Direction::DOWN:
-            {
-                offset_y += 2;
-                break;
-            }
-            case Direction::LEFT:
-            {
-                offset_x -= 2;
-                break;
-            }
-            case Direction::RIGHT:
-            {
-                offset_x += 2;
-                break;
-            }
-            }
-        }
-    }
-    if (speedup)
-    {
-        offset_x = 0;
-        offset_y = 0;
-    }
+    //if(game.player.moving) //the weird effect of the game in emulator, emulated
+    //{
+    //    if (game.player.moveIndex % 2 == 1)
+    //    {
+    //        switch (game.player.dir)
+    //        {
+    //        case Direction::UP:
+    //        {
+    //            offset_y -= 2;
+    //            break;
+    //        }
+    //        case Direction::DOWN:
+    //        {
+    //            offset_y += 2;
+    //            break;
+    //        }
+    //        case Direction::LEFT:
+    //        {
+    //            offset_x -= 2;
+    //            break;
+    //        }
+    //        case Direction::RIGHT:
+    //        {
+    //            offset_x += 2;
+    //            break;
+    //        }
+    //        }
+    //    }
+    //}
 
     SDL_Rect rectSrc = { 0,offset,16,16 };
     SDL_Rect rectDest = { pos->x-offset_x,pos->y-offset_y,16,16 };

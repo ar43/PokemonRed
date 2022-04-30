@@ -1,10 +1,10 @@
---[[if(os.time()-time >= 1) --example: this will execute once per second
+if(os.time()-time >= 1) --example: this will execute once per second
 then
-	local player_pos = world.get_player_pos()
-	print(math.floor(player_pos.x/16))
-	print(math.floor(player_pos.y/16))
+	local player_pos = pkm.get_player_pos()
+	--print(math.floor(player_pos.x/16))
+	--print(math.floor(player_pos.y/16))
 	time = os.time()
-end--]]
+end
 if(delay > 0) then
 	delay = delay - 1
 elseif(pkm.get_script() == 0) then

@@ -7,6 +7,8 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 {
 	SDL_Surface *sur = IMG_Load(path);
 
+	//0x00 0x55 0xaa 0xff
+
 	if (!sur) {
 		sys.error(util::va("IMG_Load: %s\n", IMG_GetError()));
 		// handle error
@@ -17,6 +19,17 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 
 	Tileset *tileset = new Tileset();
 	tileset->surface = gsSurface;
+	//for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
+	//{
+	//	Uint32* pixels = (Uint32*)gsSurface->pixels;
+	//	if(pixels[i] < 0xffffffff)
+	//		pixels[i] += 0x555555;
+	//
+	//	if (pixels[i] < 0xff000000)
+	//		pixels[i] = 0xff000000;
+	//	//printf("%x: %x\n", i, pixels[i]);
+	//}
+
 	tileset->format = gsSurface->format->format;
 	tileset->collData = collData;
 	tileset->warpData = warpData;
@@ -136,6 +149,7 @@ void ResourceManager::loadSprite(std::string spriteName)
 	//SDL_Surface* gsSurface = SDL_ConvertSurfaceFormat(sur,SDL_PIXELFORMAT_ARGB8888,0);
 	SDL_Surface* gsSurface = sur;
 	SDL_SetColorKey(gsSurface, SDL_TRUE, SDL_MapRGB(gsSurface->format, 0xff, 0xff, 0xff));
+
 	Sprite* sprite = new Sprite();
 	sprite->surface = gsSurface;
 	sprite->format = gsSurface->format->format;
@@ -368,7 +382,7 @@ void ResourceManager::loadBlockset(std::string blocksetName, std::string tileset
 		blockset->blocks[i].valid = true;
 		i++;
 	}
-	
+	ifs.close();
 
 	blocksetMap[blocksetName] = blockset;
 }

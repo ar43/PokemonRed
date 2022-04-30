@@ -48,7 +48,7 @@ void Item::init()
 void Item::get_screen_pos(Position* pnt)
 {
 	pnt->x = pos.x * 16 + GAME_WIDTH / 2 - game.player.getPosition()->x - WORLD_OFFSET_X;
-	pnt->y = pos.y * 16 + GAME_WIDTH / 2 - game.player.getPosition()->y - WORLD_OFFSET_Y - 12;
+	pnt->y = pos.y * 16 + GAME_HEIGHT / 2 - game.player.getPosition()->y - 12;
 }
 
 void Item::get_block_pos(Position* pos)
