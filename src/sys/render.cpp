@@ -85,21 +85,9 @@ void Render::draw_overlay()
         }
     }
 
-    if (game.player.warpIndex < 32 && game.player.warpIndex >= 24)
-    {
-        SDL_SetRenderDrawColor(sys.getRenderer(), 0, 0, 0, 255);
-        SDL_Rect screen = { 0,0,GAME_WIDTH,GAME_HEIGHT };
-        SDL_RenderFillRect(sys.getRenderer(), &screen);
-    }
-    else if (game.player.warpIndex < 40 && game.player.warpIndex >= 24)
+    if (game.player.warpIndex < 38 && game.player.warpIndex >= 30)
     {
         SDL_SetRenderDrawColor(sys.getRenderer(), 255, 255, 255, 255);
-        SDL_Rect screen = { 0,0,GAME_WIDTH,GAME_HEIGHT };
-        SDL_RenderFillRect(sys.getRenderer(), &screen);
-    }
-    else if (game.player.warpIndex < 47 && game.player.warpIndex >= 24)
-    {
-        SDL_SetRenderDrawColor(sys.getRenderer(), 0, 0, 0, 255);
         SDL_Rect screen = { 0,0,GAME_WIDTH,GAME_HEIGHT };
         SDL_RenderFillRect(sys.getRenderer(), &screen);
     }
@@ -334,20 +322,22 @@ void Sprite::render_static(int x, int y, Direction dir)
     SDL_Rect rectSrc = { 0,offset,16,16 };
     SDL_Rect rectDest = { x,y+y_offset,16,16 };
 
-    if (game.player.warpIndex < 8)
+    size_t brightness = BRIGHTNESS_NORMAL;
+
+    if (game.player.warpIndex >= 24)
     {
-        SDL_SetTextureColorMod(texture, 255, 255, 255);
+        brightness = BRIGHTNESS_DARK3;
     }
-    else if (game.player.warpIndex < 16)
+    else if (game.player.warpIndex >= 16)
     {
-        SDL_SetTextureColorMod(texture, 16, 16, 16);
+        brightness = BRIGHTNESS_DARK3;
     }
-    else if (game.player.warpIndex < 24)
+    else if (game.player.warpIndex >= 8)
     {
-        SDL_SetTextureColorMod(texture, 1, 1, 1);
+        brightness = BRIGHTNESS_DARK1;
     }
 
-    SDL_RenderCopyEx(sys.getRenderer(), texture, &rectSrc, &rectDest, 0.0f, NULL, flip);
+    SDL_RenderCopyEx(sys.getRenderer(), texture[brightness], &rectSrc, &rectDest, 0.0f, NULL, flip);
 
 }
 
@@ -485,19 +475,21 @@ void Sprite::render(Position *pos, Direction dir, bool speedup)
     SDL_Rect rectSrc = { 0,offset,16,16 };
     SDL_Rect rectDest = { pos->x-offset_x,pos->y-offset_y,16,16 };
 
-    if (game.player.warpIndex < 8)
+    size_t brightness = BRIGHTNESS_NORMAL;
+
+    if (game.player.warpIndex >= 24)
     {
-        SDL_SetTextureColorMod(texture, 255, 255, 255);
+        brightness = BRIGHTNESS_DARK3;
     }
-    else if (game.player.warpIndex < 16)
+    else if (game.player.warpIndex >= 16)
     {
-        SDL_SetTextureColorMod(texture, 16, 16, 16);
+        brightness = BRIGHTNESS_DARK3;
     }
-    else if (game.player.warpIndex < 24)
+    else if (game.player.warpIndex >= 8)
     {
-        SDL_SetTextureColorMod(texture, 1, 1, 1);
+        brightness = BRIGHTNESS_DARK1;
     }
 
-    SDL_RenderCopyEx(sys.getRenderer(), texture, &rectSrc, &rectDest, 0.0f, NULL, flip);
+    SDL_RenderCopyEx(sys.getRenderer(), texture[brightness], &rectSrc, &rectDest, 0.0f, NULL, flip);
 
 }

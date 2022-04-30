@@ -54,6 +54,7 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 
 
 	SDL_FreeSurface(sur);
+	SDL_FreeSurface(gsSurface);
 	sur = IMG_Load(path);
 	gsSurface = SDL_ConvertSurfaceFormat(sur,
 		SDL_PIXELFORMAT_ARGB8888,
@@ -111,6 +112,7 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 	
 	tilesetMap[textureName] = tileset;
 	SDL_FreeSurface(sur);
+	SDL_FreeSurface(gsSurface);
 }
 
 void ResourceManager::setObject(std::string name, Object* pointer)
@@ -199,16 +201,19 @@ void ResourceManager::loadTexture(std::string textureName, const char* path, boo
 
 	//LIGHT TEXTURE CODE
 	gsSurface = SDL_ConvertSurfaceFormat(sur,SDL_PIXELFORMAT_ARGB8888,0);
+	SDL_SetColorKey(gsSurface, SDL_TRUE, SDL_MapRGB(gsSurface->format, 0x12, 0x34, 0x56));
 	//lighten by one level:
 	for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
 	{
 		Uint32* pixels = (Uint32*)gsSurface->pixels;
-		if (pixels[i] > 0xff000000)
+		if (pixels[i] == 0xffffffff)
+			pixels[i] = 0xff123456;
+		if (pixels[i] > 0xff000000 && pixels[i] !=  0xff123456)
 			pixels[i] += 0x555555;
 
 		//printf("%x: %x\n", i, pixels[i]);
 	}
-	SDL_SetColorKey(gsSurface, SDL_TRUE, SDL_MapRGB(gsSurface->format, 0xff, 0xff, 0xff));
+	
 
 	Texture* textureLight = new Texture();
 	textureLight->surface = gsSurface;
@@ -239,30 +244,89 @@ void ResourceManager::loadSprite(std::string spriteName)
 	SDL_Surface* gsSurface = SDL_ConvertSurfaceFormat(sur,
 		SDL_PIXELFORMAT_ARGB8888,
 		0);
+	SDL_Surface* gsSurface2 = SDL_ConvertSurfaceFormat(sur,
+		SDL_PIXELFORMAT_ARGB8888,
+		0);
 	
+	
+	Sprite* sprite = new Sprite();
+	sprite->surface = gsSurface;
+	SDL_SetColorKey(sur, SDL_TRUE, SDL_MapRGB(sur->format, 0xff, 0xff, 0xff));
+	sprite->texture[BRIGHTNESS_DARK1] = SDL_CreateTextureFromSurface(sys.getRenderer(), sur);
+	//darken by two level:
+	for (int i = 0; i < gsSurface2->w*gsSurface2->h; i++)
+	{
+		Uint32* pixels = (Uint32*)gsSurface2->pixels;
+		if(pixels[i] < 0xffffffff)
+			pixels[i] -= 0x555555;
 
-	
-	//lighten by one level:
+		if (pixels[i] < 0xff000000)
+			pixels[i] = 0xff000000;
+
+		//printf("%x: %x\n", i, pixels[i]);
+	}
+	SDL_SetColorKey(gsSurface2, SDL_TRUE, SDL_MapRGB(gsSurface2->format, 0xff, 0xff, 0xff));
+	sprite->texture[BRIGHTNESS_DARK2] = SDL_CreateTextureFromSurface(sys.getRenderer(), gsSurface2);
+	//darken by three level:
+	for (int i = 0; i < gsSurface2->w*gsSurface2->h; i++)
+	{
+		Uint32* pixels = (Uint32*)gsSurface2->pixels;
+		if(pixels[i] != 0xffffffff)
+			pixels[i] = 0xff000000;
+		//printf("%x: %x\n", i, pixels[i]);
+	}
+	SDL_SetColorKey(gsSurface2, SDL_TRUE, SDL_MapRGB(gsSurface2->format, 0xff, 0xff, 0xff));
+	sprite->texture[BRIGHTNESS_DARK3] = SDL_CreateTextureFromSurface(sys.getRenderer(), gsSurface2);
+	//normalize:
+	SDL_SetColorKey(gsSurface, SDL_TRUE, SDL_MapRGB(gsSurface->format, 0x12, 0x34, 0x56));
 	for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
 	{
 		Uint32* pixels = (Uint32*)gsSurface->pixels;
-		if (pixels[i] > 0xff000000)
+		if (pixels[i] == 0xffffffff)
+			pixels[i] = 0xff123456;
+		if (pixels[i] > 0xff000000 && pixels[i] != 0xff123456)
+			pixels[i] += 0x555555;
+
+		//printf("%x: %x\n", i, pixels[i]);
+	}
+	
+	sprite->texture[BRIGHTNESS_NORMAL] = SDL_CreateTextureFromSurface(sys.getRenderer(), sprite->surface);
+
+	//lighten by 1:
+	for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
+	{
+		Uint32* pixels = (Uint32*)gsSurface->pixels;
+		if (pixels[i] > 0xff000000 && pixels[i] != 0xff123456)
+			pixels[i] += 0x555555;
+
+		//printf("%x: %x\n", i, pixels[i]);
+	}
+	sprite->texture[BRIGHTNESS_LIGHT1] = SDL_CreateTextureFromSurface(sys.getRenderer(), sprite->surface);
+	//lighten by 2:
+	for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
+	{
+		Uint32* pixels = (Uint32*)gsSurface->pixels;
+		if (pixels[i] > 0xff000000 && pixels[i] != 0xff123456)
 			pixels[i] += 0x555555;
 
 		//printf("%x: %x\n", i, pixels[i]);
 	}
 	SDL_SetColorKey(gsSurface, SDL_TRUE, SDL_MapRGB(gsSurface->format, 0xff, 0xff, 0xff));
-	Sprite* sprite = new Sprite();
-	sprite->surface = gsSurface;
+	sprite->texture[BRIGHTNESS_LIGHT2] = SDL_CreateTextureFromSurface(sys.getRenderer(), sprite->surface);
+	sprite->texture[BRIGHTNESS_LIGHT3] = SDL_CreateTextureFromSurface(sys.getRenderer(), sprite->surface);
+
+
 	sprite->format = gsSurface->format->format;
 	sprite->w = gsSurface->w;
 	sprite->h = gsSurface->h;
 	sprite->size = sprite->h / 16;
 	sprite->animIndex = 0;
 
-	sprite->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), sprite->surface);
+	//sprite->texture[BRIGHTNESS_NORMAL] = SDL_CreateTextureFromSurface(sys.getRenderer(), sprite->surface);
 	spriteMap[spriteName] = sprite;
 	SDL_FreeSurface(sur);
+	SDL_FreeSurface(gsSurface);
+	SDL_FreeSurface(gsSurface2);
 }
 
 void ResourceManager::loadBlockset(std::string blocksetName, std::string tilesetName, const char* path)

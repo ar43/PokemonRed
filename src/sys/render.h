@@ -19,7 +19,7 @@ class Sprite
 {
 public:
 	SDL_Surface* surface;
-	SDL_Texture* texture;
+	SDL_Texture* texture[NUM_BRIGHTNESS];
 	Uint32 format;
 	int w;
 	int h;

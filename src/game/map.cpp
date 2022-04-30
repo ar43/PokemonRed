@@ -18,17 +18,17 @@ void Block::render(int x, int y)
     if (!(final_x > -64 && final_x < GAME_WIDTH + 64 && final_y > -64 && final_y < GAME_HEIGHT + 64))
         return;
 
-    if (game.player.warpIndex >= 8)
+    if (game.player.warpIndex >= 24)
     {
-        brightness = BRIGHTNESS_DARK1;
+        brightness = BRIGHTNESS_DARK3;
     }
     else if (game.player.warpIndex >= 16)
     {
         brightness = BRIGHTNESS_DARK2;
     }
-    else if (game.player.warpIndex >= 24)
+    else if (game.player.warpIndex >= 8)
     {
-        brightness = BRIGHTNESS_DARK3;
+        brightness = BRIGHTNESS_DARK1;
     }
 
     SDL_Rect rected = { final_x,final_y,32,32 };
