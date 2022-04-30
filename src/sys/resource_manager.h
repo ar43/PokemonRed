@@ -2,6 +2,7 @@
 #include <map>
 #include <string>
 #include "../game/map.h"
+#include "../game/trainer_data.h"
 
 #define MAX_BLOCKS 256
 
@@ -32,6 +33,12 @@ public:
 
 	void addTextRedefinition(std::string in, std::string out);
 	std::string getTextRedefinition(std::string in);
+
+	void addTrainerConstant(std::string name, int id);
+	int getTrainerConstant(std::string name);
+
+	void addTrainerData(int id, TrainerData* trainerData);
+	TrainerData* getTrainerData(int id);
 	
 private:
 	std::map<std::string, Tileset*> tilesetMap;
@@ -42,4 +49,6 @@ private:
 	std::map<std::string, PokemonData*> pokemonDataMap;
 	std::map<std::string, Object*> objectMap;
 	std::map<std::string, std::string> textRedefinitionMap;
+	std::map<std::string, int> trainerConstantMap;
+	std::map<int, TrainerData*> trainerDataMap;
 };

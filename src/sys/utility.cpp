@@ -46,6 +46,17 @@ namespace util
 		return string;
 	}
 
+	bool is_numeric(const char *str) 
+	{
+		while(*str != '\0')
+		{
+			if(*str < '0' || *str > '9')
+				return false;
+			str++;
+		}
+		return true;
+	}
+
 	int square_to_pixel(int a)
 	{
 		return a * 16;

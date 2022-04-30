@@ -157,6 +157,7 @@
     <ClCompile Include="src\game\text.cpp" />
     <ClCompile Include="src\game\textbox.cpp" />
     <ClCompile Include="src\game\trainer.cpp" />
+    <ClCompile Include="src\game\trainer_data.cpp" />
     <ClCompile Include="src\game\world.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\sys\frame.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="src\game\text.h" />
     <ClInclude Include="src\game\textbox.h" />
     <ClInclude Include="src\game\trainer.h" />
+    <ClInclude Include="src\game\trainer_data.h" />
     <ClInclude Include="src\game\world.h" />
     <ClInclude Include="src\sys\frame.h" />
     <ClInclude Include="src\sys\input.h" />

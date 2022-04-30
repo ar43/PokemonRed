@@ -253,7 +253,7 @@ void System::load_pkm_data()
 		closedir(dir);
 	}
 	else {
-		sys.error("Could not open directory for loading maps");
+		sys.error("Could not open directory for loading pokemon data");
 		return;
 	}
 }
@@ -263,7 +263,7 @@ void System::load_text_redefinitions()
 	std::string pathData = "assets/data/misc/redefinitions.pkd";
 	FILE* fp = fopen(pathData.c_str(), "r");
 	if (!fp)
-		sys.error("Cant find the map header file");
+		sys.error("Cant find text redefinitions file");
 	int l = 0;
 	char string[1024];
 	while (fgets(string, 1024, fp)) 
@@ -490,6 +490,147 @@ void System::hide_show_objects()
 		fclose(fp);
 }
 
+void System::load_trainer_constants()
+{
+	char string[1024] = { 0 };
+	FILE *fp = fopen("assets/data/constants/trainer_constants.asm", "r");
+	if (!fp)
+		sys.error("Cant find trainer constants data");
+	int l = 0;
+	int id = 0;
+	int counter = 0;
+	while (fp && fgets(string, 1024, fp)) 
+	{
+		if (l < 10)
+		{
+			l++;
+			continue;
+		}
+		char* substring = strstr(string, "trainer_const");
+		if (substring == nullptr)
+		{
+			l++;
+			continue;
+		}
+
+		substring += SDL_strlen("trainer_const") + 1;
+
+		char* str = substring;
+
+		for (; *str != '\0'; str++)
+		{
+			if (*str == ' ')
+			{
+				*str = 0;
+				break;
+			}
+		}
+
+		util::cleanStr(substring);
+
+		/*printf(substring);
+		printf("\n");*/
+		res.addTrainerConstant(std::string(substring), id);
+		id++;
+		l++;
+	}
+	if (fp)
+		fclose(fp);
+}
+
+void System::load_trainer_data()
+{
+	char string[1024] = { 0 };
+	FILE *fp = fopen("assets/data/trainers/parties.asm", "r");
+	if (!fp)
+		sys.error("Cant find trainer party data");
+	int l = 0;
+	int id = 0;
+	int counter = 0;
+	TrainerData* trainer_data_pointer = nullptr;
+	while (fp && fgets(string, 1024, fp)) 
+	{
+		if (l < 10)
+		{
+			l++;
+			continue;
+		}
+		char* substring = strstr(string, ";");
+		if (substring != nullptr)
+		{
+			l++;
+			continue;
+		}
+		substring = strstr(string, ":");
+		if (substring != nullptr)
+		{
+			id++;
+			l++;
+			trainer_data_pointer = new TrainerData();
+			res.addTrainerData(id, trainer_data_pointer);
+			continue;
+		}
+		substring = strstr(string, "db ");
+		if (substring == nullptr)
+		{
+			l++;
+			continue;
+		}
+		Party *party = new Party();
+		trainer_data_pointer->addParty(party);
+		char* token;
+		token = strtok(substring, ",");
+		int i = 0;
+		bool level_static = true;
+		int level = 0;
+		while (token != NULL) 
+		{
+			
+			if (i == 0)
+			{
+				char* pnt = SDL_strstr(token, "$FF");
+				if (pnt)
+				{
+					level_static = false;
+				}
+				else
+				{
+					pnt = SDL_strstr(token, "db ");
+					pnt += 3;
+					level = atoi(pnt);
+					//printf("%i\n", level);
+				}
+			}
+			else
+			{
+				util::remove_spaces(token);
+				if (*token == '0')
+					break;
+				if (level_static)
+				{
+					party->addPokemon(new Pokemon(res.getPokemonData(token), level));
+				}
+				else
+				{
+					if (util::is_numeric(token))
+					{
+						level = atoi(token);
+					}
+					else
+					{
+						party->addPokemon(new Pokemon(res.getPokemonData(token), level));
+					}
+				}
+			}
+			token = strtok(NULL, ",");
+			i++;
+		}
+		l++;
+	}
+	if (fp)
+		fclose(fp);
+}
+
 void test_lua()
 {
 	/*
@@ -545,5 +686,7 @@ void System::load_media()
 
 	hide_show_objects();
 	load_text_redefinitions();
+	load_trainer_constants();
+	load_trainer_data();
 	//test_lua();
 }

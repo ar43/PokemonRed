@@ -165,6 +165,62 @@ std::string ResourceManager::getTextRedefinition(std::string in)
 	}
 }
 
+void ResourceManager::addTrainerConstant(std::string name, int id)
+{
+	if (!(trainerConstantMap.find(name) == trainerConstantMap.end()))
+	{
+		printf("constant already exists for that trainer\n");
+		return;
+	}
+	else
+	{
+		trainerConstantMap[name] = id;
+	}
+}
+
+int ResourceManager::getTrainerConstant(std::string name)
+{
+	if (name.rfind("OPP_", 0) == 0) 
+	{ 
+		name = name.substr(4);
+	}
+	if (!(trainerConstantMap.find(name) == trainerConstantMap.end()))
+	{
+		return trainerConstantMap[name];
+	}
+	else
+	{
+		sys.error(util::va("can not find trainer constant in the trainer map: %s", name.c_str()));
+		return 0;
+	}
+}
+
+void ResourceManager::addTrainerData(int id, TrainerData* trainerData)
+{
+	if (!(trainerDataMap.find(id) == trainerDataMap.end()))
+	{
+		sys.error("party already exists for that trainer\n");
+		return;
+	}
+	else
+	{
+		trainerDataMap[id] = trainerData;
+	}
+}
+
+TrainerData* ResourceManager::getTrainerData(int id)
+{
+	if (!(trainerDataMap.find(id) == trainerDataMap.end()))
+	{
+		return trainerDataMap[id];
+	}
+	else
+	{
+		sys.error(util::va("can not find trainer constant in the trainer map: %i", id));
+		return 0;
+	}
+}
+
 void ResourceManager::loadTexture(std::string textureName, std::string path, bool transparent)
 {
 	loadTexture(textureName, path.c_str(), transparent);

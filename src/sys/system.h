@@ -45,6 +45,7 @@ extern "C"
 #include "utility.h"
 #include "../game/lua.h"
 #include "../game/inventory.h"
+#include "../game/trainer_data.h"
 
 #define GAME_WIDTH 160
 #define GAME_HEIGHT 144
@@ -81,6 +82,8 @@ private:
 	void load_pkm_data();
 	void load_text_redefinitions();
 	void hide_show_objects();
+	void load_trainer_constants();
+	void load_trainer_data();
 };
 
 extern System sys;

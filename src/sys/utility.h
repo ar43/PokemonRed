@@ -23,5 +23,7 @@ namespace util
 	extern int ipow(int base, int exp);
 
 	extern void error(const char* pMsg);
+
+	extern bool is_numeric(const char* str);
 }
 
