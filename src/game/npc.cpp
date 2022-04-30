@@ -416,17 +416,17 @@ void Npc::render()
 		{
 			case EmotionBubble::HAPPY:
 			{
-				res.getTexture("happy")->render(loc.x, loc.y - 16);
+				res.getTexture("happyLight")->render(loc.x, loc.y - 16);
 				break;
 			}
 			case EmotionBubble::QUESTION:
 			{
-				res.getTexture("question")->render(loc.x, loc.y - 16);
+				res.getTexture("questionLight")->render(loc.x, loc.y - 16);
 				break;
 			}
 			case EmotionBubble::SHOCK:
 			{
-				res.getTexture("shock")->render(loc.x, loc.y - 16);
+				res.getTexture("shockLight")->render(loc.x, loc.y - 16);
 				break;
 			}
 		}

@@ -19,11 +19,11 @@ void ResourceManager::loadTileset(std::string textureName, const char *path, std
 
 	Tileset *tileset = new Tileset();
 	tileset->surface = gsSurface;
+	//darken:
 	//for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
 	//{
 	//	Uint32* pixels = (Uint32*)gsSurface->pixels;
-	//	if(pixels[i] < 0xffffffff)
-	//		pixels[i] += 0x555555;
+	//	pixels[i] -= 0x555555;
 	//
 	//	if (pixels[i] < 0xff000000)
 	//		pixels[i] = 0xff000000;
@@ -133,6 +133,29 @@ void ResourceManager::loadTexture(std::string textureName, const char* path, boo
 	texture->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), texture->surface);
 
 	textureMap[textureName] = texture;
+
+	gsSurface = SDL_ConvertSurfaceFormat(sur,SDL_PIXELFORMAT_ARGB8888,0);
+	//lighten by one level:
+	for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
+	{
+		Uint32* pixels = (Uint32*)gsSurface->pixels;
+		if (pixels[i] > 0xff000000)
+			pixels[i] += 0x555555;
+
+		//printf("%x: %x\n", i, pixels[i]);
+	}
+	SDL_SetColorKey(gsSurface, SDL_TRUE, SDL_MapRGB(gsSurface->format, 0xff, 0xff, 0xff));
+
+	Texture* textureLight = new Texture();
+	textureLight->surface = gsSurface;
+	textureLight->format = gsSurface->format->format;
+	textureLight->w = gsSurface->w;
+	textureLight->h = gsSurface->h;
+
+	textureLight->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), textureLight->surface);
+
+	textureMap[textureName + "Light"] = textureLight;
+
 	SDL_FreeSurface(sur);
 }
 
@@ -147,9 +170,22 @@ void ResourceManager::loadSprite(std::string spriteName)
 		// handle error
 	}
 	//SDL_Surface* gsSurface = SDL_ConvertSurfaceFormat(sur,SDL_PIXELFORMAT_ARGB8888,0);
-	SDL_Surface* gsSurface = sur;
-	SDL_SetColorKey(gsSurface, SDL_TRUE, SDL_MapRGB(gsSurface->format, 0xff, 0xff, 0xff));
+	SDL_Surface* gsSurface = SDL_ConvertSurfaceFormat(sur,
+		SDL_PIXELFORMAT_ARGB8888,
+		0);
+	
 
+	
+	//lighten by one level:
+	for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
+	{
+		Uint32* pixels = (Uint32*)gsSurface->pixels;
+		if (pixels[i] > 0xff000000)
+			pixels[i] += 0x555555;
+
+		//printf("%x: %x\n", i, pixels[i]);
+	}
+	SDL_SetColorKey(gsSurface, SDL_TRUE, SDL_MapRGB(gsSurface->format, 0xff, 0xff, 0xff));
 	Sprite* sprite = new Sprite();
 	sprite->surface = gsSurface;
 	sprite->format = gsSurface->format->format;

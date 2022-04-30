@@ -70,17 +70,17 @@ void Player::render()
 		{
 			case EmotionBubble::HAPPY:
 			{
-				res.getTexture("happy")->render(PLAYER_OFFSET_X, PLAYER_OFFSET_Y - 16);
+				res.getTexture("happyLight")->render(PLAYER_OFFSET_X, PLAYER_OFFSET_Y - 16);
 				break;
 			}
 			case EmotionBubble::QUESTION:
 			{
-				res.getTexture("question")->render(PLAYER_OFFSET_X, PLAYER_OFFSET_Y - 16);
+				res.getTexture("questionLight")->render(PLAYER_OFFSET_X, PLAYER_OFFSET_Y - 16);
 				break;
 			}
 			case EmotionBubble::SHOCK:
 			{
-				res.getTexture("shock")->render(PLAYER_OFFSET_X, PLAYER_OFFSET_Y - 16);
+				res.getTexture("shockLight")->render(PLAYER_OFFSET_X, PLAYER_OFFSET_Y - 16);
 				break;
 			}
 		}
