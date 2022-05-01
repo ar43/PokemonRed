@@ -136,13 +136,14 @@ void Battle::second_animation()
 
 void Battle::render_player_pokeballs()
 {
+    auto tex = res.getTexture("balls");
     int x_offset = 88;
     int status[6] = { 0 };
     game.player.inv.statusReport(status);
-    res.getTexture("balls")->render_ex(x_offset, 80, status[0], 0, 8, 8);
-    res.getTexture("balls")->render_ex(x_offset+8, 80, status[1], 0, 8, 8);
-    res.getTexture("balls")->render_ex(x_offset+16, 80, status[2], 0, 8, 8);
-    res.getTexture("balls")->render_ex(x_offset+24, 80, status[3], 0, 8, 8);
-    res.getTexture("balls")->render_ex(x_offset+32, 80, status[4], 0, 8, 8);
-    res.getTexture("balls")->render_ex(x_offset+40, 80, status[5], 0, 8, 8);
+    tex->render_ex(x_offset, 80, status[0], 0, 8, 8);
+    tex->render_ex(x_offset+8, 80, status[1], 0, 8, 8);
+    tex->render_ex(x_offset+16, 80, status[2], 0, 8, 8);
+    tex->render_ex(x_offset+24, 80, status[3], 0, 8, 8);
+    tex->render_ex(x_offset+32, 80, status[4], 0, 8, 8);
+    tex->render_ex(x_offset+40, 80, status[5], 0, 8, 8);
 }

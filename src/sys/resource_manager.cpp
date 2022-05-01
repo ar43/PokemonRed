@@ -1591,8 +1591,20 @@ void ResourceManager::loadMap(std::string fileName)
 							firstLine = line;
 						z++;
 
-						if (line->type == TextType::TYPE_TEXT_DECIMAL || line->type == TextType::TYPE_TEXT_RAM || line->type == TextType::TYPE_TEXT_BCD)
+						if (line->type == TextType::TYPE_TEXT_DECIMAL || line->type == TextType::TYPE_TEXT_BCD)
 						{
+							break;
+						}
+						else if (line->type == TextType::TYPE_TEXT_RAM)
+						{
+							substring += strlen(words[i])+1;
+							std::string new_string = "<" + std::string(substring) + ">";
+							if (new_string.size() > sizeof(line->text))
+							{
+								sys.error("text_ram too long");
+								break;
+							}
+							SDL_strlcpy(line->text, new_string.c_str(), sizeof(line->text));
 							break;
 						}
 						else if (line->type == TextType::TYPE_TEXT_START)

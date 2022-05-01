@@ -28,6 +28,8 @@ private:
 
 	bool activated;
 	bool drawArrow;
+
+	int curLine = 0;
 	
 
 	void transition();

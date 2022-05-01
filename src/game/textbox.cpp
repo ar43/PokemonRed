@@ -88,16 +88,22 @@ void Textbox::update()
 {
     if (currText == nullptr)
         return;
-    if (currText->type == TextType::TYPE_TEXT)
+
+    if (!cleared)
     {
-        if (!cleared)
-        {
-            clear();
-            //input.keyDown[KEY_A] = false;
-        }
+        clear();
+        //input.keyDown[KEY_A] = false;
+    }
+
+    if (currText->type == TextType::TYPE_TEXT_START)
+    {
+        transition();
+    }
+    else if (currText->type == TextType::TYPE_TEXT || currText->type == TextType::TYPE_TEXT_RAM)
+    {
         if(index < filteredText.length() && game.frame.getFrame() % 3 == 0) //add a char
         { 
-            update_text(0);
+            update_text(curLine);
         }
         if (index >= filteredText.length()) //go next
         {
@@ -107,6 +113,7 @@ void Textbox::update()
     }
     else if (currText->type == TextType::TYPE_LINE)
     {
+        curLine = 1;
         if (index < filteredText.length() && game.frame.getFrame() % 3 == 0)
         {
             update_text(1);
@@ -161,11 +168,12 @@ void Textbox::update()
         {
             activated = true;
             drawArrow = false;
-            delay = 21;
+            delay = 20;
             clear();
         }
         if (activated && delay <= 0)
         {
+            curLine = 0;
             if (index < filteredText.length() && game.frame.getFrame() % 3 == 0)
             {
                 update_text(0);
@@ -178,7 +186,7 @@ void Textbox::update()
         }
         delay--;
     }
-    else if (currText->type == TextType::TYPE_DONE || currText->type == TextType::TYPE_TEXT_END)
+    else if (currText->type == TextType::TYPE_DONE || currText->type == TextType::TYPE_TEXT_END || currText->type == TextType::TYPE_PROMPT)
     {
         if (input.keyDown[KEY_A] && canInput || autoTextbox)
         {
@@ -222,6 +230,7 @@ bool Textbox::show(std::string idString)
             input.keycatchers = KEYCATCHERS_TEXTBOX;
             filteredText = currText->text;
             game.canRunScript = false;
+            curLine = 0;
             return true;
         }
     }
