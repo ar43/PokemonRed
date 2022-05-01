@@ -13,7 +13,7 @@ Textbox::Textbox()
 
 void Textbox::render()
 {
-    if (input.keycatchers == KEYCATCHERS_TEXTBOX)
+    if (input.keycatchers == KEYCATCHERS_TEXTBOX && !game.battle.starting)
     {
         SDL_SetRenderDrawColor(sys.getRenderer(), 255, 255, 255, 255);
         SDL_Rect screen = { 0,GAME_HEIGHT - TEXTBOX_HEIGHT,TEXTBOX_WIDTH,TEXTBOX_HEIGHT };

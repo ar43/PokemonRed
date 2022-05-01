@@ -13,6 +13,7 @@ void Block::render(int x, int y)
     int final_x = x + GAME_WIDTH / 2 - game.player.getPosition()->x - WORLD_OFFSET_X;
     int final_y = y + GAME_HEIGHT / 2 - game.player.getPosition()->y - WORLD_OFFSET_Y;
     size_t brightness = BRIGHTNESS_NORMAL;
+    static bool ascend = true;
 
     //check if we can see the block (save our CPU)
     if (!(final_x > -64 && final_x < GAME_WIDTH + 64 && final_y > -64 && final_y < GAME_HEIGHT + 64))
@@ -29,6 +30,10 @@ void Block::render(int x, int y)
     else if (game.player.warpIndex >= 8)
     {
         brightness = BRIGHTNESS_DARK1;
+    }
+    else if (game.battle.starting)
+    {
+        brightness = game.battle.brightness;
     }
 
     SDL_Rect rected = { final_x,final_y,32,32 };
@@ -296,6 +301,26 @@ void Texture::render(int x, int y, SDL_RendererFlip flip)
 
     SDL_Rect rected = { x,y,w,h };
     SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, flip);
+}
+
+void Texture::render_ex(int x, int y, int x2, int y2, int w, int h, SDL_RendererFlip flip)
+{
+    if (game.player.warpIndex < 8)
+    {
+        SDL_SetTextureColorMod(texture, 255, 255, 255);
+    }
+    else if (game.player.warpIndex < 16)
+    {
+        SDL_SetTextureColorMod(texture, 128, 128, 128);
+    }
+    else if (game.player.warpIndex < 24)
+    {
+        SDL_SetTextureColorMod(texture, 16, 16, 16);
+    }
+
+    SDL_Rect rected = { x,y,w,h };
+    SDL_Rect rectedSrc = { x2,y2,w,h };
+    SDL_RenderCopyEx(sys.getRenderer(), texture, &rectedSrc, &rected, 0.0f, NULL, flip);
 }
 
 void Texture::render_grass(int x, int y, bool upper)

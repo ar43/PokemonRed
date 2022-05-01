@@ -679,8 +679,9 @@ void System::load_media()
 	res.loadTexture("tb5", "assets/gfx/font/textbox/tb5.png");
 	res.loadTexture("tb6", "assets/gfx/font/textbox/tb6.png");
 	res.loadTexture("tinput", "assets/gfx/font/textbox/input.png");
-
-	//res.loadSprite("red", "assets/gfx/sprites/red.png");
+	
+	res.loadTexture("redb", "assets/gfx/player/redb.png",true);
+	res.loadTexture("balls", "assets/gfx/battle/balls.png", true);
 	
 	Constants::font = TTF_OpenFont("assets/gfx/font/pokemon-final.otf", 8);
 

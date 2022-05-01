@@ -64,7 +64,8 @@ void Input::catchPriority(SDL_Event *e)
 			break;
 
 		case SDLK_F5:
-			game.debug.darken = !game.debug.darken;
+			game.runDebugScript();
+			game.battle.begin_wild("RATTATA",5);
 			break;
 
 		case SDLK_F11:

@@ -21,6 +21,8 @@ void Game::update()
 		it->update();
 	}
 
+	battle.update();
+
 	textbox.update();
 }
 

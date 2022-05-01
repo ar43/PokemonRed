@@ -46,6 +46,7 @@ extern "C"
 #include "../game/lua.h"
 #include "../game/inventory.h"
 #include "../game/trainer_data.h"
+#include "../game/battle.h"
 
 #define GAME_WIDTH 160
 #define GAME_HEIGHT 144

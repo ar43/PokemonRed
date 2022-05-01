@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\game\battle.cpp" />
     <ClCompile Include="src\game\constants.cpp" />
     <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\game\inventory.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="src\sys\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\game\battle.h" />
     <ClInclude Include="src\game\constants.h" />
     <ClInclude Include="src\game\enums.h" />
     <ClInclude Include="src\game\game.h" />

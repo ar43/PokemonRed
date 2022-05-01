@@ -3,6 +3,7 @@
 #include "player.h"
 #include "world.h"
 #include "textbox.h"
+#include "battle.h"
 
 struct Debug
 {
@@ -34,6 +35,7 @@ public:
 	World world;
 	Debug debug;
 	Textbox textbox;
+	Battle battle;
 	//Action action;
 private:
 	std::map<std::string, bool> eventMap;

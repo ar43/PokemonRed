@@ -11,6 +11,7 @@ void Render::render()
     draw_objects();
     game.player.render();
     draw_overlay();
+    game.battle.render();
     game.textbox.render();
     
 
@@ -88,6 +89,13 @@ void Render::draw_overlay()
     if (game.player.warpIndex < 38 && game.player.warpIndex >= 30)
     {
         SDL_SetRenderDrawColor(sys.getRenderer(), 255, 255, 255, 255);
+        SDL_Rect screen = { 0,0,GAME_WIDTH,GAME_HEIGHT };
+        SDL_RenderFillRect(sys.getRenderer(), &screen);
+    }
+
+    if (game.battle.battleIndex >= 106 && game.battle.starting)
+    {
+        SDL_SetRenderDrawColor(sys.getRenderer(), 0, 0, 0, 255);
         SDL_Rect screen = { 0,0,GAME_WIDTH,GAME_HEIGHT };
         SDL_RenderFillRect(sys.getRenderer(), &screen);
     }

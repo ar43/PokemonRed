@@ -75,6 +75,28 @@ void Inventory::deletePokemon(size_t i) //debug, should not be used in actual ga
 	pokemonList.erase(pokemonList.begin() + i);
 }
 
+void Inventory::statusReport(int *status)
+{
+	if (pokemonList.size() == 0)
+	{
+		sys.error("Entered battle with empty party.");
+	}
+
+	for (int j = 0; j < 6; j++)
+		status[j] = 24;
+
+	int i = 0;
+
+	for (Pokemon* pokemon : pokemonList)
+	{
+		if (pokemon->hp > 0)
+			status[i] = 0;
+		else
+			status[i] = 16;
+		i++;
+	}
+}
+
 void Inventory::addPokemonToBox(Pokemon* pokemon, size_t box_num)
 {
 	if (box_num >= NUM_BOXES || box_num < 0)

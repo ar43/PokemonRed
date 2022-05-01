@@ -120,6 +120,9 @@
     <ClCompile Include="src\game\trainer_data.cpp">
       <Filter>Source Files\game</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\battle.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sys\system.h">
@@ -195,6 +198,9 @@
       <Filter>Header Files\game\player</Filter>
     </ClInclude>
     <ClInclude Include="src\game\trainer_data.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\battle.h">
       <Filter>Header Files\game</Filter>
     </ClInclude>
   </ItemGroup>
