@@ -1532,26 +1532,69 @@ void ResourceManager::loadMap(std::string fileName)
 
 	fclose(fp);
 
-	fp = fopen(pathTexts.c_str(), "r");
+	loadTexts(&map->texts, pathTexts);
+
+	//printf("%s: (%i, %i)\n", map->name.c_str(), map->height, map->width);
+	mapMap[map->name] = map;
+
+}
+
+Tileset* ResourceManager::getTileset(std::string textureName)
+{
+	std::map<std::string, Tileset*>::iterator it = tilesetMap.find(textureName);
+
+	if (it == tilesetMap.end())
+	{
+		sys.error("Trying to look for a tileset that doesn't exist");
+		return nullptr;
+	}
+	else
+	{
+		return it->second;
+	}
+}
+
+Texture* ResourceManager::getTexture(std::string textureName)
+{
+	std::map<std::string, Texture*>::iterator it = textureMap.find(textureName);
+
+	if (it == textureMap.end())
+	{
+		//sys.error("Trying to look for a texture that doesn't exist");
+		return nullptr;
+	}
+	else
+	{
+		return it->second;
+	}
+}
+
+void ResourceManager::loadTexts(std::vector<Textset*> *textsetList, std::string path)
+{
+	FILE *fp = fopen(path.c_str(), "r");
+
 	if (!fp)
-		printf("%s has no texts\n", map->name.c_str());
-	l = 0;
+		printf("%s has no texts\n", path.c_str());
+
+	int l = 0;
+	char string[1024] = { 0 };
 	static const char words[][16] = {
-					"text ",
-					"next ",
-					"line ",
-					"para ",
-					"cont ",
-					"done",
-					"prompt",
-					"page ",
-					"dex ",
-					"text_end",
-					"text_start",
-					"text_ram ",
-					"text_decimal ",
-					"text_bcd "
+		"text ",
+		"next ",
+		"line ",
+		"para ",
+		"cont ",
+		"done",
+		"prompt",
+		"page ",
+		"dex ",
+		"text_end",
+		"text_start",
+		"text_ram ",
+		"text_decimal ",
+		"text_bcd "
 	};
+
 	while (fp && fgets(string, 1024, fp)) {
 		char* substring = strstr(string, "_");
 		if (substring != nullptr)
@@ -1565,8 +1608,8 @@ void ResourceManager::loadMap(std::string fileName)
 					break;
 				}
 			}
-			Textset textset;
-			textset.name = substring;
+			Textset *textset = new Textset();
+			textset->name = substring;
 			bool foundEnd = false;
 			Text* firstLine = nullptr;
 			Text* prevLine = nullptr;
@@ -1636,55 +1679,21 @@ void ResourceManager::loadMap(std::string fileName)
 				if (foundsth)
 					prevLine = line;
 				else if(strlen(string) > 1)
-					printf("TEXT PARSER: invalid line %s\n", string);
+					printf("TEXT PARSER: invalid line %s in %s\n", string, path.c_str());
 				if (foundEnd)
 					break;
 
 			}
 			if (z == 0)
-				printf("Text parsing failed for %s\n", map->name.c_str());
-			textset.start = firstLine;
-			map->texts.push_back(textset);
+				printf("Text parsing failed for %s\n", path.c_str());
+			textset->start = firstLine;
+			textsetList->push_back(textset);
 
 		}
 		l++;
 	}
 	if(fp)
 		fclose(fp);
-
-	//printf("%s: (%i, %i)\n", map->name.c_str(), map->height, map->width);
-	mapMap[map->name] = map;
-
-}
-
-Tileset* ResourceManager::getTileset(std::string textureName)
-{
-	std::map<std::string, Tileset*>::iterator it = tilesetMap.find(textureName);
-
-	if (it == tilesetMap.end())
-	{
-		sys.error("Trying to look for a tileset that doesn't exist");
-		return nullptr;
-	}
-	else
-	{
-		return it->second;
-	}
-}
-
-Texture* ResourceManager::getTexture(std::string textureName)
-{
-	std::map<std::string, Texture*>::iterator it = textureMap.find(textureName);
-
-	if (it == textureMap.end())
-	{
-		//sys.error("Trying to look for a texture that doesn't exist");
-		return nullptr;
-	}
-	else
-	{
-		return it->second;
-	}
 }
 
 Sprite* ResourceManager::getSprite(std::string spriteName)

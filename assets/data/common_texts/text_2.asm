@@ -469,7 +469,7 @@ _JustAMomentText::
 	text "Just a moment."
 	done
 
-TMNotebookText::
+_TMNotebookText::
 	text "It's a pamphlet"
 	line "on TMs."
 
@@ -912,7 +912,7 @@ _TrainerAboutToUseText::
 	text_ram wTrainerName
 	text " is"
 	line "about to use"
-	cont"@"
+	cont "@"
 	text_ram wEnemyMonNick
 	text "!"
 
@@ -1097,6 +1097,7 @@ _InsteadText::
 _CF4BText::
 	text_ram wcf4b
 	text "@"
+	text_end
 
 _ExclamationPoint1Text::
 	text "!"
@@ -1273,9 +1274,7 @@ _GhostCantBeIDdText::
 
 _GoText::
 	text "Go! @"
-	text_ram wBattleMonNick
-	text "!"
-	done
+	text_end
 
 _DoItText::
 	text "Do it! @"
@@ -1618,6 +1617,7 @@ _MonWasReleasedText::
 	text " was"
 	line "released outside."
 	cont "Bye @"
+	done
 
 _CF4BExclamationText::
 	text_ram wcf4b

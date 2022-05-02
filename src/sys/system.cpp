@@ -229,6 +229,47 @@ void System::load_maps()
 	}
 }
 
+void System::load_textures()
+{
+	printf("Loading textures...\n");
+	res.loadTexture("flower1", "assets/gfx/tilesets/flower/flower1.png");
+	res.loadTexture("flower2", "assets/gfx/tilesets/flower/flower2.png");
+	res.loadTexture("flower3", "assets/gfx/tilesets/flower/flower3.png");
+
+	res.loadTexture("water0", "assets/gfx/tilesets/water/water0.png");
+	res.loadTexture("water1", "assets/gfx/tilesets/water/water1.png");
+	res.loadTexture("water2", "assets/gfx/tilesets/water/water2.png");
+	res.loadTexture("water3", "assets/gfx/tilesets/water/water3.png");
+	res.loadTexture("water4", "assets/gfx/tilesets/water/water4.png");
+
+	res.loadTexture("grass1", "assets/gfx/tilesets/grass/grass.png",true);
+	res.loadTexture("shadow", "assets/gfx/overworld/shadow.png", true);
+
+	res.loadTexture("happy", "assets/gfx/emotes/happy.png", true);
+	res.loadTexture("shock", "assets/gfx/emotes/shock.png", true);
+	res.loadTexture("question", "assets/gfx/emotes/question.png", true);
+
+	res.loadTexture("tb1", "assets/gfx/font/textbox/tb1.png");
+	res.loadTexture("tb2", "assets/gfx/font/textbox/tb2.png");
+	res.loadTexture("tb3", "assets/gfx/font/textbox/tb3.png");
+	res.loadTexture("tb4", "assets/gfx/font/textbox/tb4.png");
+	res.loadTexture("tb5", "assets/gfx/font/textbox/tb5.png");
+	res.loadTexture("tb6", "assets/gfx/font/textbox/tb6.png");
+	res.loadTexture("tinput", "assets/gfx/font/textbox/input.png");
+
+	res.loadTexture("redb", "assets/gfx/player/redb.png",true);
+	res.loadTexture("balls", "assets/gfx/battle/balls.png", true);
+}
+
+void System::load_texts()
+{
+	printf("Loading texts...\n");
+	for (int i = 1; i <= 7; i++)
+	{
+		res.loadTexts(&game.world.common_texts, "assets/data/common_texts/text_" + std::to_string(i) + ".asm");
+	}
+}
+
 void System::load_pkm_data()
 {
 	printf("Loading maps...\n");
@@ -654,34 +695,8 @@ void System::load_media()
 	load_tilesets();
 	load_blocksets();
 	load_maps();
-
-	res.loadTexture("flower1", "assets/gfx/tilesets/flower/flower1.png");
-	res.loadTexture("flower2", "assets/gfx/tilesets/flower/flower2.png");
-	res.loadTexture("flower3", "assets/gfx/tilesets/flower/flower3.png");
-
-	res.loadTexture("water0", "assets/gfx/tilesets/water/water0.png");
-	res.loadTexture("water1", "assets/gfx/tilesets/water/water1.png");
-	res.loadTexture("water2", "assets/gfx/tilesets/water/water2.png");
-	res.loadTexture("water3", "assets/gfx/tilesets/water/water3.png");
-	res.loadTexture("water4", "assets/gfx/tilesets/water/water4.png");
-
-	res.loadTexture("grass1", "assets/gfx/tilesets/grass/grass.png",true);
-	res.loadTexture("shadow", "assets/gfx/overworld/shadow.png", true);
-	
-	res.loadTexture("happy", "assets/gfx/emotes/happy.png", true);
-	res.loadTexture("shock", "assets/gfx/emotes/shock.png", true);
-	res.loadTexture("question", "assets/gfx/emotes/question.png", true);
-
-	res.loadTexture("tb1", "assets/gfx/font/textbox/tb1.png");
-	res.loadTexture("tb2", "assets/gfx/font/textbox/tb2.png");
-	res.loadTexture("tb3", "assets/gfx/font/textbox/tb3.png");
-	res.loadTexture("tb4", "assets/gfx/font/textbox/tb4.png");
-	res.loadTexture("tb5", "assets/gfx/font/textbox/tb5.png");
-	res.loadTexture("tb6", "assets/gfx/font/textbox/tb6.png");
-	res.loadTexture("tinput", "assets/gfx/font/textbox/input.png");
-	
-	res.loadTexture("redb", "assets/gfx/player/redb.png",true);
-	res.loadTexture("balls", "assets/gfx/battle/balls.png", true);
+	load_textures();
+	load_texts();
 	
 	Constants::font = TTF_OpenFont("assets/gfx/font/pokemon-final.otf", 8);
 

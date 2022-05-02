@@ -22,16 +22,20 @@ void Battle::begin_wild(std::string pokemonName, int level)
     party->addPokemon(new Pokemon(res.getPokemonData(pokemonName), level));
     this->opp_party = party;
     enemyMonNick = pokemonName;
+    battleMonNick = game.player.inv.firstMonNick();
 }
 
 void Battle::start()
 {
+
     game.textbox.autoTextbox = true; //TODO: restore this on battle end
     game.textbox.autoClose = true;
 	starting = true;
     inBattle = false;
 	battleIndex = 0;
     brightness = 3;
+    game.textbox.clear();
+    scriptIndex = 0;
 	input.keycatchers = KEYCATCHERS_TEXTBOX;
 }
 
@@ -69,7 +73,28 @@ void Battle::update()
 
         if (battleIndex == 103)
             game.textbox.show("WildMonAppearedText");
-
+        else if (battleIndex > 103 && game.canRunScript)
+        {
+            switch (scriptIndex)
+            {
+                case 0:
+                {
+                    game.textbox.show("GoText");
+                    scriptIndex = 1;
+                    break;
+                }
+                case 1:
+                {
+                    game.textbox.show("PlayerMon1Text",false);
+                    scriptIndex = 2;
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
+            }
+        }
 		//todo
 	}
 	

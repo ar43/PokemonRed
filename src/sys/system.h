@@ -76,6 +76,8 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	void load_maps();
+	void load_textures();
+	void load_texts();
 	void load_tilesets();
 	void load_blocksets();
 	void load_sprites();

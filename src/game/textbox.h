@@ -6,7 +6,7 @@ public:
 	Textbox();
 	void render();
 	void update();
-	bool show(std::string idString);
+	bool show(std::string idString, bool doClear = true);
 	Text *currText;
 	char line[2][32];
 	std::string filteredText;
@@ -16,10 +16,13 @@ public:
 	Texture lineText[2];
 	bool autoTextbox;
 	void close();
+	void clear();
 	
 	bool autoClose;
 private:
-	void clear();
+	
+	void begin(Textset *it, bool doClear);
+
 	void updateRenderer(int num);
 	void update_text(int num);
 

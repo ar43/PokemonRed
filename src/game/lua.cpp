@@ -146,8 +146,7 @@ namespace lua
 			//it->sprite->animIndex = 0;
 		//}
 		game.textbox.autoClose = autoClose;
-		if (!game.textbox.show(textId))
-			sys.error(util::va("Could not find text %s", textId.c_str()));
+		game.textbox.show(textId);
 	}
 
 	void close_text()

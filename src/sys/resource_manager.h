@@ -16,6 +16,8 @@ public:
 	void loadTexture(std::string textureName, std::string path, bool transparent = false);
 	Texture* getTexture(std::string textureName);
 
+	void loadTexts(std::vector<Textset*> *textsetList, std::string path);
+
 	void loadSprite(std::string spriteName);
 	Sprite* getSprite(std::string spriteName);
 
@@ -41,6 +43,7 @@ public:
 	TrainerData* getTrainerData(int id);
 	
 private:
+
 	std::map<std::string, Tileset*> tilesetMap;
 	std::map<std::string, Texture*> textureMap;
 	std::map<std::string, Sprite*> spriteMap;

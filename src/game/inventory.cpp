@@ -97,6 +97,25 @@ void Inventory::statusReport(int *status)
 	}
 }
 
+std::string Inventory::firstMonNick()
+{
+	for (auto it : pokemonList)
+	{
+		if (it->hp > 0)
+		{
+			if (it->nickname.empty())
+			{
+				return it->data->getId();
+			}
+			else
+			{
+				return it->nickname;
+			}
+		}
+	}
+	return "ERRORNAME";
+}
+
 void Inventory::addPokemonToBox(Pokemon* pokemon, size_t box_num)
 {
 	if (box_num >= NUM_BOXES || box_num < 0)

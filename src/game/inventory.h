@@ -17,6 +17,8 @@ public:
 	void releasePokemon(size_t box_num, size_t i);
 	void deletePokemon(size_t i);
 	void statusReport(int *status);
+
+	std::string firstMonNick();
 private:
 	std::vector<Pokemon*> pokemonList;
 	std::vector<Pokemon*> PC[NUM_BOXES];

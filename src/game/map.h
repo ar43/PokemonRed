@@ -159,7 +159,7 @@ public:
 	std::vector<Position> grassEffect;
 	std::vector<Warp> warps;
 	std::vector<Sign> signs;
-	std::vector<Textset> texts;
+	std::vector<Textset*> texts;
 	std::vector<Object*> objects;
 	void render(int x, int y);
 	int currentScript;

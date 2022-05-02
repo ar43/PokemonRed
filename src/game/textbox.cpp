@@ -89,11 +89,11 @@ void Textbox::update()
     if (currText == nullptr)
         return;
 
-    if (!cleared)
-    {
-        clear();
-        //input.keyDown[KEY_A] = false;
-    }
+    //if (!cleared)
+    //{
+    //    clear();
+    //    //input.keyDown[KEY_A] = false;
+    //}
 
     if (currText->type == TextType::TYPE_TEXT_START)
     {
@@ -200,7 +200,9 @@ void Textbox::update()
             }
             game.canRunScript = true;
             if(autoClose)
-            { 
+            {
+                /*if (currText->type != TextType::TYPE_TEXT_END)
+                    clear();*/
                 close();
             }
             return;
@@ -218,27 +220,44 @@ void Textbox::close()
         input.keycatchers = KEYCATCHERS_NORMAL;
     currText = nullptr;
     input.clear();
-    clear();
 }
 
-bool Textbox::show(std::string idString)
+void Textbox::begin(Textset *it, bool doClear)
 {
+    if (doClear)
+        clear();
+    else
+        cleared = false;
+    currText = it->start;
+    index = 0;
+    input.keycatchers = KEYCATCHERS_TEXTBOX;
+    filteredText = currText->text;
+    game.canRunScript = false;
+    //curLine = 0;
+}
 
+bool Textbox::show(std::string idString, bool doClear)
+{
     idString = res.getTextRedefinition(idString);
-    for (std::vector<Textset>::iterator it2 = game.world.currentMap->texts.begin(); it2 != game.world.currentMap->texts.end(); ++it2)
+    for(auto it : game.world.currentMap->texts)
     {
-        if (SDL_strcmp(idString.c_str(), it2->name.c_str()) == 0)
+        if (SDL_strcmp(idString.c_str(), it->name.c_str()) == 0)
         {
-            currText = it2->start;
-            index = 0;
-            cleared = false;
-            input.keycatchers = KEYCATCHERS_TEXTBOX;
-            filteredText = currText->text;
-            game.canRunScript = false;
-            curLine = 0;
+            begin(it, doClear);
             return true;
         }
     }
+
+    for (auto it : game.world.common_texts)
+    {
+        if (SDL_strcmp(idString.c_str(), it->name.c_str()) == 0)
+        {
+            begin(it, doClear);
+            return true;
+        }
+    }
+
+    printf("ERROR: Could not find text %s\n", idString.c_str());
     return false;
     
 }
@@ -256,6 +275,7 @@ void Textbox::update_text(int num)
         filteredText = std::regex_replace(filteredText, std::regex("<ROCKET>"), "ROCKET");
 
         filteredText = std::regex_replace(filteredText, std::regex("<EnemyMonNick>"), game.battle.enemyMonNick);
+        filteredText = std::regex_replace(filteredText, std::regex("<BattleMonNick>"), game.battle.battleMonNick);
     }
     int times = 1;
     if (input.keyDown[KEY_A] && !autoTextbox) //text speedup
@@ -337,5 +357,6 @@ void Textbox::clear()
         //SDL_DestroyTexture(lineText[1].texture);
     memset(line[0], 0, sizeof(line[0]));
     memset(line[1], 0, sizeof(line[1]));
+    curLine = 0;
     cleared = true;
 }

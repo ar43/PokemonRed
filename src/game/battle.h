@@ -18,7 +18,10 @@ public:
 	int battleIndex = 0;
 	int brightness = 3;
 
+	int scriptIndex = 0;
+
 	std::string enemyMonNick = "???";
+	std::string battleMonNick = "???";
 	
 private:
 	void first_animation();
