@@ -188,8 +188,11 @@ void Textbox::update()
     }
     else if (currText->type == TextType::TYPE_DONE || currText->type == TextType::TYPE_TEXT_END || currText->type == TextType::TYPE_PROMPT)
     {
-        if (input.keyDown[KEY_A] && canInput || autoTextbox)
+        if(currText->type == TextType::TYPE_PROMPT)
+            drawArrow = true;
+        if (input.keyDown[KEY_A] && canInput || autoTextbox && currText->type != TextType::TYPE_PROMPT)
         {
+            drawArrow = false;
             if (delay)
             {
                 delay--;
@@ -211,9 +214,11 @@ void Textbox::update()
 
 void Textbox::close()
 {
-    input.keycatchers = KEYCATCHERS_NORMAL;
+    if(!game.battle.inBattle)
+        input.keycatchers = KEYCATCHERS_NORMAL;
     currText = nullptr;
     input.clear();
+    clear();
 }
 
 bool Textbox::show(std::string idString)
@@ -249,6 +254,8 @@ void Textbox::update_text(int num)
         filteredText = std::regex_replace(filteredText, std::regex("<TM>"), "TM");
         filteredText = std::regex_replace(filteredText, std::regex("<TRAINER>"), "TRAINER");
         filteredText = std::regex_replace(filteredText, std::regex("<ROCKET>"), "ROCKET");
+
+        filteredText = std::regex_replace(filteredText, std::regex("<EnemyMonNick>"), game.battle.enemyMonNick);
     }
     int times = 1;
     if (input.keyDown[KEY_A] && !autoTextbox) //text speedup

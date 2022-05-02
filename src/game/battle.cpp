@@ -21,10 +21,13 @@ void Battle::begin_wild(std::string pokemonName, int level)
     Party* party = new Party();
     party->addPokemon(new Pokemon(res.getPokemonData(pokemonName), level));
     this->opp_party = party;
+    enemyMonNick = pokemonName;
 }
 
 void Battle::start()
 {
+    game.textbox.autoTextbox = true; //TODO: restore this on battle end
+    game.textbox.autoClose = true;
 	starting = true;
     inBattle = false;
 	battleIndex = 0;
@@ -63,6 +66,9 @@ void Battle::update()
         battleIndex++;
         if (scrollIndex < 72)
             scrollIndex++;
+
+        if (battleIndex == 103)
+            game.textbox.show("WildMonAppearedText");
 
 		//todo
 	}

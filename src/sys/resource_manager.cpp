@@ -1598,7 +1598,7 @@ void ResourceManager::loadMap(std::string fileName)
 						else if (line->type == TextType::TYPE_TEXT_RAM)
 						{
 							substring += strlen(words[i])+1;
-							std::string new_string = "<" + std::string(substring) + ">";
+							std::string new_string = "<" + std::string(util::cleanStr(substring)) + ">";
 							if (new_string.size() > sizeof(line->text))
 							{
 								sys.error("text_ram too long");
