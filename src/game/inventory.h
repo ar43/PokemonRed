@@ -4,6 +4,8 @@
 
 #define BOX_CAPACITY 20
 #define NUM_BOXES 12
+#include "trainer_data.h"
+
 #define MAX_POKEMON_PARTY 6
 
 class Inventory
@@ -16,10 +18,15 @@ public:
 	void swapPokemon(size_t i, size_t j);
 	void releasePokemon(size_t box_num, size_t i);
 	void deletePokemon(size_t i);
-	void statusReport(int *status);
 
-	std::string firstMonNick();
+	//void statusReport(int *status);
+
+	Party* getParty();
+
+	/*std::string firstMonNick();
+	int firstMonId();*/
 private:
-	std::vector<Pokemon*> pokemonList;
+	Party party;
+	//std::vector<Pokemon*> pokemonList;
 	std::vector<Pokemon*> PC[NUM_BOXES];
 };

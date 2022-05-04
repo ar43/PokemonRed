@@ -284,6 +284,26 @@ void Map::render(int x, int y)
     }
 }
 
+void Texture::render_scale(int x, int y, int new_w, int new_h, SDL_RendererFlip flip)
+{
+    if (game.player.warpIndex < 8)
+    {
+        SDL_SetTextureColorMod(texture, 255, 255, 255);
+    }
+    else if (game.player.warpIndex < 16)
+    {
+        SDL_SetTextureColorMod(texture, 128, 128, 128);
+    }
+    else if (game.player.warpIndex < 24)
+    {
+        SDL_SetTextureColorMod(texture, 16, 16, 16);
+    }
+
+    SDL_Rect rectedDest = { x,y,new_w,new_h };
+    SDL_Rect rectedSrc = { 0,0,w,h };
+    SDL_RenderCopyEx(sys.getRenderer(), texture, &rectedSrc, &rectedDest, 0.0f, NULL, flip);
+}
+
 void Texture::render(int x, int y, SDL_RendererFlip flip)
 {
     if (game.player.warpIndex < 8)
@@ -320,6 +340,32 @@ void Texture::render_ex(int x, int y, int x2, int y2, int w, int h, SDL_Renderer
 
     SDL_Rect rected = { x,y,w,h };
     SDL_Rect rectedSrc = { x2,y2,w,h };
+    SDL_RenderCopyEx(sys.getRenderer(), texture, &rectedSrc, &rected, 0.0f, NULL, flip);
+}
+
+void Texture::render_special(int x, int y, int num, SDL_RendererFlip flip)
+{
+    if (game.player.warpIndex < 8)
+    {
+        SDL_SetTextureColorMod(texture, 255, 255, 255);
+    }
+    else if (game.player.warpIndex < 16)
+    {
+        SDL_SetTextureColorMod(texture, 128, 128, 128);
+    }
+    else if (game.player.warpIndex < 24)
+    {
+        SDL_SetTextureColorMod(texture, 16, 16, 16);
+    }
+
+    int offset = num;
+
+    int y2 = offset / 16;
+    y2 = y2 * 8;
+    int x2 = (offset % 16)*8;
+
+    SDL_Rect rected = { x,y,8,8 };
+    SDL_Rect rectedSrc = { x2,y2,8,8 };
     SDL_RenderCopyEx(sys.getRenderer(), texture, &rectedSrc, &rected, 0.0f, NULL, flip);
 }
 

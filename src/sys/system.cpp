@@ -259,6 +259,11 @@ void System::load_textures()
 
 	res.loadTexture("redb", "assets/gfx/player/redb.png",true);
 	res.loadTexture("balls", "assets/gfx/battle/balls.png", true);
+	res.loadTexture("battle_hud_1", "assets/gfx/battle/battle_hud_1.png", true);
+	res.loadTexture("battle_hud_2", "assets/gfx/battle/battle_hud_2.png", true);
+	res.loadTexture("battle_hud_3", "assets/gfx/battle/battle_hud_3.png", true);
+	res.loadTexture("font_battle_extra", "assets/gfx/battle/font_battle_extra.png", true);
+	res.loadTexture("attack_anim_1", "assets/gfx/battle/attack_anim_1.png", true);
 }
 
 void System::load_texts()

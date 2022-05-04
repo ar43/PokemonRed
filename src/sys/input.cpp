@@ -65,7 +65,7 @@ void Input::catchPriority(SDL_Event *e)
 
 		case SDLK_F5:
 			game.runDebugScript();
-			game.battle.begin_wild("RATTATA",5);
+			game.battle.begin_wild("RATTATA",4);
 			break;
 
 		case SDLK_F11:

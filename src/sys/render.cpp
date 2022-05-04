@@ -11,8 +11,10 @@ void Render::render()
     draw_objects();
     game.player.render();
     draw_overlay();
-    game.battle.render();
+    
+    game.battle.pre_render();
     game.textbox.render();
+    game.battle.render();
     
 
     SDL_RenderPresent(sys.getRenderer());

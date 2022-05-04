@@ -176,6 +176,8 @@ public:
 	int w;
 	int h;
 	void render(int x, int y, SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void render_scale(int x, int y, int new_w, int new_h, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	void render_ex(int x, int y, int x2, int y2, int w, int h, SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void render_special(int x, int y, int num, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	void render_grass(int x, int y, bool upper);
 };
