@@ -12,6 +12,11 @@ Pokemon::Pokemon(PokemonData* p_data, int p_level)
 	hp = maxHp();
 	status = PokemonStatus::NONE;
 	exp = calculateEXP(level);
+	setMoves();
+	if (!moves[0].compare("NO_MOVE"))
+	{
+		sys.error("Trying to create a pokemon with no moves");
+	}
 }
 
 int Pokemon::maxHp()
@@ -26,6 +31,47 @@ void Pokemon::calculateStats()
 	stats.defense = (((data->baseStats.defense + iv.defense) * 2 + int(ceil(sqrt(ev.defense))) / 4) * level) / 100 + 5;
 	stats.speed = (((data->baseStats.speed + iv.speed) * 2 + int(ceil(sqrt(ev.speed))) / 4) * level) / 100 + 5;
 	stats.special = (((data->baseStats.special + iv.special) * 2 + int(ceil(sqrt(ev.special))) / 4) * level) / 100 + 5;
+}
+
+void Pokemon::setMoves()
+{
+	//TODO: actually take into account evosmoves data file
+
+	for (int i = 0; i < 4; i++)
+	{
+		moves[i] = data->baseLearnset[i];
+	}
+
+	auto learnset = res.getLearnset(this->data->getId());
+
+	for (auto& it : learnset->learnList)
+	{
+		if (this->level >= it.first)
+		{
+			bool modified = false;
+			for (int i = 0; i < 4; i++)
+			{
+				if (!moves[i].compare(it.second)) //dont allow duplicate moves
+				{
+					modified = true;
+					break;
+				}
+				if (!moves[i].compare("NO_MOVE"))
+				{
+					moves[i] = it.second;
+					modified = true;
+					break;
+				}
+			}
+			if (modified)
+				continue;
+			moves[0] = moves[1];
+			moves[1] = moves[2];
+			moves[2] = moves[3];
+			moves[3] = it.second;
+		}
+	}
+
 }
 
 void Pokemon::generateIV()

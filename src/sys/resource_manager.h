@@ -3,6 +3,8 @@
 #include <string>
 #include "../game/map.h"
 #include "../game/trainer_data.h"
+#include "../game/evolution_set.h"
+#include "../game/learn_set.h"
 
 #define MAX_BLOCKS 256
 
@@ -44,6 +46,10 @@ public:
 
 	void addTrainerData(int id, TrainerData* trainerData);
 	TrainerData* getTrainerData(int id);
+
+	void loadEvolutionAndLearnSetData();
+	EvolutionSet* getEvolutionInfo(std::string pokemonName);
+	LearnSet* getLearnset(std::string pokemonName);
 	
 private:
 
@@ -53,8 +59,11 @@ private:
 	std::map<std::string, Blockset*> blocksetMap;
 	std::map<std::string, Map*> mapMap;
 	std::map<std::string, PokemonData*> pokemonDataMap;
+	std::map<std::string, std::string> rawPokemonNameToDexName;
 	std::map<std::string, Object*> objectMap;
 	std::map<std::string, std::string> textRedefinitionMap;
 	std::map<std::string, int> trainerConstantMap;
 	std::map<int, TrainerData*> trainerDataMap;
+	std::map<std::string, EvolutionSet*> evolutionMap;
+	std::map<std::string, LearnSet*> learnSetMap;
 };

@@ -221,6 +221,182 @@ TrainerData* ResourceManager::getTrainerData(int id)
 	}
 }
 
+void ResourceManager::loadEvolutionAndLearnSetData()
+{
+	if (!evolutionMap.empty())
+		sys.error("Evolution & learnset data cannot be reloaded");
+
+	FILE *fp = fopen("assets/data/pokemon/evos_moves.asm", "r");
+
+	if (!fp)
+		printf("assets/data/pokemon/evos_moves.asm does not exist\n");
+
+	int l = 0;
+	char string[1024] = { 0 };
+
+	while (fp && fgets(string, 1024, fp)) 
+	{
+		char* substring = strstr(string, "EvosMoves");
+		if (isalpha(string[0]) && substring && l > 10)
+		{
+			char* str = string;
+			int calc = substring - str;
+			string[calc] = 0;
+			EvolutionSet *evoSet = new EvolutionSet();
+			LearnSet* learnSet = new LearnSet();
+			util::to_lower(string);
+			if ((rawPokemonNameToDexName.find(string) == rawPokemonNameToDexName.end())) //pokemon doesnt exist in the database
+			{
+				l++;
+				continue;
+			}
+			std::string pokemonName = rawPokemonNameToDexName[string].substr(4);
+			evolutionMap[pokemonName] = evoSet;
+			learnSetMap[pokemonName] = learnSet;
+			int mode = 0;
+			while (true)
+			{
+				fgets(string, 1024, fp);
+				l++;
+
+				if (strstr(string, ";")) //found a comment
+					continue;
+
+				if (mode == 0)
+				{
+					if (strstr(string, "db 0"))
+					{
+						mode = 1;
+					}
+					else
+					{
+						substring = strstr(string, "EV_");
+						Evolution* evo = new Evolution();
+						evoSet->evolutionList.push_back(evo);
+						char* token;
+						token = strtok(substring, ",");
+						std::string strtoken = token;
+						int i = 0;
+						/* walk through other tokens */
+						while (token != NULL) 
+						{
+							token = util::cleanStr(token);
+							util::remove_spaces(token);
+							if (i == 0)
+							{
+								evo->type = token;
+							}
+							else if (i == 1)
+							{
+								if (util::is_numeric(token))
+								{
+									evo->level = atoi(token);
+								}
+								else
+								{
+									evo->item = token;
+								}
+							}
+							else if (i == 2)
+							{
+								if (util::is_numeric(token))
+								{
+									evo->itemCount = atoi(token);
+								}
+								else
+								{
+									evo->to = token;
+								}
+							}
+							else if (i == 3)
+							{
+								evo->to = token;
+							}
+							token = strtok(NULL, ",");
+							i++;
+						}
+					}
+				}
+				else if (mode == 1)
+				{
+					if (strstr(string, "db 0"))
+					{
+						break;
+					}
+					else
+					{
+						substring = strstr(string, "db ");
+						substring += 3;
+						char* token = strtok(substring, ",");
+						int a = 0;
+						std::string b = "ERROR_MOVE";
+						int i = 0;
+						/* walk through other tokens */
+						while (token != NULL && i < 2) 
+						{
+							token = util::cleanStr(token);
+							util::remove_spaces(token);
+							if (i == 0)
+							{
+								a = atoi(token);
+							}
+							else
+							{
+								b = token;
+							}
+							token = strtok(NULL, ",");
+							i++;
+						}
+						learnSet->learnList.push_back(std::make_pair(a, b));
+					}
+				}
+
+			}
+			
+
+		}
+		l++;
+	}
+	if(fp)
+		fclose(fp);
+
+
+}
+
+EvolutionSet* ResourceManager::getEvolutionInfo(std::string pokemonName)
+{
+	if (pokemonName.rfind("DEX_", 0) == 0) 
+	{ 
+		pokemonName = pokemonName.substr(4);
+	}
+	if (!(evolutionMap.find(pokemonName) == evolutionMap.end()))
+	{
+		return evolutionMap[pokemonName];
+	}
+	else
+	{
+		sys.error(util::va("can not find evolution info for pokemon: %s", pokemonName.c_str()));
+		return 0;
+	}
+}
+
+LearnSet* ResourceManager::getLearnset(std::string pokemonName)
+{
+	if (pokemonName.rfind("DEX_", 0) == 0) 
+	{ 
+		pokemonName = pokemonName.substr(4);
+	}
+	if (!(learnSetMap.find(pokemonName) == learnSetMap.end()))
+	{
+		return learnSetMap[pokemonName];
+	}
+	else
+	{
+		sys.error(util::va("can not find learnset for pokemon: %s", pokemonName.c_str()));
+		return 0;
+	}
+}
+
 void ResourceManager::loadTexture(std::string textureName, std::string path, bool transparent)
 {
 	loadTexture(textureName, path.c_str(), transparent);
@@ -633,6 +809,7 @@ void ResourceManager::loadPokemonData(std::string pokemonName)
 {
 	std::string path = "assets/data/pokemon/base_stats/" + pokemonName + ".asm";
 	PokemonData *data = new PokemonData();
+	data->rawName = pokemonName;
 
 	bool tmhm = false;
 	char string[1024];
@@ -657,6 +834,7 @@ void ResourceManager::loadPokemonData(std::string pokemonName)
 					}
 				}
 				data->dexId = std::string(substring);
+				rawPokemonNameToDexName[data->rawName] = data->dexId;
 			}
 			else
 			{
@@ -785,7 +963,7 @@ void ResourceManager::loadPokemonData(std::string pokemonName)
 				sys.error("pkm data: error at line 8");
 			}
 		}
-		else if (l == 12) //pokemon learnset
+		else if (l == 12) //pokemon base learnset
 		{
 			char* substring = SDL_strstr(string, "db ");
 			if (substring)

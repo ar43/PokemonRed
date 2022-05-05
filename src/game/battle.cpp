@@ -52,8 +52,7 @@ void Battle::start()
     drawSubmenu = BattleSubmenu::NONE;
     drawPlayerMon = 0;
     currEnemyMonIndex = 0;
-    battleMonNick = player_party->firstMonNick();
-    currPlayerMonIndex = player_party->firstMonId();
+    
     cursorGeneralPosition.x = 0;
     cursorGeneralPosition.y = 0;
 
@@ -63,6 +62,12 @@ void Battle::on_begin()
 {
     if (player_party->firstMonId() < 0 || opp_party->firstMonId() < 0)
         sys.error("Trying to create a battle with an empty or dead party on either side");
+
+    battleMonNick = player_party->firstMonNick();
+    currPlayerMonIndex = player_party->firstMonId();
+
+    create_fight_text();
+
 }
 
 static int cantor(int a, int b)
@@ -279,6 +284,25 @@ void Battle::update()
 
                         break;
                     }
+                    case (int)NamedBattleScripts::FIGHT_SUBMENU: //Battle submenu shows here
+                    {
+                        drawSubmenu = BattleSubmenu::FIGHT;
+
+                        if (input.keyDown[KEY_A])
+                        {
+                            input.clear();
+                        }
+                        else if (input.keyDown[ARROW_DOWN])
+                        {
+                            input.clear();
+                        }
+                        else if (input.keyDown[ARROW_UP])
+                        {
+                            input.clear();
+                        }
+
+                        break;
+                    }
                     default:
                     {
                         sys.error(util::va("Undefined battle script: %i", scriptIndex));
@@ -322,9 +346,14 @@ void Battle::render()
     {
         render_player_info();
     }
+
     if (drawSubmenu == BattleSubmenu::GENERAL)
     {
         render_general_submenu();
+    }
+    else if (drawSubmenu == BattleSubmenu::FIGHT)
+    {
+        render_fight_submenu();
     }
 
 
@@ -575,6 +604,11 @@ void Battle::render_general_submenu()
     res.getTexture("cursor_full")->render(cursor_x, cursor_y);
 }
 
+void Battle::render_fight_submenu()
+{
+
+}
+
 void Battle::update_enemy_hp()
 {
     enemyHp = opp_party->pokemonList.at(currEnemyMonIndex)->hp;
@@ -629,6 +663,14 @@ void Battle::create_player_pokemon_text_texture()
 void Battle::create_submenu_text()
 {
 
+}
+
+void Battle::create_fight_text()
+{
+    for (int i = 0; i < 4; i++)
+    {
+        res.updateText(&tex_move[i], player_party->pokemonList.at(currEnemyMonIndex)->moves[i]);
+    }
 }
 
 void Battle::playanim_pokemonappear()

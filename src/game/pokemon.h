@@ -28,7 +28,9 @@ public:
 	int pp[4];
 	int trainerId;
 
+private:
 	void calculateStats();
+	void setMoves();
 	void generateIV();
 	int calculateEXP(int level);
 };

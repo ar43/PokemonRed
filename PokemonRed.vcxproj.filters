@@ -43,6 +43,12 @@
     <Filter Include="Source Files\game\player">
       <UniqueIdentifier>{830c08ac-6412-441b-97fb-5d291d8cf1f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\game\pokemon\moves">
+      <UniqueIdentifier>{e5595383-be66-4e5d-8b4c-8cdd2b274a0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\pokemon\moves">
+      <UniqueIdentifier>{c9bd277b-7b1c-4bf6-b464-0af0ffcc88dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -123,6 +129,12 @@
     <ClCompile Include="src\game\battle.cpp">
       <Filter>Source Files\game</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\evolution_set.cpp">
+      <Filter>Source Files\game\pokemon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\learn_set.cpp">
+      <Filter>Source Files\game\pokemon\moves</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sys\system.h">
@@ -202,6 +214,12 @@
     </ClInclude>
     <ClInclude Include="src\game\battle.h">
       <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\evolution_set.h">
+      <Filter>Header Files\game\pokemon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\learn_set.h">
+      <Filter>Header Files\game\pokemon\moves</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

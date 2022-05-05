@@ -13,6 +13,7 @@ class PokemonData
 {
 public:
 	std::string dexId;
+	std::string rawName;
 	PokemonStats baseStats;
 	std::string type[2];
 	int catchRate;

@@ -711,6 +711,7 @@ void System::load_media()
 	load_maps();
 	load_textures();
 	load_texts();
+	res.loadEvolutionAndLearnSetData();
 	
 	
 	Constants::font = TTF_OpenFont("assets/gfx/font/pokemon-final.otf", 8);
@@ -720,5 +721,6 @@ void System::load_media()
 	load_trainer_constants();
 	load_trainer_data();
 	load_generic_text();
+	
 	//test_lua();
 }

@@ -63,6 +63,7 @@ private:
 	void render_player_info();
 	void render_player_pokemon();
 	void render_general_submenu();
+	void render_fight_submenu();
 
 	void update_enemy_hp();
 	void update_player_hp();
@@ -98,13 +99,12 @@ private:
 	Texture playerPokemonLvl;
 	Texture playerPokemonHp;
 
-	Texture tex_fight;
-	Texture tex_item;
-	Texture tex_run;
+	Texture tex_move[4];
 
 	void create_enemy_pokemon_text_texture();
 	void create_player_pokemon_text_texture();
 	void create_submenu_text();
+	void create_fight_text();
 
 	BattleAnimation pokemonAppear;
 	void playanim_pokemonappear();

@@ -144,9 +144,11 @@
   <ItemGroup>
     <ClCompile Include="src\game\battle.cpp" />
     <ClCompile Include="src\game\constants.cpp" />
+    <ClCompile Include="src\game\evolution_set.cpp" />
     <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\game\inventory.cpp" />
     <ClCompile Include="src\game\item.cpp" />
+    <ClCompile Include="src\game\learn_set.cpp" />
     <ClCompile Include="src\game\lua.cpp" />
     <ClCompile Include="src\game\map.cpp" />
     <ClCompile Include="src\game\npc.cpp" />
@@ -173,9 +175,11 @@
     <ClInclude Include="src\game\battle.h" />
     <ClInclude Include="src\game\constants.h" />
     <ClInclude Include="src\game\enums.h" />
+    <ClInclude Include="src\game\evolution_set.h" />
     <ClInclude Include="src\game\game.h" />
     <ClInclude Include="src\game\inventory.h" />
     <ClInclude Include="src\game\item.h" />
+    <ClInclude Include="src\game\learn_set.h" />
     <ClInclude Include="src\game\lua.h" />
     <ClInclude Include="src\game\map.h" />
     <ClInclude Include="src\game\npc.h" />
