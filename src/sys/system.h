@@ -87,6 +87,7 @@ private:
 	void hide_show_objects();
 	void load_trainer_constants();
 	void load_trainer_data();
+	void load_generic_text();
 };
 
 extern System sys;

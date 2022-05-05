@@ -177,6 +177,21 @@ void Input::catchTextbox(SDL_Event* e)
 			keyDown[KEY_B] = true;
 			break;
 
+		case SDLK_UP:
+			keyDown[ARROW_UP] = true;
+			break;
+
+		case SDLK_DOWN:
+			keyDown[ARROW_DOWN] = true;
+			break;
+
+		case SDLK_LEFT:
+			keyDown[ARROW_LEFT] = true;
+			break;
+
+		case SDLK_RIGHT:
+			keyDown[ARROW_RIGHT] = true;
+			break;
 
 		default:
 			break;
@@ -193,6 +208,19 @@ void Input::catchTextbox(SDL_Event* e)
 
 		case SDLK_x:
 			keyDown[KEY_B] = false;
+			break;
+
+		case SDLK_UP:
+			keyDown[ARROW_UP] = false;
+			break;
+		case SDLK_DOWN:
+			keyDown[ARROW_DOWN] = false;
+			break;
+		case SDLK_LEFT:
+			keyDown[ARROW_LEFT] = false;
+			break;
+		case SDLK_RIGHT:
+			keyDown[ARROW_RIGHT] = false;
 			break;
 
 		default:

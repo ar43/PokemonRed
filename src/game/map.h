@@ -171,11 +171,16 @@ class Texture
 {
 public:
 	SDL_Surface* surface; //kind of useless ngl
-	SDL_Texture* texture;
+	SDL_Texture* texture = nullptr;
+	SDL_Texture* tilemap_3x3 = nullptr;
+	SDL_Texture* tilemap_5x5 = nullptr;
 	Uint32 format;
 	int w;
 	int h;
+	void scale(int new_w, int new_h);
+	void generate_tilemaps();
 	void render(int x, int y, SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void render_tilemap(int x, int y, bool t3);
 	void render_scale(int x, int y, int new_w, int new_h, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	void render_ex(int x, int y, int x2, int y2, int w, int h, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	void render_special(int x, int y, int num, SDL_RendererFlip flip = SDL_FLIP_NONE);

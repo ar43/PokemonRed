@@ -304,6 +304,94 @@ void Texture::render_scale(int x, int y, int new_w, int new_h, SDL_RendererFlip 
     SDL_RenderCopyEx(sys.getRenderer(), texture, &rectedSrc, &rectedDest, 0.0f, NULL, flip);
 }
 
+void Texture::scale(int new_w, int new_h) //will lose transparency!
+{
+    //maybe do
+    // SDL_SetTextureBlendMode(t, SDL_BLENDMODE_BLEND);
+    //SDL_DestroyTexture(texture);
+    SDL_Texture *new_texture =  SDL_CreateTexture(sys.getRenderer(), format, SDL_TEXTUREACCESS_TARGET, new_w, new_h);
+    
+    if(new_texture == NULL)
+        printf("SDL_CreateTexture failed: %s\n", SDL_GetError());
+
+    SDL_SetRenderTarget(sys.getRenderer(), new_texture);
+
+    SDL_SetRenderDrawColor( sys.getRenderer(), 0xFF, 0xFF, 0xFF, 0xFF );
+    SDL_RenderClear( sys.getRenderer() );
+
+    SDL_Rect rectedSrc = { 0,0,w,h };
+    SDL_Rect rected = { 0,0,new_w,new_h };
+    
+    SDL_RenderCopy(sys.getRenderer(), texture, &rectedSrc, &rected);
+
+    SDL_SetRenderTarget(sys.getRenderer(), NULL);
+    SDL_DestroyTexture(texture);
+    texture = new_texture;
+    w = new_w;
+    h = new_h;
+}
+
+void Texture::generate_tilemaps()
+{
+    if (w != 64 && h != 64)
+        return;
+
+    tilemap_3x3 =  SDL_CreateTexture(sys.getRenderer(), format, SDL_TEXTUREACCESS_TARGET, 3*8, 3*8);
+    if(tilemap_3x3 == NULL)
+        printf("SDL_CreateTexture failed: %s\n", SDL_GetError());
+
+    SDL_SetRenderTarget(sys.getRenderer(), tilemap_3x3);
+
+    SDL_SetRenderDrawColor( sys.getRenderer(), 0xff, 0xff, 0xff, 0xFF );
+    SDL_RenderClear( sys.getRenderer() );
+
+    const int table_3x3[9] = { 305,326,347,
+        308,329,350,
+        311,332,353 };
+
+    for (int i = 0; i < 9; i++)
+    {
+        int num = table_3x3[i] - 305;
+        int src_x = num / 7;
+        int src_y = num % 7;
+        int dst_x = i % 3;
+        int dst_y = i / 3;
+        SDL_Rect rectedSrc = { src_x*8,src_y*8,8,8 };
+        SDL_Rect rectedDst = { dst_x*8,dst_y*8,8,8 };
+        SDL_RenderCopy(sys.getRenderer(), texture, &rectedSrc, &rectedDst);
+    }
+
+    tilemap_5x5 =  SDL_CreateTexture(sys.getRenderer(), format, SDL_TEXTUREACCESS_TARGET, 5*8, 5*8);
+    if(tilemap_5x5 == NULL)
+        printf("SDL_CreateTexture failed: %s\n", SDL_GetError());
+
+    SDL_SetRenderTarget(sys.getRenderer(), tilemap_5x5);
+
+    SDL_SetRenderDrawColor( sys.getRenderer(), 0xff, 0xff, 0xff, 0xFF );
+    SDL_RenderClear( sys.getRenderer() );
+
+    const int table_5x5[25] = { 305,312,326,340,347,
+        306,313,327,341,348,
+        308,315,329,343,350,
+        310,317,331,345,352,
+        311,318,332,346,353 };
+
+    for (int i = 0; i < 25; i++)
+    {
+        int num = table_5x5[i] - 305;
+        int src_x = num / 7;
+        int src_y = num % 7;
+        int dst_x = i % 5;
+        int dst_y = i / 5;
+        SDL_Rect rectedSrc = { src_x*8,src_y*8,8,8 };
+        SDL_Rect rectedDst = { dst_x*8,dst_y*8,8,8 };
+        SDL_RenderCopy(sys.getRenderer(), texture, &rectedSrc, &rectedDst);
+    }
+
+
+    SDL_SetRenderTarget(sys.getRenderer(), NULL);
+}
+
 void Texture::render(int x, int y, SDL_RendererFlip flip)
 {
     if (game.player.warpIndex < 8)
@@ -321,6 +409,30 @@ void Texture::render(int x, int y, SDL_RendererFlip flip)
 
     SDL_Rect rected = { x,y,w,h };
     SDL_RenderCopyEx(sys.getRenderer(), texture, NULL, &rected, 0.0f, NULL, flip);
+}
+
+void Texture::render_tilemap(int x, int y, bool t3)
+{
+    if (tilemap_3x3 == nullptr || tilemap_5x5 == nullptr)
+        sys.error("trying to draw tilemap with no tilemap for the texture");
+
+    int temp_w, temp_h;
+    if (t3)
+    {
+        temp_w = 3*8;
+        temp_h = 3*8;
+    }
+    else
+    {
+        temp_w = 5*8;
+        temp_h = 5*8;
+    }
+    SDL_Rect rected = { x,y,temp_w,temp_h };
+    SDL_Rect rectedSrc = { 0,0,temp_w,temp_h };
+    if(t3)
+        SDL_RenderCopy(sys.getRenderer(), tilemap_3x3, &rectedSrc, &rected);
+    else
+        SDL_RenderCopy(sys.getRenderer(), tilemap_5x5, &rectedSrc, &rected);
 }
 
 void Texture::render_ex(int x, int y, int x2, int y2, int w, int h, SDL_RendererFlip flip)

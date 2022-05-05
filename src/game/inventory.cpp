@@ -16,7 +16,7 @@ void Inventory::addPokemon(Pokemon* pokemon)
 	printf("dbg: added pokemon to inventory\n");
 }
 
-void Inventory::movePokemonToBox(size_t i, size_t box_num)
+void Inventory::movePokemonToBox(size_t i, size_t box_num) //TODO: add limit, max 20 mons per box
 {
 	if (i < 0 || i >= party.pokemonList.size())
 	{

@@ -226,6 +226,12 @@ void ResourceManager::loadTexture(std::string textureName, std::string path, boo
 	loadTexture(textureName, path.c_str(), transparent);
 }
 
+void ResourceManager::addTexture(std::string textureName, Texture* texture)
+{
+	if(getTexture(textureName) == nullptr)
+		textureMap[textureName] = texture;
+}
+
 void ResourceManager::loadTexture(std::string textureName, const char* path, bool transparent)
 {
 	SDL_Surface* sur = IMG_Load(path);
@@ -235,15 +241,10 @@ void ResourceManager::loadTexture(std::string textureName, const char* path, boo
 		// handle error
 	}
 	SDL_Surface* gsSurface;
-	if(!transparent)
-	{ 
-		gsSurface = SDL_ConvertSurfaceFormat(sur,SDL_PIXELFORMAT_ARGB8888,0);
-	}
-	else
-	{
-		gsSurface = sur;
+	 
+	gsSurface = SDL_ConvertSurfaceFormat(sur,SDL_PIXELFORMAT_ARGB8888,0);
+	if(transparent)
 		SDL_SetColorKey(gsSurface, SDL_TRUE, SDL_MapRGB(gsSurface->format, 0xff, 0xff, 0xff));
-	}
 	Texture* texture = new Texture();
 	texture->surface = gsSurface;
 	texture->format = gsSurface->format->format;
@@ -256,7 +257,7 @@ void ResourceManager::loadTexture(std::string textureName, const char* path, boo
 
 
 	//LIGHT TEXTURE CODE
-	gsSurface = SDL_ConvertSurfaceFormat(sur,SDL_PIXELFORMAT_ARGB8888,0);
+	//gsSurface = SDL_ConvertSurfaceFormat(sur,SDL_PIXELFORMAT_ARGB8888,0);
 	SDL_SetColorKey(gsSurface, SDL_TRUE, SDL_MapRGB(gsSurface->format, 0x12, 0x34, 0x56));
 	//lighten by one level:
 	for (int i = 0; i < gsSurface->w*gsSurface->h; i++)
@@ -894,7 +895,7 @@ void ResourceManager::loadPokemonData(std::string pokemonName)
 					util::remove_spaces(util::cleanStr(token));
 					if (isalpha(token[0]))
 					{
-						data->learnset.push_back(std::string(token));
+						data->tmhm.push_back(std::string(token));
 					}
 					token = strtok(NULL, ",");
 					i++;
@@ -912,7 +913,7 @@ void ResourceManager::loadPokemonData(std::string pokemonName)
 					util::remove_spaces(util::cleanStr(token));
 					if (isalpha(token[0]))
 					{
-						data->learnset.push_back(std::string(token));
+						data->tmhm.push_back(std::string(token));
 					}
 					token = strtok(NULL, ",");
 					i++;
@@ -925,6 +926,8 @@ void ResourceManager::loadPokemonData(std::string pokemonName)
 	std::string name = data->getId();
 	data->front = res.getTexture(pokemonName);
 	data->back = res.getTexture(pokemonName+"b");
+	data->back->scale(64, 64);
+	data->back->generate_tilemaps();
 	pokemonDataMap[name] = data;
 }
 
@@ -1694,6 +1697,62 @@ void ResourceManager::loadTexts(std::vector<Textset*> *textsetList, std::string 
 	}
 	if(fp)
 		fclose(fp);
+}
+
+Texture* ResourceManager::createText(std::string text)
+{
+	Texture* texture = new Texture();
+	SDL_Surface* textSurface = TTF_RenderText_Solid(Constants::font, text.c_str(), {0,0,0,0xff});
+	texture->w = textSurface->w;
+	texture->h = textSurface->h;
+	if (textSurface != NULL)
+	{
+		//Create texture from surface pixels
+		if (texture->texture != nullptr) 
+		{
+			SDL_DestroyTexture(texture->texture); //prevent memory leak
+		}
+		texture->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), textSurface);
+		if (texture->texture == NULL)
+		{
+			printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+		}
+
+		//Get rid of old surface
+		SDL_FreeSurface(textSurface);
+	}
+	else
+	{
+		printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+	}
+	return texture;
+}
+
+void ResourceManager::updateText(Texture* texture, std::string text)
+{
+	SDL_Surface* textSurface = TTF_RenderText_Solid(Constants::font, text.c_str(), {0,0,0,0xff});
+	texture->w = textSurface->w;
+	texture->h = textSurface->h;
+	if (textSurface != NULL)
+	{
+		//Create texture from surface pixels
+		if (texture->texture != nullptr) 
+		{
+			SDL_DestroyTexture(texture->texture); //prevent memory leak
+		}
+		texture->texture = SDL_CreateTextureFromSurface(sys.getRenderer(), textSurface);
+		if (texture->texture == NULL)
+		{
+			printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+		}
+
+		//Get rid of old surface
+		SDL_FreeSurface(textSurface);
+	}
+	else
+	{
+		printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+	}
 }
 
 Sprite* ResourceManager::getSprite(std::string spriteName)

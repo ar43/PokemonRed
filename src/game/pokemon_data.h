@@ -19,7 +19,7 @@ public:
 	int baseEXP;
 	std::string baseLearnset[4];
 	GrowthRate growthRate;
-	std::vector <std::string> learnset;
+	std::vector <std::string> tmhm;
 	Texture* front;
 	Texture* back;
 	std::string getId();

@@ -63,6 +63,9 @@ bool Player::is_mq_empty()
 
 void Player::render()
 {
+	if (game.battle.inBattle)
+		return;
+
 	sprite->render_static(PLAYER_OFFSET_X, PLAYER_OFFSET_Y,dir);
 	if (emoteTime)
 	{

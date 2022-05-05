@@ -17,6 +17,7 @@ void Battle::begin_trainer(std::string trainerName, Party* opp_party)
     this->trainerName = trainerName;
     this->opp_party = opp_party;
     trainerBattle = true;
+    on_begin();
 }
 
 void Battle::begin_wild(std::string pokemonName, int level)
@@ -27,6 +28,7 @@ void Battle::begin_wild(std::string pokemonName, int level)
     party->addPokemon(new Pokemon(res.getPokemonData(pokemonName), level));
     this->opp_party = party;
     enemyMonNick = pokemonName;
+    on_begin();
 }
 
 void Battle::start()
@@ -47,14 +49,25 @@ void Battle::start()
     drawPlayerPokeballs = true;
     drawEnemyInfo = false;
     drawPlayerInfo = false;
+    drawSubmenu = BattleSubmenu::NONE;
+    drawPlayerMon = 0;
     currEnemyMonIndex = 0;
     battleMonNick = player_party->firstMonNick();
     currPlayerMonIndex = player_party->firstMonId();
+    cursorGeneralPosition.x = 0;
+    cursorGeneralPosition.y = 0;
 
 }
 
 void Battle::on_begin()
 {
+    if (player_party->firstMonId() < 0 || opp_party->firstMonId() < 0)
+        sys.error("Trying to create a battle with an empty or dead party on either side");
+}
+
+static int cantor(int a, int b)
+{
+    return ((a + b) * (a + b + 1)) / 2 + b;
 }
 
 void Battle::update()
@@ -203,14 +216,72 @@ void Battle::update()
                     case 7:
                     {
                         //reveal 3x3, wait 3, reveal 5x5, wait 6, reveal full
-                       // Find out how pokemon sprite is loaded into memory. (spoiler: top down
-                       //     the 3x3 and 5x5 adresses are constant
+                        if (drawPlayerMon == 0)
+                        {
+                            delayScript = 3;
+                            drawPlayerMon = 1;
+                        }
+                        else if (drawPlayerMon == 1)
+                        {
+                            delayScript = 6;
+                            drawPlayerMon = 2;
+                        }
+                        else if (drawPlayerMon == 2)
+                        {
+                            drawPlayerMon = 3;
+                            scriptIndex = 8;
+                            delayScript = 52;
+                        }
+                        
+                        break;
+                    }
+                    case 8:
+                    {
+                        game.textbox.clear();
+                        delayScript = 7;
+                        scriptIndex = (int)NamedBattleScripts::GENERAL_SUBMENU;
+                        break;
+                    }
+                    case (int)NamedBattleScripts::GENERAL_SUBMENU: //Battle submenu shows here
+                    {
+                        drawSubmenu = BattleSubmenu::GENERAL;
 
-                        drawPlayerMon = 3;
+                        if (input.keyDown[KEY_A])
+                        {
+                            const int offset = cantor(cursorGeneralPosition.x, cursorGeneralPosition.y);
+                            input.clear();
+                            scriptIndex = (int)NamedBattleScripts::FIGHT_SUBMENU + offset;
+                        }
+                        else if (input.keyDown[ARROW_LEFT])
+                        {
+                            input.clear();
+                            if(cursorGeneralPosition.x > 0)
+                                cursorGeneralPosition.x -= 1;
+                        }
+                        else if (input.keyDown[ARROW_RIGHT])
+                        {
+                            input.clear();
+                            if(cursorGeneralPosition.x == 0)
+                                cursorGeneralPosition.x += 1;
+                        }
+                        else if (input.keyDown[ARROW_DOWN])
+                        {
+                            input.clear();
+                            if(cursorGeneralPosition.y == 0)
+                                cursorGeneralPosition.y += 1;
+                        }
+                        else if (input.keyDown[ARROW_UP])
+                        {
+                            input.clear();
+                            if(cursorGeneralPosition.y == 1)
+                                cursorGeneralPosition.y -= 1;
+                        }
+
                         break;
                     }
                     default:
                     {
+                        sys.error(util::va("Undefined battle script: %i", scriptIndex));
                         break;
                     }
                 }
@@ -251,14 +322,17 @@ void Battle::render()
     {
         render_player_info();
     }
+    if (drawSubmenu == BattleSubmenu::GENERAL)
+    {
+        render_general_submenu();
+    }
+
+
     if (pokemonAppear.play)
     {
         playanim_pokemonappear();
     }
-    if (drawPlayerMon)
-    {
-        render_player_pokemon();
-    }
+    
 }
 
 void Battle::pre_render()
@@ -268,6 +342,11 @@ void Battle::pre_render()
     SDL_SetRenderDrawColor(sys.getRenderer(), 255, 255, 255, 255);
     SDL_Rect screen = { 0,0,GAME_WIDTH,GAME_HEIGHT };
     SDL_RenderFillRect(sys.getRenderer(), &screen);
+
+    if (drawPlayerMon)
+    {
+        render_player_pokemon();
+    }
 }
 
 void Battle::first_animation()
@@ -465,7 +544,35 @@ void Battle::render_player_info()
 
 void Battle::render_player_pokemon()
 {
-    player_party->pokemonList.at(currPlayerMonIndex)->data->back->render_scale(1 * 8, 5 * 8, 64, 64);
+    if(drawPlayerMon == 3)
+        player_party->pokemonList.at(currPlayerMonIndex)->data->back->render(1 * 8, 5 * 8);
+    else if(drawPlayerMon == 2)
+        player_party->pokemonList.at(currPlayerMonIndex)->data->back->render_tilemap(2 * 8, 7 * 8,false);
+    else if(drawPlayerMon == 1)
+        player_party->pokemonList.at(currPlayerMonIndex)->data->back->render_tilemap(3 * 8, 9 * 8,true);
+}
+
+void Battle::render_general_submenu()
+{
+    auto tex1 = res.getTexture("tb1");
+    auto tex5 = res.getTexture("tb5");
+    auto tex4 = res.getTexture("tb4");
+
+    tex1->render(8 * 8, 12 * 8);
+    
+    for (int i = 0; i < 6; i++)
+        tex4->render(8*8, GAME_HEIGHT - TEXTBOX_HEIGHT + 8 + i * 8);
+
+    tex5->render(8 * 8, 17 * 8);
+
+    res.getTexture("pkmn")->render(16 * 8, 14 * 8);
+    res.getTexture("battle_fight")->render(10 * 8, 14 * 8);
+    res.getTexture("battle_item")->render(10 * 8 + 1, 16 * 8);
+    res.getTexture("battle_run")->render(16 * 8, 16 * 8);
+
+    const int cursor_x = 9*8 + (6 * cursorGeneralPosition.x)*8;
+    const int cursor_y = 14*8 + (2 * cursorGeneralPosition.y)*8;
+    res.getTexture("cursor_full")->render(cursor_x, cursor_y);
 }
 
 void Battle::update_enemy_hp()
@@ -509,85 +616,18 @@ void Battle::update_player_hp()
 
 void Battle::create_enemy_pokemon_text_texture()
 {
-    std::string enemyPokemonLevel = std::to_string(opp_party->pokemonList.at(currEnemyMonIndex)->level);
-    SDL_Surface* textSurfaceName = TTF_RenderText_Solid(Constants::font, enemyMonNick.c_str(), { 0,0,0,0xff });
-    SDL_Surface* textSurfaceLevel = TTF_RenderText_Solid(Constants::font, enemyPokemonLevel.c_str(), { 0,0,0,0xff });
-    enemyPokemonText.w = textSurfaceName->w;
-    enemyPokemonText.h = textSurfaceName->h;
-    enemyPokemonLvl.w = textSurfaceLevel->w;
-    enemyPokemonLvl.h = textSurfaceLevel->h;
-    if (textSurfaceName != NULL && textSurfaceLevel != NULL)
-    {
-        //Create texture from surface pixels
-        if (enemyPokemonText.texture != nullptr) 
-        {
-            SDL_DestroyTexture(enemyPokemonText.texture); //prevent memory leak
-        }
-        if (enemyPokemonLvl.texture != nullptr) 
-        {
-            SDL_DestroyTexture(enemyPokemonLvl.texture); //prevent memory leak
-        }
-        enemyPokemonText.texture = SDL_CreateTextureFromSurface(sys.getRenderer(), textSurfaceName);
-        enemyPokemonLvl.texture = SDL_CreateTextureFromSurface(sys.getRenderer(), textSurfaceLevel);
-        if (enemyPokemonText.texture == NULL)
-        {
-            printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
-        }
-        if (enemyPokemonLvl.texture == NULL)
-        {
-            printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
-        }
-
-        //Get rid of old surface
-        SDL_FreeSurface(textSurfaceName);
-        SDL_FreeSurface(textSurfaceLevel);
-    }
-    else
-    {
-        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
-    }
-    
+    res.updateText(&enemyPokemonLvl, std::to_string(opp_party->pokemonList.at(currEnemyMonIndex)->level));
+    res.updateText(&enemyPokemonText, enemyMonNick);
 }
 
 void Battle::create_player_pokemon_text_texture()
 {
-    std::string playerPokemonLevel = std::to_string(player_party->pokemonList.at(currPlayerMonIndex)->level);
-    SDL_Surface* textSurfaceName = TTF_RenderText_Solid(Constants::font, battleMonNick.c_str(), { 0,0,0,0xff });
-    SDL_Surface* textSurfaceLevel = TTF_RenderText_Solid(Constants::font, playerPokemonLevel.c_str(), { 0,0,0,0xff });
-    playerPokemonText.w = textSurfaceName->w;
-    playerPokemonText.h = textSurfaceName->h;
-    playerPokemonLvl.w = textSurfaceLevel->w;
-    playerPokemonLvl.h = textSurfaceLevel->h;
-    if (textSurfaceName != NULL && textSurfaceLevel != NULL)
-    {
-        //Create texture from surface pixels
-        if (playerPokemonText.texture != nullptr) 
-        {
-            SDL_DestroyTexture(playerPokemonText.texture); //prevent memory leak
-        }
-        if (playerPokemonLvl.texture != nullptr) 
-        {
-            SDL_DestroyTexture(playerPokemonLvl.texture); //prevent memory leak
-        }
-        playerPokemonText.texture = SDL_CreateTextureFromSurface(sys.getRenderer(), textSurfaceName);
-        playerPokemonLvl.texture = SDL_CreateTextureFromSurface(sys.getRenderer(), textSurfaceLevel);
-        if (playerPokemonText.texture == NULL)
-        {
-            printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
-        }
-        if (playerPokemonLvl.texture == NULL)
-        {
-            printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
-        }
+    res.updateText(&playerPokemonLvl, std::to_string(player_party->pokemonList.at(currPlayerMonIndex)->level));
+    res.updateText(&playerPokemonText, battleMonNick);
+}
 
-        //Get rid of old surface
-        SDL_FreeSurface(textSurfaceName);
-        SDL_FreeSurface(textSurfaceLevel);
-    }
-    else
-    {
-        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
-    }
+void Battle::create_submenu_text()
+{
 
 }
 

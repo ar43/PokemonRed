@@ -1,6 +1,15 @@
 #pragma once
 #include "trainer_data.h"
 
+enum class NamedBattleScripts
+{
+	FIGHT_SUBMENU = 9,
+	PKMN_SUBMENU,
+	ITEM_SUBMENU,
+	GENERAL_SUBMENU,
+	RUN_SUBMENU,
+};
+
 struct BattleAnimation
 {
 	void reset();
@@ -9,6 +18,16 @@ struct BattleAnimation
 	int* counter = nullptr;
 	int x_offset = 0;
 	int y_offset = 0;
+};
+
+enum class BattleSubmenu
+{
+	FIGHT,
+	PKMN,
+	ITEM,
+	GENERAL,
+	RUN,
+	NONE
 };
 
 class Battle
@@ -43,15 +62,18 @@ private:
 	void render_hp(int hp, int max_hp, int x_start, int y);
 	void render_player_info();
 	void render_player_pokemon();
+	void render_general_submenu();
 
 	void update_enemy_hp();
 	void update_player_hp();
 
-	Party* opp_party;
-	Party* player_party;
+	Party* opp_party = nullptr;
+	Party* player_party = nullptr;
 	bool trainerBattle = false;
 	std::string trainerName;
 	Position ash_position;
+
+	Position cursorGeneralPosition;
 
 	int scrollIndex = 0;
 	int enemyScrollIndex = 0;
@@ -67,6 +89,7 @@ private:
 	bool drawEnemyInfo = false;
 	bool drawPlayerInfo = true;
 	int drawPlayerMon = 0;
+	BattleSubmenu drawSubmenu = BattleSubmenu::NONE;
 
 	Texture enemyPokemonText;
 	Texture enemyPokemonLvl;
@@ -75,8 +98,13 @@ private:
 	Texture playerPokemonLvl;
 	Texture playerPokemonHp;
 
+	Texture tex_fight;
+	Texture tex_item;
+	Texture tex_run;
+
 	void create_enemy_pokemon_text_texture();
 	void create_player_pokemon_text_texture();
+	void create_submenu_text();
 
 	BattleAnimation pokemonAppear;
 	void playanim_pokemonappear();

@@ -22,6 +22,9 @@ void Render::render()
 
 void Render::draw_objects()
 {
+    if (game.battle.inBattle)
+        return;
+
     for (auto it : game.world.currentMap->objects)
     {
         it->render();
@@ -31,6 +34,9 @@ void Render::draw_objects()
 
 void Render::draw_overlay()
 {
+    if (game.battle.inBattle)
+        return;
+
     if (!game.world.currentMap->grassEffect.empty())
     {
         bool obj_nearby = false;
@@ -105,7 +111,8 @@ void Render::draw_overlay()
 
 void Render::draw_map()
 {
-
+    if (game.battle.inBattle)
+        return;
     if (game.world.currentMap == nullptr)
         sys.error("Current map is a null pointer");
 

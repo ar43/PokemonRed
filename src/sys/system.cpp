@@ -231,7 +231,7 @@ void System::load_maps()
 
 void System::load_textures()
 {
-	printf("Loading textures...\n");
+	printf("Loading misc textures...\n");
 	res.loadTexture("flower1", "assets/gfx/tilesets/flower/flower1.png");
 	res.loadTexture("flower2", "assets/gfx/tilesets/flower/flower2.png");
 	res.loadTexture("flower3", "assets/gfx/tilesets/flower/flower3.png");
@@ -264,6 +264,8 @@ void System::load_textures()
 	res.loadTexture("battle_hud_3", "assets/gfx/battle/battle_hud_3.png", true);
 	res.loadTexture("font_battle_extra", "assets/gfx/battle/font_battle_extra.png", true);
 	res.loadTexture("attack_anim_1", "assets/gfx/battle/attack_anim_1.png", true);
+	res.loadTexture("pkmn", "assets/gfx/battle/pkmn.png");
+	res.loadTexture("cursor_full", "assets/gfx/battle/cursor_full.png");
 }
 
 void System::load_texts()
@@ -677,6 +679,13 @@ void System::load_trainer_data()
 		fclose(fp);
 }
 
+void System::load_generic_text()
+{
+	res.addTexture("battle_fight", res.createText("FIGHT"));
+	res.addTexture("battle_item", res.createText("ITEM"));
+	res.addTexture("battle_run", res.createText("RUN"));
+}
+
 void test_lua()
 {
 	/*
@@ -703,11 +712,13 @@ void System::load_media()
 	load_textures();
 	load_texts();
 	
+	
 	Constants::font = TTF_OpenFont("assets/gfx/font/pokemon-final.otf", 8);
 
 	hide_show_objects();
 	load_text_redefinitions();
 	load_trainer_constants();
 	load_trainer_data();
+	load_generic_text();
 	//test_lua();
 }

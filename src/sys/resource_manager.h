@@ -14,9 +14,12 @@ public:
 
 	void loadTexture(std::string textureName, const char* path, bool transparent = false);
 	void loadTexture(std::string textureName, std::string path, bool transparent = false);
+	void addTexture(std::string textureName, Texture* texture);
 	Texture* getTexture(std::string textureName);
 
 	void loadTexts(std::vector<Textset*> *textsetList, std::string path);
+	Texture* createText(std::string text);
+	void updateText(Texture* texture, std::string text);
 
 	void loadSprite(std::string spriteName);
 	Sprite* getSprite(std::string spriteName);
