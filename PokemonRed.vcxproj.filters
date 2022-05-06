@@ -221,5 +221,8 @@
     <ClInclude Include="src\game\learn_set.h">
       <Filter>Header Files\game\pokemon\moves</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\move.h">
+      <Filter>Header Files\game\pokemon\moves</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

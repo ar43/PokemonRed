@@ -721,6 +721,7 @@ void System::load_media()
 	load_trainer_constants();
 	load_trainer_data();
 	load_generic_text();
+	res.loadMoves("assets/data/moves/moves.asm");
 	
 	//test_lua();
 }

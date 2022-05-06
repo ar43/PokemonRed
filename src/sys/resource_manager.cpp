@@ -1720,9 +1720,75 @@ void ResourceManager::loadMap(std::string fileName)
 
 }
 
+void ResourceManager::loadMoves(std::string path)
+{
+	if (!moveMap.empty())
+		sys.error("Move data cannot be reloaded");
+
+	FILE* fp = fopen(path.c_str() , "r");
+
+	if (!fp)
+		printf("%s does not exist\n", path.c_str());
+
+	int l = 0;
+	char string[1024] = { 0 };
+	int id = 0;
+	while (fp && fgets(string, 1024, fp)) 
+	{
+		char* substring = strstr(string, "move ");
+		if (substring != nullptr && l > 10)
+		{
+			substring += 5;
+			char* token = strtok(substring, ",");
+			Move* move = new Move();
+			int i = 0;
+			/* walk through other tokens */
+			while (token != NULL) 
+			{
+				token = util::cleanStr(token);
+				util::remove_spaces(token);
+				if (i == 0)
+				{
+					move->name = token;
+					move->id = id;
+				}
+				else if (i == 1)
+				{
+					move->effect = token;
+				}
+				else if (i == 2)
+				{
+					move->power = atoi(token);
+				}
+				else if (i == 3)
+				{
+					move->type = token;
+				}
+				else if (i == 4)
+				{
+					move->accuracy = atoi(token);
+				}
+				else if (i == 5)
+				{
+					move->pp = atoi(token);
+				}
+				token = strtok(NULL, ",");
+				i++;
+			}
+			moveMap[move->name] = move;
+			id++;
+		}
+		l++;
+	}
+	if(fp)
+		fclose(fp);
+
+
+}
+
 Tileset* ResourceManager::getTileset(std::string textureName)
 {
-	std::map<std::string, Tileset*>::iterator it = tilesetMap.find(textureName);
+	auto it = tilesetMap.find(textureName);
 
 	if (it == tilesetMap.end())
 	{
@@ -1737,7 +1803,7 @@ Tileset* ResourceManager::getTileset(std::string textureName)
 
 Texture* ResourceManager::getTexture(std::string textureName)
 {
-	std::map<std::string, Texture*>::iterator it = textureMap.find(textureName);
+	auto it = textureMap.find(textureName);
 
 	if (it == textureMap.end())
 	{
@@ -1935,7 +2001,7 @@ void ResourceManager::updateText(Texture* texture, std::string text)
 
 Sprite* ResourceManager::getSprite(std::string spriteName)
 {
-	std::map<std::string, Sprite*>::iterator it = spriteMap.find(spriteName);
+	auto it = spriteMap.find(spriteName);
 
 	if (it == spriteMap.end())
 	{
@@ -1950,7 +2016,7 @@ Sprite* ResourceManager::getSprite(std::string spriteName)
 
 Blockset* ResourceManager::getBlockset(std::string blocksetName)
 {
-	std::map<std::string, Blockset*>::iterator it = blocksetMap.find(blocksetName);
+	auto it = blocksetMap.find(blocksetName);
 
 	if (it == blocksetMap.end())
 	{
@@ -1977,7 +2043,7 @@ Map* ResourceManager::getMap(std::string mapName)
 	if (mapName == "none")
 		return nullptr;
 
-	std::map<std::string, Map*>::iterator it = mapMap.find(mapName);
+	auto it = mapMap.find(mapName);
 
 	if (it == mapMap.end())
 	{

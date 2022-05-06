@@ -1,10 +1,12 @@
 #pragma once
 #include <map>
+#include <unordered_map>
 #include <string>
 #include "../game/map.h"
 #include "../game/trainer_data.h"
 #include "../game/evolution_set.h"
 #include "../game/learn_set.h"
+#include "../game/move.h"
 
 #define MAX_BLOCKS 256
 
@@ -50,20 +52,23 @@ public:
 	void loadEvolutionAndLearnSetData();
 	EvolutionSet* getEvolutionInfo(std::string pokemonName);
 	LearnSet* getLearnset(std::string pokemonName);
+
+	void loadMoves(std::string path);
 	
 private:
 
-	std::map<std::string, Tileset*> tilesetMap;
-	std::map<std::string, Texture*> textureMap;
-	std::map<std::string, Sprite*> spriteMap;
-	std::map<std::string, Blockset*> blocksetMap;
-	std::map<std::string, Map*> mapMap;
-	std::map<std::string, PokemonData*> pokemonDataMap;
-	std::map<std::string, std::string> rawPokemonNameToDexName;
-	std::map<std::string, Object*> objectMap;
-	std::map<std::string, std::string> textRedefinitionMap;
-	std::map<std::string, int> trainerConstantMap;
-	std::map<int, TrainerData*> trainerDataMap;
-	std::map<std::string, EvolutionSet*> evolutionMap;
-	std::map<std::string, LearnSet*> learnSetMap;
+	std::unordered_map<std::string, Tileset*> tilesetMap;
+	std::unordered_map<std::string, Texture*> textureMap;
+	std::unordered_map<std::string, Sprite*> spriteMap;
+	std::unordered_map<std::string, Blockset*> blocksetMap;
+	std::unordered_map<std::string, Map*> mapMap;
+	std::unordered_map<std::string, PokemonData*> pokemonDataMap;
+	std::unordered_map<std::string, std::string> rawPokemonNameToDexName;
+	std::unordered_map<std::string, Object*> objectMap;
+	std::unordered_map<std::string, std::string> textRedefinitionMap;
+	std::unordered_map<std::string, int> trainerConstantMap;
+	std::unordered_map<int, TrainerData*> trainerDataMap;
+	std::unordered_map<std::string, EvolutionSet*> evolutionMap;
+	std::unordered_map<std::string, LearnSet*> learnSetMap;
+	std::unordered_map<std::string, Move*> moveMap;
 };
