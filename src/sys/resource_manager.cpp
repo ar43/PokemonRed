@@ -1116,7 +1116,7 @@ void ResourceManager::loadMap(std::string fileName)
 	std::string pathHeaders = "assets/data/map_headers/" + fileName + ".asm";
 	std::string pathTexts = "assets/data/map_texts/" + fileName + ".asm";
 	Map* map = new Map(-1,-1,nullptr, 0, "none",0, "none", 0, "none", 0, "none", 0);
-	map->tileset = nullptr;
+	//map->tileset = nullptr;
 	map->name = "error";
 	map->fileName = fileName;
 	//copy the bytes of map data to a vector
@@ -1183,8 +1183,8 @@ void ResourceManager::loadMap(std::string fileName)
 							break;
 						}
 					}
-					map->blockset = getBlockset(token);
-					map->tileset = map->blockset->tileset;
+					//map->blockset = getBlockset(token);
+					map->blocksetName = token;
 					//printf("%s\n", token);
 				}
 				token = strtok(NULL, ",");
@@ -1954,6 +1954,15 @@ Blockset* ResourceManager::getBlockset(std::string blocksetName)
 
 	if (it == blocksetMap.end())
 	{
+		for (int i = 0; i < Constants::num_blocksets; i++)
+		{
+			if (!Constants::blocksets[i][0].compare(blocksetName))
+			{
+				loadBlockset(Constants::blocksets[i][0], Constants::blocksets[i][1], Constants::blocksets[i][2].c_str());
+				printf("Dynamically loaded blockset: %s\n", Constants::blocksets[i][0].c_str());
+				return blocksetMap[blocksetName];
+			}
+		}
 		sys.error("Trying to look for a blockset that doesn't exist");
 		return nullptr;
 	}
@@ -1977,6 +1986,7 @@ Map* ResourceManager::getMap(std::string mapName)
 	}
 	else
 	{
+		//it->second->loadBlockset();
 		return it->second;
 	}
 }

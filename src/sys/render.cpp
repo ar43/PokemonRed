@@ -57,7 +57,7 @@ void Render::draw_overlay()
                 if (it->y > obj_pos.y + 4 && it->y < obj_pos.y + 20 && it->x >= obj_pos.x && it->x < obj_pos.x + 16)
                 {
                     
-                    Texture* grass = res.getTexture(game.world.currentMap->tileset->grassName);
+                    Texture* grass = res.getTexture(game.world.currentMap->blockset()->tileset->grassName);
                     if (obj_nearby)
                         grass->render_grass(it->x, it->y, false);
                     else
@@ -66,7 +66,7 @@ void Render::draw_overlay()
                 }
                 else if (it->y > obj_pos.y && it->y < obj_pos.y + 16 && it->x >= obj_pos.x && it->x < obj_pos.x + 16)
                 {
-                    Texture* grass = res.getTexture(game.world.currentMap->tileset->grassName);
+                    Texture* grass = res.getTexture(game.world.currentMap->blockset()->tileset->grassName);
                     grass->render_grass(it->x, it->y,true);
                 }
 
@@ -74,7 +74,7 @@ void Render::draw_overlay()
 
             if (it->y > PLAYER_OFFSET_Y + 4 && it->y < PLAYER_OFFSET_Y + 20 && it->x >= PLAYER_OFFSET_X && it->x < PLAYER_OFFSET_X + 16)
             {
-                Texture* grass = res.getTexture(game.world.currentMap->tileset->grassName);
+                Texture* grass = res.getTexture(game.world.currentMap->blockset()->tileset->grassName);
                 if (obj_nearby)
                     grass->render_grass(it->x, it->y, false);
                 else
@@ -82,7 +82,7 @@ void Render::draw_overlay()
             }
             else if (it->y > PLAYER_OFFSET_Y && it->y < PLAYER_OFFSET_Y + 16 && it->x >= PLAYER_OFFSET_X && it->x < PLAYER_OFFSET_X+16)
             {
-                Texture* grass = res.getTexture(game.world.currentMap->tileset->grassName);
+                Texture* grass = res.getTexture(game.world.currentMap->blockset()->tileset->grassName);
                 grass->render_grass(it->x, it->y,true);
             }
 
@@ -144,7 +144,7 @@ void Render::draw_map()
             for (int j = 0; j < 3; j++)
             {
                 int bkg = game.world.currentMap->background;
-                game.world.currentMap->blockset->blocks[bkg].render(-1 - j, i);
+                game.world.currentMap->blockset()->blocks[bkg].render(-1 - j, i);
             }
         }
     }
@@ -156,7 +156,7 @@ void Render::draw_map()
             for (int j = 0; j < 3; j++)
             {
                 int bkg = game.world.currentMap->background;
-                game.world.currentMap->blockset->blocks[bkg].render(j + game.world.currentMap->width, i);
+                game.world.currentMap->blockset()->blocks[bkg].render(j + game.world.currentMap->width, i);
             }
         }
     }
@@ -168,7 +168,7 @@ void Render::draw_map()
             for (int j = 0; j < 3; j++)
             {
                 int bkg = game.world.currentMap->background;
-                game.world.currentMap->blockset->blocks[bkg].render(i, -1 - j);
+                game.world.currentMap->blockset()->blocks[bkg].render(i, -1 - j);
             }
         }
     }
@@ -180,7 +180,7 @@ void Render::draw_map()
             for (int j = 0; j < 3; j++)
             {
                 int bkg = game.world.currentMap->background;
-                game.world.currentMap->blockset->blocks[bkg].render(i, j + game.world.currentMap->height);
+                game.world.currentMap->blockset()->blocks[bkg].render(i, j + game.world.currentMap->height);
             }
         }
     }

@@ -135,7 +135,7 @@ public:
 	Map(int h, int w, Blockset *blk, int background, std::string north, int northOffset, std::string west, int westOffset, std::string east, int eastOffset, std::string south, int southOffset) {
 		width = w;
 		height = h;
-		blockset = blk;
+		p_blockset = blk;
 		this->background = background;
 		connection.west = west;
 		connection.westOffset = westOffset;
@@ -153,8 +153,9 @@ public:
 	int height;
 	int background;
 	std::vector<Uint8> blocks;
-	Blockset* blockset;
-	Tileset* tileset;
+	std::string blocksetName;
+	Blockset* blockset();
+	//Tileset* tileset;
 	Connection connection;
 	std::vector<Position> grassEffect;
 	std::vector<Warp> warps;
@@ -162,8 +163,11 @@ public:
 	std::vector<Textset*> texts;
 	std::vector<Object*> objects;
 	void render(int x, int y);
+	void loadBlockset();
 	int currentScript;
 	void runScript();
+private:
+	Blockset* p_blockset;
 };
 
 

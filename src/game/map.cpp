@@ -273,15 +273,27 @@ void Block::render_static(int x, int y)
 }
 
 
+Blockset* Map::blockset()
+{
+    if (p_blockset == nullptr)
+        loadBlockset();
+    return p_blockset;
+}
+
 void Map::render(int x, int y)
 {
     for (int Y = 0; Y < height; Y++)
     {
         for (int X = 0; X < width; X++)
         {
-            blockset->blocks[this->blocks[Y*width + X]].render(X + x, Y + y);
+            blockset()->blocks[this->blocks[Y*width + X]].render(X + x, Y + y);
         }
     }
+}
+
+void Map::loadBlockset()
+{
+    this->p_blockset = res.getBlockset(this->blocksetName);
 }
 
 void Texture::render_scale(int x, int y, int new_w, int new_h, SDL_RendererFlip flip)

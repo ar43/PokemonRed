@@ -541,7 +541,7 @@ bool Player::collision_check()
 		return true;
 
 	//ledge jumping (check "from" tile and "to" tile)
-	if(currMap->blockset->name == "overworld")
+	if(currMap->blockset()->name == "overworld")
 		ledge_check(currBlock, newBlock,iOld,i);
 
 
@@ -680,7 +680,7 @@ void Player::block_input(int time)
 
 void Player::warp()
 {
-	if (game.world.currentMap->tileset->permission == Permission::OUTDOOR) //is current map outdoors?
+	if (game.world.currentMap->blockset()->tileset->permission == Permission::OUTDOOR) //is current map outdoors?
 	{
 		lastMap = game.world.currentMap->name;
 	}
@@ -698,7 +698,7 @@ void Player::warp()
 
 	pos.x = util::square_to_pixel(game.world.currentMap->warps[nextWarp->warpIn].at.x);
 	pos.y = util::square_to_pixel(game.world.currentMap->warps[nextWarp->warpIn].at.y);
-	if (game.world.currentMap->tileset->permission == Permission::OUTDOOR) //is next map outdoors?
+	if (game.world.currentMap->blockset()->tileset->permission == Permission::OUTDOOR) //is next map outdoors?
 	{
 		moving = true;
 		moveIndex = 0;

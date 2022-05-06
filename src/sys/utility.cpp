@@ -96,7 +96,7 @@ namespace util
 		if (index < 0 || index >= currMap->blocks.size() || p_pos->x < 0 || p_pos->x >= currMap->width * 32) //else it would throw error
 			return false;
 
-		block = &currMap->blockset->blocks[currMap->blocks[index]];
+		block = &currMap->blockset()->blocks[currMap->blocks[index]];
 
 		if (p_pos->x % 32 == 0)
 		{

@@ -707,7 +707,7 @@ void System::load_media()
 	load_pkm_textures();
 	load_pkm_data();
 	load_tilesets();
-	load_blocksets();
+	//load_blocksets(); //uncomment to enable static loading
 	load_maps();
 	load_textures();
 	load_texts();

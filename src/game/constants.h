@@ -2,6 +2,8 @@
 namespace Constants
 {
 	extern TTF_Font* font;
+	extern std::string blocksets[][3];
+	extern int num_blocksets;
 	namespace Coll
 	{
 		extern std::vector<Uint8> overworld;

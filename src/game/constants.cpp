@@ -133,6 +133,34 @@ OverworldWarpTileIDs:
 namespace Constants
 {
 	TTF_Font* font = nullptr;
+
+	std::string blocksets[][3]{ {"overworld", "overworld", "assets/data/blocksets/overworld.bst"},
+	{"reds_house_1", "reds_house", "assets/data/blocksets/reds_house.bst"},
+	{"reds_house_2", "reds_house", "assets/data/blocksets/reds_house.bst"},
+	{"mart", "mart", "assets/data/blocksets/pokecenter.bst"},
+	{"forest", "forest", "assets/data/blocksets/forest.bst"},
+	{"dojo", "dojo", "assets/data/blocksets/gym.bst"},
+	{"pokecenter", "pokecenter", "assets/data/blocksets/pokecenter.bst"},
+	{"gym", "gym", "assets/data/blocksets/gym.bst"},
+	{"house", "house", "assets/data/blocksets/house.bst"},
+	{"forest_gate", "forestgate", "assets/data/blocksets/gate.bst"},
+	{"museum", "museum", "assets/data/blocksets/gate.bst"},
+	{"underground", "underground", "assets/data/blocksets/underground.bst"},
+	{"gate", "gate", "assets/data/blocksets/gate.bst"},
+	{"ship", "ship", "assets/data/blocksets/ship.bst"},
+	{"ship_port", "shipport", "assets/data/blocksets/ship_port.bst"},
+	{"cemetery", "cemetery", "assets/data/blocksets/cemetery.bst"},
+	{"interior", "interior", "assets/data/blocksets/interior.bst"},
+	{"cavern", "cavern", "assets/data/blocksets/cavern.bst"},
+	{"lobby", "lobby", "assets/data/blocksets/lobby.bst"},
+	{"mansion", "mansion", "assets/data/blocksets/mansion.bst"},
+	{"lab", "lab", "assets/data/blocksets/lab.bst"},
+	{"club", "club", "assets/data/blocksets/club.bst"},
+	{"facility", "facility", "assets/data/blocksets/facility.bst"},
+	{"plateau", "plateau", "assets/data/blocksets/plateau.bst"} };
+
+	int num_blocksets = 24;
+
 	namespace Coll
 	{
 		std::vector<Uint8> overworld{ 0x00, 0x10, 0x1b, 0x20, 0x21, 0x23, 0x2c, 0x2d, 0x2e, 0x30, 0x31, 0x33, 0x39, 0x3c, 0x3e, 0x52, 0x54, 0x58, 0x5b };
