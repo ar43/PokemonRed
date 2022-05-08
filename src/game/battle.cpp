@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 
 
 
@@ -55,6 +56,7 @@ void Battle::start()
     
     cursorGeneralPosition.x = 0;
     cursorGeneralPosition.y = 0;
+    cursorFightPosition = 0;
 
 }
 
@@ -256,6 +258,9 @@ void Battle::update()
                             const int offset = cantor(cursorGeneralPosition.x, cursorGeneralPosition.y);
                             input.clear();
                             scriptIndex = (int)NamedBattleScripts::FIGHT_SUBMENU + offset;
+                            update_fight_move_description();
+                            game.battle.canInput = true;
+
                         }
                         else if (input.keyDown[ARROW_LEFT])
                         {
@@ -288,18 +293,36 @@ void Battle::update()
                     {
                         drawSubmenu = BattleSubmenu::FIGHT;
 
-                        if (input.keyDown[KEY_A])
+                        if (game.battle.canInput)
                         {
-                            input.clear();
+                            if (input.keyDown[KEY_A])
+                            {
+                                input.clear();
+                                update_fight_move_description();
+                            }
+                            else if (input.keyDown[KEY_B])
+                            {
+                                input.clear();
+                                scriptIndex = (int)NamedBattleScripts::GENERAL_SUBMENU;
+                            }
+                            else if (input.keyDown[ARROW_DOWN])
+                            {
+                                input.clear();
+                                cursorFightPosition++;
+                                cursorFightPosition = cursorFightPosition % num_moves;
+                                update_fight_move_description();
+                            }
+                            else if (input.keyDown[ARROW_UP])
+                            {
+                                input.clear();
+                                cursorFightPosition--;
+                                if (cursorFightPosition < 0)
+                                    cursorFightPosition = num_moves-1;
+                                update_fight_move_description();
+                            }
                         }
-                        else if (input.keyDown[ARROW_DOWN])
-                        {
-                            input.clear();
-                        }
-                        else if (input.keyDown[ARROW_UP])
-                        {
-                            input.clear();
-                        }
+
+                        
 
                         break;
                     }
@@ -606,7 +629,57 @@ void Battle::render_general_submenu()
 
 void Battle::render_fight_submenu()
 {
+    auto tex1 = res.getTexture("tb1");
+    auto tex2 = res.getTexture("tb2");
+    auto tex5 = res.getTexture("tb5");
+    auto tex4 = res.getTexture("tb4");
+    auto tex3 = res.getTexture("tb3");
+    auto tex6 = res.getTexture("tb6");
 
+    SDL_SetRenderDrawColor( sys.getRenderer(), 255, 255, 255, 255 );
+    SDL_Rect white = { 8,8 * 9,8 * 9,3 * 8 };
+    SDL_RenderFillRect(sys.getRenderer(), &white);
+
+    tex5->render(0, 12 * 8);
+
+    for (int i = 0; i < 5; i++)
+        tex4->render(4*8, GAME_HEIGHT - TEXTBOX_HEIGHT + 8 + i * 8);
+
+    for (int i = 0; i < 3; i++)
+        tex4->render(0, 9*8 + i * 8);
+    for (int i = 0; i < 3; i++)
+        tex4->render(10*8, 9*8 + i * 8);
+
+    tex5->render(4 * 8, 17 * 8);
+
+    for (int i = 0; i < 9; i++)
+        tex2->render(8+i*8, 8*8);
+
+    tex6->render(10 * 8, 12 * 8);
+    tex1->render(0, 8 * 8);
+    tex3->render(10*8, 8 * 8);
+    
+
+    for (int i = 0; i < 4; i++)
+    {
+        if (tex_move[i].flag)
+        {
+            tex_move[i].render(6 * 8+1, 13 * 8 + i*8);
+        }
+        else
+        {
+            tex_move[i].render(6 * 8, 13 * 8 + i*8);
+        }     
+    }
+
+    int cursorPos = cursorFightPosition;
+    res.getTexture("cursor_full")->render(5*8, 13*8+cursorPos*8);
+
+    res.getTexture("battle_type")->render(1 * 8, 9 * 8);
+    if(typeText.texture != nullptr)
+        typeText.render(2 * 8, 10 * 8);
+    if(current_ppText.texture != nullptr)
+        current_ppText.render(5 * 8, 11 * 8);
 }
 
 void Battle::update_enemy_hp()
@@ -660,17 +733,39 @@ void Battle::create_player_pokemon_text_texture()
     res.updateText(&playerPokemonText, battleMonNick);
 }
 
-void Battle::create_submenu_text()
-{
-
-}
-
 void Battle::create_fight_text()
 {
+    num_moves = 0;
     for (int i = 0; i < 4; i++)
     {
-        res.updateText(&tex_move[i], player_party->pokemonList.at(currEnemyMonIndex)->moves[i]);
+        std::string move_name = player_party->pokemonList.at(currPlayerMonIndex)->moves[i];
+        if (!move_name.compare("NO_MOVE"))
+        {
+            move_name = "-";
+            tex_move[i].flag = true;
+        }
+        else
+        {
+            tex_move[i].flag = false;
+            num_moves++;
+        }
+            
+        std::replace( move_name.begin(), move_name.end(), '_', ' ');
+        res.updateText(&tex_move[i], move_name);
     }
+}
+
+void Battle::update_fight_move_description()
+{
+    if (cursorFightPosition >= num_moves || cursorFightPosition < 0)
+        return sys.error("cursorFightPosition out of bounds in Battle::update_fight_move_description()");
+    auto move = res.getMove(player_party->pokemonList.at(currPlayerMonIndex)->moves[cursorFightPosition]);
+    std::string str_type = move->type;
+    std::string max_pp = std::to_string(move->pp);
+    std::string current_pp = std::to_string(player_party->pokemonList.at(currPlayerMonIndex)->pp[cursorFightPosition]) + "/" + max_pp;
+
+    res.updateText(&typeText, str_type);
+    res.updateText(&current_ppText, current_pp);
 }
 
 void Battle::playanim_pokemonappear()

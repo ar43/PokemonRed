@@ -44,6 +44,7 @@ public:
 	
 	bool inBattle = false;
 	bool starting = false;
+	bool canInput = true;
 	
 	int battleIndex = 0;
 	int brightness = 3;
@@ -75,6 +76,7 @@ private:
 	Position ash_position;
 
 	Position cursorGeneralPosition;
+	int cursorFightPosition;
 
 	int scrollIndex = 0;
 	int enemyScrollIndex = 0;
@@ -99,12 +101,16 @@ private:
 	Texture playerPokemonLvl;
 	Texture playerPokemonHp;
 
+	Texture typeText;
+	Texture current_ppText;
+
 	Texture tex_move[4];
+	int num_moves = 0;
 
 	void create_enemy_pokemon_text_texture();
 	void create_player_pokemon_text_texture();
-	void create_submenu_text();
 	void create_fight_text();
+	void update_fight_move_description();
 
 	BattleAnimation pokemonAppear;
 	void playanim_pokemonappear();

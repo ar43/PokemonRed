@@ -656,7 +656,7 @@ void System::load_trainer_data()
 					break;
 				if (level_static)
 				{
-					party->addPokemon(new Pokemon(res.getPokemonData(token), level));
+					party->addPokemon(new Pokemon(res.getPokemonData(token), level, true));
 				}
 				else
 				{
@@ -666,7 +666,7 @@ void System::load_trainer_data()
 					}
 					else
 					{
-						party->addPokemon(new Pokemon(res.getPokemonData(token), level));
+						party->addPokemon(new Pokemon(res.getPokemonData(token), level, true));
 					}
 				}
 			}
@@ -684,6 +684,7 @@ void System::load_generic_text()
 	res.addTexture("battle_fight", res.createText("FIGHT"));
 	res.addTexture("battle_item", res.createText("ITEM"));
 	res.addTexture("battle_run", res.createText("RUN"));
+	res.addTexture("battle_type", res.createText("TYPE/"));
 }
 
 void test_lua()
@@ -705,6 +706,7 @@ void System::load_media()
 {
 	load_sprites();
 	load_pkm_textures();
+	res.loadMoves("assets/data/moves/moves.asm");
 	load_pkm_data();
 	load_tilesets();
 	//load_blocksets(); //uncomment to enable static loading
@@ -721,7 +723,6 @@ void System::load_media()
 	load_trainer_constants();
 	load_trainer_data();
 	load_generic_text();
-	res.loadMoves("assets/data/moves/moves.asm");
 	
 	//test_lua();
 }

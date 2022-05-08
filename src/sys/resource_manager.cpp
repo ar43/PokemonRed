@@ -1786,6 +1786,21 @@ void ResourceManager::loadMoves(std::string path)
 
 }
 
+Move* ResourceManager::getMove(std::string name)
+{
+	auto it = moveMap.find(name);
+
+	if (it == moveMap.end())
+	{
+		sys.error("Trying to look for a move that doesn't exist");
+		return nullptr;
+	}
+	else
+	{
+		return it->second;
+	}
+}
+
 Tileset* ResourceManager::getTileset(std::string textureName)
 {
 	auto it = tilesetMap.find(textureName);
@@ -1807,7 +1822,7 @@ Texture* ResourceManager::getTexture(std::string textureName)
 
 	if (it == textureMap.end())
 	{
-		//sys.error("Trying to look for a texture that doesn't exist");
+		printf("WARNING: Trying to look for a texture that doesn't exist\n");
 		return nullptr;
 	}
 	else

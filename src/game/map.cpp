@@ -406,6 +406,8 @@ void Texture::generate_tilemaps()
 
 void Texture::render(int x, int y, SDL_RendererFlip flip)
 {
+    if (texture == nullptr)
+        return;
     if (game.player.warpIndex < 8)
     {
         SDL_SetTextureColorMod(texture, 255, 255, 255);

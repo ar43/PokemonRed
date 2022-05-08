@@ -13,7 +13,7 @@ enum class PokemonStatus
 class Pokemon
 {
 public:
-	Pokemon(PokemonData* p_data, int p_level);
+	Pokemon(PokemonData* p_data, int p_level, bool trainer = false);
 	PokemonData *data;
 	std::string nickname;
 	PokemonStats stats;
@@ -31,6 +31,6 @@ public:
 private:
 	void calculateStats();
 	void setMoves();
-	void generateIV();
+	void generateIV(bool trainer);
 	int calculateEXP(int level);
 };

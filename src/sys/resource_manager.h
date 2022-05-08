@@ -54,6 +54,7 @@ public:
 	LearnSet* getLearnset(std::string pokemonName);
 
 	void loadMoves(std::string path);
+	Move* getMove(std::string name);
 	
 private:
 

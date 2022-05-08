@@ -1,13 +1,13 @@
 #include "../sys/system.h"
 
-Pokemon::Pokemon(PokemonData* p_data, int p_level)
+Pokemon::Pokemon(PokemonData* p_data, int p_level, bool trainer)
 {
 	data = p_data;
 	level = p_level;
 	trainerId = game.player.trainerId;
 	nickname = "";
 	util::clearStats(&ev);
-	generateIV();
+	generateIV(trainer);
 	calculateStats();
 	hp = maxHp();
 	status = PokemonStatus::NONE;
@@ -71,15 +71,32 @@ void Pokemon::setMoves()
 			moves[3] = it.second;
 		}
 	}
+	for (int i = 0; i < 4; i++)
+	{
+		if (moves[i].compare("NO_MOVE") != 0)
+		{
+			pp[i] = res.getMove(moves[i])->pp;
+		}
+	}
 
 }
 
-void Pokemon::generateIV()
+void Pokemon::generateIV(bool trainer)
 {
-	iv.attack = util::random(0, 15);
-	iv.defense = util::random(0, 15);
-	iv.speed = util::random(0, 15);
-	iv.special = util::random(0, 15);
+	if (!trainer)
+	{
+		iv.attack = util::random(0, 15);
+		iv.defense = util::random(0, 15);
+		iv.speed = util::random(0, 15);
+		iv.special = util::random(0, 15);
+	}
+	else
+	{
+		iv.attack = 9;
+		iv.defense = 8;
+		iv.speed = 8;
+		iv.special = 8;
+	}
 	iv.hp = ((iv.attack & 1) << 3) | ((iv.defense & 1) << 2) | ((iv.speed & 1) << 1) | (iv.special & 1);
 }
 

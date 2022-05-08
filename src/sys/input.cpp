@@ -18,6 +18,7 @@ void Input::clear()
 		keyDown[i] = false;
 	}
 	game.textbox.canInput = false;
+	game.battle.canInput = false;
 }
 
 void Input::process(SDL_Event *e)
@@ -211,15 +212,19 @@ void Input::catchTextbox(SDL_Event* e)
 			break;
 
 		case SDLK_UP:
+			game.battle.canInput = true;
 			keyDown[ARROW_UP] = false;
 			break;
 		case SDLK_DOWN:
+			game.battle.canInput = true;
 			keyDown[ARROW_DOWN] = false;
 			break;
 		case SDLK_LEFT:
+			game.battle.canInput = true;
 			keyDown[ARROW_LEFT] = false;
 			break;
 		case SDLK_RIGHT:
+			game.battle.canInput = true;
 			keyDown[ARROW_RIGHT] = false;
 			break;
 

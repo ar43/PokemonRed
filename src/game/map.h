@@ -179,6 +179,7 @@ public:
 	SDL_Texture* tilemap_3x3 = nullptr;
 	SDL_Texture* tilemap_5x5 = nullptr;
 	Uint32 format;
+	bool flag = false;
 	int w;
 	int h;
 	void scale(int new_w, int new_h);
